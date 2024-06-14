@@ -1,0 +1,33 @@
+[package]
+name = "server"
+version = "0.2.1"
+edition = "2021"
+
+[dependencies]
+salvo = "0.68"
+tokio = { version = "1", features = ["macros"] }
+time = { version = "0.3", features = ['macros'] }
+tracing = { version = "0.1", features = ["log", "release_max_level_info"] }
+tracing-subscriber = { version = "0.3", features = [
+  'time',
+  'env-filter',
+  'json',
+] }
+tracing-appender = '0.2'
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+lazy_static = '1'
+thiserror = "1"
+sqlx = { version = "0.7", default-features = false, features = [
+  "macros",
+  "runtime-tokio",
+  "sqlite",
+  "time",
+] }
+
+[profile.release]
+panic = "abort"   # Strip expensive panic clean-up logic
+codegen-units = 1 # Compile crates one after another so the compiler can optimize better
+lto = true        # Enables link to optimizations
+opt-level = "s"   # Optimize for binary size
+strip = true      # Remove debug symbols
