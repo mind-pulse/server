@@ -267,7 +267,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
                     point: 1,
                 },
                 QuestionOption {
-                    text: "中度。假如强迫行为被阻止，会有中等程度的焦虑，但是仍可以应付。 　　3=严重。假如强迫行为被阻止，会明显且困扰地增加焦虑。",
+                    text: "中度。假如强迫行为被阻止，会有中等程度的焦虑，但是仍可以应付。",
                     point: 2,
                 },
                 QuestionOption {
