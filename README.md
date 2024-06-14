@@ -45,3 +45,7 @@ cargo build -r
 ### 2. 为什么都使用硬编码了，不直接把量表数据保存到 json 文件并入前端？
 
 理论上可以，在我开源之前已经有人这么做了，只不过使用 server 更便于统计，所以项目中还有一个简陋的模块叫`statistics`。
+
+---
+
+[![Stargazers over time](https://starchart.cc/mind-pulse/server.svg?variant=adaptive)](https://starchart.cc/mind-pulse/server)
