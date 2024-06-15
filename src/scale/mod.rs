@@ -126,17 +126,17 @@ pub struct Characteristic {
 
 #[derive(Debug, Serialize)]
 pub struct ScalePath {
-    name: &'static str,
-    pub path: &'static str,
-    introduction: &'static str,
-    warning: Option<&'static str>,
+    name: Text,
+    pub path: Text,
+    introduction: Texts,
+    warning: Option<Text>,
     tags: Tag,
     disabled: bool,
 }
 
 impl ScalePath {
     pub(crate) fn name(&self) -> &str {
-        &self.name
+        self.name
     }
 }
 
@@ -144,7 +144,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: SELF_DIRECTED_SEARCH.name,
         path: "h_sds",
-        introduction: SELF_DIRECTED_SEARCH.introduction[0],
+        introduction: SELF_DIRECTED_SEARCH.introduction,
         warning: SELF_DIRECTED_SEARCH.warning,
         tags: SELF_DIRECTED_SEARCH.tags,
         disabled: false,
@@ -152,7 +152,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: REVISED_NEOPERSONALITY_INVENTORY.name,
         path: "neo_pi_r",
-        introduction: REVISED_NEOPERSONALITY_INVENTORY.introduction[0],
+        introduction: REVISED_NEOPERSONALITY_INVENTORY.introduction,
         warning: REVISED_NEOPERSONALITY_INVENTORY.warning,
         tags: REVISED_NEOPERSONALITY_INVENTORY.tags,
         disabled: false,
@@ -160,7 +160,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.name,
         path: "16pf",
-        introduction: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.introduction[0],
+        introduction: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.introduction,
         warning: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.warning,
         tags: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.tags,
         disabled: false,
@@ -168,7 +168,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: ENNEAGRAM_PERSONALITY_TEST.name,
         path: "ept",
-        introduction: ENNEAGRAM_PERSONALITY_TEST.introduction[0],
+        introduction: ENNEAGRAM_PERSONALITY_TEST.introduction,
         warning: ENNEAGRAM_PERSONALITY_TEST.warning,
         tags: ENNEAGRAM_PERSONALITY_TEST.tags,
         disabled: false,
@@ -176,7 +176,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: EPQ_RSC.name,
         path: "epq_rsc",
-        introduction: EPQ_RSC.introduction[0],
+        introduction: EPQ_RSC.introduction,
         warning: EPQ_RSC.warning,
         tags: EPQ_RSC.tags,
         disabled: false,
@@ -184,7 +184,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: SYMPTOM_CHECKLIST_90.name,
         path: "scl90",
-        introduction: SYMPTOM_CHECKLIST_90.introduction[0],
+        introduction: SYMPTOM_CHECKLIST_90.introduction,
         warning: SYMPTOM_CHECKLIST_90.warning,
         tags: SYMPTOM_CHECKLIST_90.tags,
         disabled: false,
@@ -192,7 +192,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: BECK_DEPRESSION_RATING_SCALE.name,
         path: "bdi",
-        introduction: BECK_DEPRESSION_RATING_SCALE.introduction[0],
+        introduction: BECK_DEPRESSION_RATING_SCALE.introduction,
         warning: BECK_DEPRESSION_RATING_SCALE.warning,
         tags: BECK_DEPRESSION_RATING_SCALE.tags,
         disabled: false,
@@ -200,7 +200,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: SELF_RATING_DEPRESSION_SCALE.name,
         path: "sds",
-        introduction: SELF_RATING_DEPRESSION_SCALE.introduction[0],
+        introduction: SELF_RATING_DEPRESSION_SCALE.introduction,
         warning: SELF_RATING_DEPRESSION_SCALE.warning,
         tags: SELF_RATING_DEPRESSION_SCALE.tags,
         disabled: false,
@@ -208,7 +208,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: SELF_RATING_ANXIETY_SCALE.name,
         path: "sas",
-        introduction: SELF_RATING_ANXIETY_SCALE.introduction[0],
+        introduction: SELF_RATING_ANXIETY_SCALE.introduction,
         warning: SELF_RATING_ANXIETY_SCALE.warning,
         tags: SELF_RATING_ANXIETY_SCALE.tags,
         disabled: false,
@@ -216,7 +216,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.name,
         path: "y_bocs",
-        introduction: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.introduction[0],
+        introduction: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.introduction,
         warning: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.warning,
         tags: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.tags,
         disabled: false,
@@ -224,7 +224,7 @@ pub const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: HAMILTON_DEPRESSION_SCALE.name,
         path: "hamd",
-        introduction: HAMILTON_DEPRESSION_SCALE.introduction[0],
+        introduction: HAMILTON_DEPRESSION_SCALE.introduction,
         warning: HAMILTON_DEPRESSION_SCALE.warning,
         tags: HAMILTON_DEPRESSION_SCALE.tags,
         disabled: false,

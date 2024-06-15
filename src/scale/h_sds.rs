@@ -403,7 +403,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
     references: None,
     warning: None,
     formula_mode: None,
-    tags: Tag{ info: Some(&["职业"]), normal: Some(&["自评"]), warning: None, error: None },
+    tags: Tag{ info: Some(&["职业", "高考", "就业", "专业"]), normal: Some(&["自评"]), warning: None, error: None },
     interpretation: Interpretation { capacity_category_interpretations: &CAPACITY_CATEGORY_INTERPRETATIONS, career_information: &CAREER_INFORMATION },
     questions: &[
         Question {
