@@ -1,67 +1,67 @@
-pub mod bdi;
-pub mod epq_rsc;
-pub mod ept;
-pub mod h_sds;
-pub mod hamd;
-pub mod neo_pi_r;
-pub mod sas;
-pub mod scl90;
-pub mod sds;
-pub mod sixteen_pf;
-pub mod y_bocs;
+mod bdi;
+mod epq_rsc;
+mod ept;
+mod h_sds;
+mod hamd;
+mod neo_pi_r;
+mod sas;
+mod scl90;
+mod sds;
+mod sixteen_pf;
+mod y_bocs;
 
 use serde::Serialize;
 
-use crate::error::{ConfidantResult, Error};
+use crate::error::{MindPulseError, MindPulseResult};
 
-pub use self::bdi::BECK_DEPRESSION_RATING_SCALE;
-pub use self::epq_rsc::EPQ_RSC;
-pub use self::ept::ENNEAGRAM_PERSONALITY_TEST;
-pub use self::h_sds::SELF_DIRECTED_SEARCH;
-pub use self::hamd::HAMILTON_DEPRESSION_SCALE;
-pub use self::neo_pi_r::REVISED_NEOPERSONALITY_INVENTORY;
-pub use self::sas::SELF_RATING_ANXIETY_SCALE;
-pub use self::scl90::SYMPTOM_CHECKLIST_90;
-pub use self::sds::SELF_RATING_DEPRESSION_SCALE;
-pub use self::sixteen_pf::SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE;
-pub use self::y_bocs::YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE;
+pub(super) use self::bdi::BECK_DEPRESSION_RATING_SCALE;
+pub(super) use self::epq_rsc::EPQ_RSC;
+pub(super) use self::ept::ENNEAGRAM_PERSONALITY_TEST;
+pub(super) use self::h_sds::SELF_DIRECTED_SEARCH;
+pub(super) use self::hamd::HAMILTON_DEPRESSION_SCALE;
+pub(super) use self::neo_pi_r::REVISED_NEOPERSONALITY_INVENTORY;
+pub(super) use self::sas::SELF_RATING_ANXIETY_SCALE;
+pub(super) use self::scl90::SYMPTOM_CHECKLIST_90;
+pub(super) use self::sds::SELF_RATING_DEPRESSION_SCALE;
+pub(super) use self::sixteen_pf::SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE;
+pub(super) use self::y_bocs::YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE;
 
-pub type Text = &'static str;
-pub type Texts = &'static [Text];
+type Text = &'static str;
+type Texts = &'static [Text];
 
 #[derive(Debug, Serialize, Clone)]
-pub struct QuestionOption {
-    pub(crate) text: Text,
-    pub(crate) point: i8,
+pub(super) struct QuestionOption {
+    text: Text,
+    point: i8,
 }
 
 #[derive(Debug, Serialize)]
-pub struct Question {
-    pub(crate) title: Text,
-    pub(crate) options: &'static [QuestionOption],
+pub(super) struct Question {
+    title: Text,
+    options: &'static [QuestionOption],
 }
 
 #[derive(Debug, Serialize)]
-pub struct InterpretationItem<I> {
-    pub(crate) range: [I; 2],
-    pub(crate) description: Text,
+pub(super) struct InterpretationItem<I> {
+    range: [I; 2],
+    description: Text,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) advice: Option<Texts>,
+    advice: Option<Texts>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) symptom: Option<Texts>,
-    pub(crate) status: Status,
+    symptom: Option<Texts>,
+    status: Status,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all(serialize = "lowercase"))]
-pub enum OperationalRule {
+pub(super) enum OperationalRule {
     Multiply(f64),
     // Divide(f64),
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all(serialize = "UPPERCASE"))]
-pub enum Integer {
+pub(super) enum Integer {
     // Floor,
     // Ceil,
     /// 四舍五入
@@ -69,36 +69,36 @@ pub enum Integer {
 }
 
 #[derive(Debug, Serialize)]
-pub struct FormulaMode {
-    pub(crate) operational_rule: OperationalRule,
-    pub(crate) integer: Option<Integer>,
+pub(super) struct FormulaMode {
+    operational_rule: OperationalRule,
+    integer: Option<Integer>,
 }
 
 #[derive(Debug, Serialize)]
-pub struct Scale<'r, I, Q> {
-    pub(crate) name: Text,
-    pub(crate) abbreviation: Text,
+pub(super) struct Scale<'r, I, Q> {
+    name: Text,
+    abbreviation: Text,
     /// 对量表的说明
-    pub(crate) instruction: Texts,
-    pub(crate) questions: &'r [Q],
-    pub(crate) interpretation: I,
+    instruction: Texts,
+    questions: &'r [Q],
+    interpretation: I,
     /// 简介
-    pub(crate) introduction: Texts,
+    introduction: Texts,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) references: Option<Texts>,
+    references: Option<Texts>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) warning: Option<Text>,
+    warning: Option<Text>,
     /// js 计算用到的表达式，和用"<SUM>"替代
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) formula_mode: Option<FormulaMode>,
-    pub(crate) tags: Tag,
+    formula_mode: Option<FormulaMode>,
+    tags: Tag,
     /// 理念
-    pub(crate) idea: Option<Texts>,
+    idea: Option<Texts>,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all(serialize = "lowercase"))]
-pub enum Status {
+pub(super) enum Status {
     /// 正常
     Normal,
     /// 轻度
@@ -110,7 +110,7 @@ pub enum Status {
 }
 
 #[derive(Debug, Serialize)]
-pub struct Tag {
+pub(super) struct Tag {
     info: Option<Texts>,
     normal: Option<Texts>,
     warning: Option<Texts>,
@@ -119,15 +119,15 @@ pub struct Tag {
 
 /// 特征
 #[derive(Debug, Serialize)]
-pub struct Characteristic {
+pub(super) struct Characteristic {
     low: Texts,
     high: Texts,
 }
 
 #[derive(Debug, Serialize)]
-pub struct ScalePath {
+pub(super) struct ScalePath {
     name: Text,
-    pub path: Text,
+    path: Text,
     introduction: Texts,
     warning: Option<Text>,
     tags: Tag,
@@ -140,7 +140,7 @@ impl ScalePath {
     }
 }
 
-pub const PATHS: [ScalePath; 11] = [
+pub(super) const PATHS: [ScalePath; 11] = [
     ScalePath {
         name: SELF_DIRECTED_SEARCH.name,
         path: "h_sds",
@@ -231,31 +231,31 @@ pub const PATHS: [ScalePath; 11] = [
     },
 ];
 
-pub fn get_scale_path_by_name(name: &str) -> ConfidantResult<&'static str> {
+pub(super) fn get_scale_path_by_name(name: &str) -> MindPulseResult<&'static str> {
     match PATHS.iter().position(|sp| sp.name == name) {
         None => {
             error!(message = "name 无效", scale = name);
-            Err(Error::Response("无效的 name".to_owned()))
+            Err(MindPulseError::Response("无效的 name".to_owned()))
         }
         Some(idx) => Ok(PATHS[idx].path),
     }
 }
 
-pub fn get_scale_index_by_path(path: &str) -> ConfidantResult<usize> {
+pub(super) fn get_scale_index_by_path(path: &str) -> MindPulseResult<usize> {
     match PATHS.iter().position(|sp| sp.path == path) {
         None => {
             error!(message = "scale 无效", scale = path);
-            Err(Error::Response("无效的 scale".to_owned()))
+            Err(MindPulseError::Response("无效的 scale".to_owned()))
         }
         Some(idx) => Ok(idx),
     }
 }
 
-pub fn get_scale_name_by_path(path: &str) -> ConfidantResult<&'static str> {
+pub(super) fn get_scale_name_by_path(path: &str) -> MindPulseResult<&'static str> {
     // 通过 path 找 ScalePath 一定能找到
     let scale_path = PATHS.iter().find(|p| p.path == path);
     match scale_path {
-        None => Err(Error::Response("无效的 scale".to_owned())),
+        None => Err(MindPulseError::Response("无效的 scale".to_owned())),
         Some(p) => Ok(p.name),
     }
 }

@@ -8,80 +8,95 @@ extern crate lazy_static;
 #[macro_use]
 extern crate tracing;
 
-use error::ConfidantResult;
-use logger::Logger;
 use salvo::prelude::*;
 use salvo::writing::Json;
+use time::macros::{format_description, offset};
+use tracing::Level;
+use tracing_subscriber::fmt::time::OffsetTime;
 
-use scale::{
+use crate::error::MindPulseResult;
+use crate::logger::Logger;
+use crate::scale::{
     BECK_DEPRESSION_RATING_SCALE, ENNEAGRAM_PERSONALITY_TEST, EPQ_RSC, HAMILTON_DEPRESSION_SCALE,
     PATHS, REVISED_NEOPERSONALITY_INVENTORY, SELF_DIRECTED_SEARCH, SELF_RATING_ANXIETY_SCALE,
     SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE, SYMPTOM_CHECKLIST_90,
     YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
 };
-use statistics::{create_table, get_statistics, insert_statistics_ip};
-use time::macros::{format_description, offset};
-use tracing::Level;
-use tracing_subscriber::fmt::time::OffsetTime;
+use crate::statistics::{create_table, get_statistics, insert_statistics_ip};
+
+trait JsonRender {
+    fn json<S>(&mut self, data: S)
+    where
+        S: serde::Serialize + std::marker::Send;
+}
+
+impl JsonRender for Response {
+    fn json<S>(&mut self, data: S)
+    where
+        S: serde::Serialize + std::marker::Send,
+    {
+        self.render(Json(data))
+    }
+}
 
 #[handler]
 async fn h_sds(res: &mut Response) {
-    res.render(Json(SELF_DIRECTED_SEARCH));
+    res.json(SELF_DIRECTED_SEARCH);
 }
 
 #[handler]
 async fn neo_pi_r(res: &mut Response) {
-    res.render(Json(REVISED_NEOPERSONALITY_INVENTORY));
+    res.json(REVISED_NEOPERSONALITY_INVENTORY);
 }
 
 #[handler]
 async fn sixteen_pf(res: &mut Response) {
-    res.render(Json(SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE));
+    res.json(SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE);
 }
 
 #[handler]
 async fn ept(res: &mut Response) {
-    res.render(Json(ENNEAGRAM_PERSONALITY_TEST));
+    res.json(ENNEAGRAM_PERSONALITY_TEST);
 }
 
 #[handler]
 async fn y_bocs(res: &mut Response) {
-    res.render(Json(YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE));
+    res.json(YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE);
 }
 
 #[handler]
 async fn epq_rsc(res: &mut Response) {
-    res.render(Json(EPQ_RSC));
+    res.json(EPQ_RSC);
 }
 
 #[handler]
 async fn bdi(res: &mut Response) {
-    res.render(Json(BECK_DEPRESSION_RATING_SCALE));
+    res.json(BECK_DEPRESSION_RATING_SCALE);
 }
 
 #[handler]
 async fn hamd(res: &mut Response) {
-    res.render(Json(HAMILTON_DEPRESSION_SCALE));
+    res.json(HAMILTON_DEPRESSION_SCALE);
 }
 
 #[handler]
 async fn scl_90(res: &mut Response) {
-    res.render(Json(SYMPTOM_CHECKLIST_90));
+    res.json(SYMPTOM_CHECKLIST_90);
 }
 
 #[handler]
 async fn sas(res: &mut Response) {
-    res.render(Json(SELF_RATING_ANXIETY_SCALE));
+    res.json(SELF_RATING_ANXIETY_SCALE);
 }
 
 #[handler]
 async fn sds(res: &mut Response) {
-    res.render(Json(SELF_RATING_DEPRESSION_SCALE));
+    res.json(SELF_RATING_DEPRESSION_SCALE);
 }
 
 #[handler]
 async fn list(res: &mut Response) {
-    res.render(Json(PATHS));
+    res.json(PATHS);
 }
 
 async fn serve() {
@@ -109,7 +124,7 @@ async fn serve() {
 }
 
 #[tokio::main]
-async fn main() -> ConfidantResult<()> {
+async fn main() -> MindPulseResult<()> {
     #[cfg(debug_assertions)]
     let timer = OffsetTime::new(
         offset!(+8),

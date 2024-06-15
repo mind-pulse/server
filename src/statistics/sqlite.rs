@@ -6,7 +6,7 @@ use time::macros::offset;
 use tokio::sync::OnceCell;
 
 use crate::{
-    error::{ConfidantResult, Error},
+    error::{MindPulseError, MindPulseResult},
     scale::{get_scale_index_by_path, get_scale_name_by_path, get_scale_path_by_name, PATHS},
 };
 
@@ -47,21 +47,21 @@ enum ClientType {
 }
 
 impl TryFrom<u8> for ClientType {
-    type Error = Error;
+    type Error = MindPulseError;
 
-    fn try_from(value: u8) -> ConfidantResult<Self> {
+    fn try_from(value: u8) -> MindPulseResult<Self> {
         match value {
             1 => Ok(ClientType::Wechat),
             2 => Ok(ClientType::MobileBrowser),
             _ => {
                 error!(message = "无效的客户端类型", value = value);
-                Err(Error::InvalidClientType(value))
+                Err(MindPulseError::InvalidClientType(value))
             }
         }
     }
 }
 
-pub async fn create_table() -> ConfidantResult<()> {
+pub async fn create_table() -> MindPulseResult<()> {
     trace!(message = "创建表格");
 
     let pool = get_global_pool().await;
@@ -90,11 +90,10 @@ pub async fn create_table() -> ConfidantResult<()> {
     Ok(())
 }
 
-// TODO: 平台测试次数100以上删除此方法和旧的统计表
 async fn select_one_from_old_table<'a>(
     pool: &SqlitePool,
     scale: &'a str,
-) -> ConfidantResult<ScaleStatistics<'a>> {
+) -> MindPulseResult<ScaleStatistics<'a>> {
     trace!(message = "正在旧表中查询一条记录", scale = scale);
 
     let row: (i32,) = sqlx::query_as("SELECT times FROM statistics WHERE scale = $1")
@@ -113,7 +112,7 @@ async fn select_one_from_old_table<'a>(
     Ok(ScaleStatistics { name, times: row.0 })
 }
 
-pub(super) async fn select_one(scale: &str) -> ConfidantResult<ScaleStatistics<'_>> {
+pub(super) async fn select_one(scale: &str) -> MindPulseResult<ScaleStatistics<'_>> {
     trace!(message = "正在查询测试统计", scale = scale);
 
     let pool = get_global_pool().await;
@@ -157,7 +156,7 @@ pub(super) async fn select_one(scale: &str) -> ConfidantResult<ScaleStatistics<'
     Ok(statistics)
 }
 
-async fn select_all_from_old_table<'a>(pool: &SqlitePool) -> ConfidantResult<HashMap<String, i32>> {
+async fn select_all_from_old_table<'a>(pool: &SqlitePool) -> MindPulseResult<HashMap<String, i32>> {
     trace!(message = "正在旧表中查询全部测试的统计次数");
 
     let rows: Vec<(String, i32)> = match sqlx::query_as("SELECT scale, times FROM statistics")
@@ -188,7 +187,7 @@ async fn select_all_from_old_table<'a>(pool: &SqlitePool) -> ConfidantResult<Has
     Ok(HashMap::from_iter(rows))
 }
 
-pub(super) async fn select_all<'a>() -> ConfidantResult<Vec<ScaleStatistics<'a>>> {
+pub(super) async fn select_all<'a>() -> MindPulseResult<Vec<ScaleStatistics<'a>>> {
     let pool = get_global_pool().await;
 
     let old_scale_statistics_list = select_all_from_old_table(pool).await?;
@@ -245,7 +244,7 @@ pub(super) async fn insert_one_finised_test(
     scale_index: usize,
     client_type: u8,
     addr: &str,
-) -> ConfidantResult<u64> {
+) -> MindPulseResult<u64> {
     trace!(message = "转换客户端类型", client_type = client_type);
     let client_type: ClientType = client_type.try_into().map_err(|e| {
         error!(message = "转换客户端类型失败", error = ?e);

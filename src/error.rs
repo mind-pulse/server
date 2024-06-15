@@ -2,10 +2,10 @@ use std::time::SystemTimeError;
 
 use salvo::{async_trait, http::StatusCode, writing::Text, Depot, Request, Response, Writer};
 
-pub type ConfidantResult<T> = std::result::Result<T, Error>;
+pub(super) type MindPulseResult<T> = std::result::Result<T, MindPulseError>;
 
 #[derive(Debug, thiserror::Error)]
-pub(super) enum Error {
+pub(super) enum MindPulseError {
     #[error(transparent)]
     Sqlite(#[from] sqlx::Error),
     #[error(transparent)]
@@ -17,10 +17,10 @@ pub(super) enum Error {
 }
 
 #[async_trait]
-impl Writer for Error {
+impl Writer for MindPulseError {
     async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
         match &self {
-            Error::Response(_) => res.status_code(StatusCode::BAD_REQUEST),
+            MindPulseError::Response(_) => res.status_code(StatusCode::BAD_REQUEST),
             _ => res.status_code(StatusCode::INTERNAL_SERVER_ERROR),
         };
 
@@ -28,8 +28,8 @@ impl Writer for Error {
     }
 }
 
-impl From<&str> for Error {
+impl From<&str> for MindPulseError {
     fn from(value: &str) -> Self {
-        Error::Response(value.to_string())
+        MindPulseError::Response(value.to_string())
     }
 }

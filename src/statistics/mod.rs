@@ -2,7 +2,7 @@ mod sqlite;
 
 use salvo::{handler, http::StatusCode, writing::Json, Request, Response};
 
-use crate::{error::ConfidantResult, scale::get_scale_index_by_path};
+use crate::{error::MindPulseResult, scale::get_scale_index_by_path};
 
 use self::sqlite::{insert_one_finised_test, select_all, select_one};
 
@@ -17,7 +17,7 @@ fn get_client_type(req: &Request) -> Option<u8> {
 }
 
 #[handler]
-pub async fn get_statistics(req: &Request, res: &mut Response) -> ConfidantResult<()> {
+pub(super) async fn get_statistics(req: &Request, res: &mut Response) -> MindPulseResult<()> {
     trace!(message = "查询统计数次");
     let scale = get_scale_query(req);
 
@@ -36,7 +36,7 @@ pub async fn get_statistics(req: &Request, res: &mut Response) -> ConfidantResul
 }
 
 #[handler]
-pub async fn insert_statistics_ip(req: &Request, res: &mut Response) -> ConfidantResult<()> {
+pub(super) async fn insert_statistics_ip(req: &Request, res: &mut Response) -> MindPulseResult<()> {
     trace!(message = "插入一条测试记录");
 
     let scale = get_scale_query(req);
