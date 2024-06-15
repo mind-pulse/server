@@ -391,6 +391,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
     name: "霍兰德职业兴趣测评",
     abbreviation: "SDS", // 与抑郁自评量表缩写相同
     introduction: &[
+        "可用于就业方向的指导和高考填报志愿时的专业选择。",
         "由美国职业指导专家霍兰德（John Holland）根据他本人大量的职业咨询经验及其职业类型理论编制的测评工具。霍兰德认为，个人职业兴趣特性与职业之间应有一种内在的对应关系。",
     ],
     instruction: &["本测量表将帮助你发现和确定自己的职业兴趣和能力特长，从而更好地做出职业的决择。在测评的时候，要求在一个不受干扰的、安静的、独立的空间和平静的心态下进行。"],
