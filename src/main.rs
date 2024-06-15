@@ -125,15 +125,15 @@ async fn serve() {
 
 #[tokio::main]
 async fn main() -> MindPulseResult<()> {
-    #[cfg(debug_assertions)]
     let timer = OffsetTime::new(
         offset!(+8),
-        format_description!("[hour]:[minute]:[second].[subsecond digits:3]"),
-    );
-    #[cfg(not(debug_assertions))]
-    let timer = OffsetTime::new(
-        offset!(+8),
-        format_description!("[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"),
+        if cfg!(debug_assertions) {
+            format_description!("[hour]:[minute]:[second].[subsecond digits:3]")
+        } else {
+            format_description!(
+                "[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"
+            )
+        },
     );
 
     // NOTE: _guard must be a top-level variable
@@ -148,10 +148,11 @@ async fn main() -> MindPulseResult<()> {
         std::io::stderr.and(writer)
     };
 
-    #[cfg(debug_assertions)]
-    let log_level = Level::TRACE;
-    #[cfg(not(debug_assertions))]
-    let log_level = Level::WARN;
+    let log_level = if cfg!(debug_assertions) {
+        Level::TRACE
+    } else {
+        Level::WARN
+    };
 
     let builder = tracing_subscriber::fmt()
         .with_max_level(log_level)
