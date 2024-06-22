@@ -1,13 +1,31 @@
 use super::{
-    FormulaMode, Integer, InterpretationItem, OperationalRule, Question, QuestionOption, Scale,
-    Status, Tag,
+    FormulaMode, HTMLElement, Integer, InterpretationItem, OperationalRule, Question,
+    QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
 };
+
+const INTRODUCTION: Texts = &[
+    &[
+        SentenceItem::Plain("本量表是根据Zung于1971年编制的“焦虑自评量表（Self—Rating Anxiety Scale，SAS）改编而成，可为临床心理咨询、诊断、治疗以及病理心理机制的研究提供科学依据。本测验应用范围颇广，适用于各种职业、文化阶层及年龄段的正常人或各类精神病人。"),
+    ],
+];
+
+const INSTRUCTION: Texts = &[&[
+    SentenceItem::Plain("本量表包含 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("20")),
+    SentenceItem::Plain(
+        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您",
+    ),
+    SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
+    SentenceItem::Plain(
+        "的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。",
+    ),
+]];
 
 pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
     name: "焦虑自评量表",
     abbreviation: "SAS",
-    introduction: &["本量表是根据Zung于1971年编制的“焦虑自评量表（Self—Rating Anxiety Scale，SAS）改编而成，可为临床心理咨询、诊断、治疗以及病理心理机制的研究提供科学依据。本测验应用范围颇广，适用于各种职业、文化阶层及年龄段的正常人或各类精神病人。"],
-    instruction: &["本量表包含 20 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您最近 1 周的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。"],
+    introduction: INTRODUCTION,
+    instruction: INSTRUCTION,
     idea: None,
     references: None,
     warning: None,

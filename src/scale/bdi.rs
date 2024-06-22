@@ -1,10 +1,31 @@
-use super::{InterpretationItem, Question, QuestionOption, Scale, Status, Tag};
+use super::{
+    HTMLElement, InterpretationItem, Question, QuestionOption, Scale, SentenceItem, Status, Tag,
+    Texts,
+};
+
+const INTRODUCTION: Texts = &[&[
+    SentenceItem::Plain("贝克抑郁自评量表BDI（BDI-II是第二版）是抑郁自评量表中"),
+    SentenceItem::HTMLElement(HTMLElement::Strong("最著名的量表")),
+    SentenceItem::Plain("之一，被广泛运用于抑郁心理测试筛查。"),
+]];
+
+const INSTRUCTION: Texts = &[&[
+    SentenceItem::Plain("本量表包含 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("13")),
+    SentenceItem::Plain(" 个项目，分为 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("4")),
+    SentenceItem::Plain(" 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您"),
+    SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
+    SentenceItem::Plain(
+        "的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。",
+    ),
+]];
 
 pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
     name: "贝克抑郁自评量表",
     abbreviation: "BDI",
-    introduction: &["贝克抑郁自评量表BDI（BDI-II是第二版）是抑郁自评量表中最著名的量表之一，被广泛运用于抑郁心理测试筛查。"],
-    instruction: &["本量表包含 13 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您最近 1 周的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。"],
+    introduction: INTRODUCTION,
+    instruction: INSTRUCTION,
     idea: None,
     references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版(EPQ-RSC)的修订. 心理学报. 2000"]),
     warning: None,

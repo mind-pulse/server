@@ -1,13 +1,31 @@
 use super::{
-    FormulaMode, Integer, InterpretationItem, OperationalRule, Question, QuestionOption, Scale,
-    Status, Tag,
+    FormulaMode, HTMLElement, Integer, InterpretationItem, OperationalRule, Question,
+    QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
 };
+
+const INTRODUCTION: Texts = &[&[
+    SentenceItem::Plain("抑郁自评量表(Self-Rating Depression Scale，SDS)是由美国杜克大学医学院的 William W. K. Zung 于 1965 年编制的，是目前应用"),
+    SentenceItem::HTMLElement(HTMLElement::Strong("最广泛")),
+    SentenceItem::Plain("的抑郁自评量表之一，能有效地反映抑郁状态的有关症状及其严重程度和变化情况。"),
+]];
+
+const INSTRUCTION: Texts = &[&[
+    SentenceItem::Plain("本量表包含 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("20")),
+    SentenceItem::Plain(
+        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您",
+    ),
+    SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
+    SentenceItem::Plain(
+        "的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。",
+    ),
+]];
 
 pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
     name: "抑郁自评量表",
     abbreviation: "SDS",
-    introduction: &["抑郁自评量表(Self-Rating Depression Scale，SDS)是由美国杜克大学医学院的 William W. K. Zung 于 1965 年编制的，是目前应用最广泛的抑郁自评量表之一，能有效地反映抑郁状态的有关症状及其严重程度和变化情况。"],
-    instruction: &["本量表包含 20 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您最近 1 周的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。"],
+    introduction: INTRODUCTION,
+    instruction: INSTRUCTION,
     idea: None,
     references: None,
     warning: None,

@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{Question, QuestionOption, Scale, Status, Tag, Text, Texts};
+use super::{HTMLElement, PlainText, PlainTexts, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts};
 
 #[derive(Debug, Serialize)]
 struct ScoreStandard {
@@ -11,17 +11,30 @@ struct ScoreStandard {
 #[derive(Debug, Serialize)]
 pub struct InterpretationItem {
     range: ScoreStandard,
-    label: Text,
-    description: Option<Texts>,
-    advice: Option<Texts>,
+    label: PlainText,
+    description: Option<PlainTexts>,
+    advice: Option<PlainTexts>,
     status: Status,
 }
+
+const INTRODUCTION: Texts = &[
+    &[SentenceItem::Plain("耶鲁布朗强迫量表是美国 GOODMAN 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。")]
+];
+
+const INSTRUCTION: Texts = &[
+    &[
+        SentenceItem::Plain("本量表包含 "),
+        SentenceItem::HTMLElement(HTMLElement::Strong("10")),
+        SentenceItem::Plain(" 个项目，为保证调查结果的准确性，务必请您仔细阅读测试内容，依照你主要的强迫症状作答。"),
+    ],
+];
+
 
 pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Question> = Scale {
     name: "耶鲁布朗强迫症量表",
     abbreviation: "Y-BOCS",
-    introduction: &["耶鲁布朗强迫量表是美国GOODMAN等人根据DSM-III-R诊断标准而制定的专门测定强迫症状严重程度的量表；是临床上使用的评定强迫症的主要量表之一。"],
-    instruction: &["本量表包含 10 个项目，为保证调查结果的准确性，务必请您仔细阅读测试内容，依照你主要的强迫症状作答。"],
+    introduction: INTRODUCTION,
+    instruction: INSTRUCTION,
     idea: None,
     references: None,
     warning: None,

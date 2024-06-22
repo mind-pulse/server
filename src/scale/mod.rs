@@ -26,29 +26,29 @@ pub(super) use self::sds::SELF_RATING_DEPRESSION_SCALE;
 pub(super) use self::sixteen_pf::SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE;
 pub(super) use self::y_bocs::YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE;
 
-type Text = &'static str;
-type Texts = &'static [Text];
+type PlainText = &'static str;
+type PlainTexts = &'static [PlainText];
 
 #[derive(Debug, Serialize, Clone)]
 pub(super) struct QuestionOption {
-    text: Text,
+    text: PlainText,
     point: i8,
 }
 
 #[derive(Debug, Serialize)]
 pub(super) struct Question {
-    title: Text,
+    title: PlainText,
     options: &'static [QuestionOption],
 }
 
 #[derive(Debug, Serialize)]
 pub(super) struct InterpretationItem<I> {
     range: [I; 2],
-    description: Text,
+    description: PlainText,
     #[serde(skip_serializing_if = "Option::is_none")]
-    advice: Option<Texts>,
+    advice: Option<PlainTexts>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    symptom: Option<Texts>,
+    symptom: Option<PlainTexts>,
     status: Status,
 }
 
@@ -76,8 +76,8 @@ pub(super) struct FormulaMode {
 
 #[derive(Debug, Serialize)]
 pub(super) struct Scale<'r, I, Q> {
-    name: Text,
-    abbreviation: Text,
+    name: PlainText,
+    abbreviation: PlainText,
     /// 对量表的说明
     instruction: Texts,
     questions: &'r [Q],
@@ -85,15 +85,15 @@ pub(super) struct Scale<'r, I, Q> {
     /// 简介
     introduction: Texts,
     #[serde(skip_serializing_if = "Option::is_none")]
-    references: Option<Texts>,
+    references: Option<PlainTexts>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    warning: Option<Text>,
+    warning: Option<PlainText>,
     /// js 计算用到的表达式，和用"<SUM>"替代
     #[serde(skip_serializing_if = "Option::is_none")]
     formula_mode: Option<FormulaMode>,
     tags: Tag,
     /// 理念
-    idea: Option<Texts>,
+    idea: Option<PlainTexts>,
 }
 
 #[derive(Debug, Serialize)]
@@ -111,25 +111,43 @@ pub(super) enum Status {
 
 #[derive(Debug, Serialize)]
 pub(super) struct Tag {
-    info: Option<Texts>,
-    normal: Option<Texts>,
-    warning: Option<Texts>,
-    error: Option<Texts>,
+    info: Option<PlainTexts>,
+    normal: Option<PlainTexts>,
+    warning: Option<PlainTexts>,
+    error: Option<PlainTexts>,
 }
 
 /// 特征
 #[derive(Debug, Serialize)]
 pub(super) struct Characteristic {
-    low: Texts,
-    high: Texts,
+    low: PlainTexts,
+    high: PlainTexts,
 }
 
 #[derive(Debug, Serialize)]
+#[serde(tag = "type", content = "text", rename_all = "UPPERCASE")]
+pub(super) enum HTMLElement {
+    Strong(PlainText),
+    //Mark(PlainText),
+    //A { text: PlainText, href: PlainText },
+}
+
+#[derive(Debug, Serialize)]
+#[serde(untagged)]
+pub(super) enum SentenceItem {
+    Plain(PlainText),
+    HTMLElement(HTMLElement),
+}
+
+pub(super) type Sentence = &'static [SentenceItem];
+pub(super) type Texts = &'static [Sentence];
+
+#[derive(Debug, Serialize)]
 pub(super) struct ScalePath {
-    name: Text,
-    path: Text,
+    name: PlainText,
+    path: PlainText,
     introduction: Texts,
-    warning: Option<Text>,
+    warning: Option<PlainText>,
     tags: Tag,
     disabled: bool,
 }

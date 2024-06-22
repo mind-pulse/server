@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{QuestionOption, Scale, Tag, Text};
+use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 /// 问题类型
 #[derive(Serialize)]
@@ -29,7 +29,7 @@ enum CapacityCategory {
 
 #[derive(Serialize)]
 pub struct Question {
-    title: Text,
+    title: PlainText,
     question_type: QuestionType,
     capacity_category: CapacityCategory,
     options: &'static [QuestionOption],
@@ -38,11 +38,11 @@ pub struct Question {
 #[derive(Serialize)]
 struct CapacityCategoryInterpretation {
     capacity_category: CapacityCategory,
-    name: Text,
+    name: PlainText,
     /// 人格特征
-    personality_trait: Text,
+    personality_trait: PlainText,
     /// 职业特征
-    occupational_stigma: Text,
+    occupational_stigma: PlainText,
 }
 
 const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
@@ -86,8 +86,8 @@ const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
 
 #[derive(Serialize)]
 struct CareerInformation {
-    code: Text,
-    information: Text,
+    code: PlainText,
+    information: PlainText,
 }
 
 const CAREER_INFORMATION: [CareerInformation; 72] = [
@@ -387,14 +387,39 @@ pub struct Interpretation {
     career_information: &'static [CareerInformation],
 }
 
+const INTRODUCTION: Texts = &[
+    &[
+        SentenceItem::Plain("可用于"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("就业方向")),
+        SentenceItem::Plain("的指导和"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("高考填报志愿")),
+        SentenceItem::Plain("时的专业选择。"),
+    ],
+    &[SentenceItem::Plain("由美国职业指导专家霍兰德（John Holland）根据他本人大量的职业咨询经验及其职业类型理论编制的测评工具。霍兰德认为，个人职业兴趣特性与职业之间应有一种内在的对应关系。")],
+];
+
+const INSTRUCTION: Texts = &[
+    &[
+        SentenceItem::Plain("本测量表将帮助你发现和确定自己的"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("职业兴趣")),
+        SentenceItem::Plain("和"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("能力特长")),
+        SentenceItem::Plain("，从而更好地做出职业的决择。"),
+    ],
+    &[
+        SentenceItem::Plain("在测评的时候，要求在一个"),
+        SentenceItem::HTMLElement(HTMLElement::Strong(
+            "不受干扰的、安静的、独立的空间和平静的心态",
+        )),
+        SentenceItem::Plain("下进行。"),
+    ],
+];
+
 pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
     name: "霍兰德职业兴趣测评",
     abbreviation: "SDS", // 与抑郁自评量表缩写相同
-    introduction: &[
-        "可用于就业方向的指导和高考填报志愿时的专业选择。",
-        "由美国职业指导专家霍兰德（John Holland）根据他本人大量的职业咨询经验及其职业类型理论编制的测评工具。霍兰德认为，个人职业兴趣特性与职业之间应有一种内在的对应关系。",
-    ],
-    instruction: &["本测量表将帮助你发现和确定自己的职业兴趣和能力特长，从而更好地做出职业的决择。在测评的时候，要求在一个不受干扰的、安静的、独立的空间和平静的心态下进行。"],
+    introduction: INTRODUCTION,
+    instruction: INSTRUCTION,
     idea: Some(&[
         "霍兰德认为，个人职业兴趣特性与职业之间应有一种内在的对应关系。根据兴趣的不同，人格可分为研究型（I）、艺术型（A）、社会型（S）、企业型（E）、传统型（C）、现实型（R）六个维度，每个人的性格都是这六个维度的不同程度组合。",
         "霍兰德的职业兴趣理论主要从兴趣的角度出发来探索职业指导的问题。他明确提出了职业兴趣的人格观，使人们对职业兴趣的认识有了质的变化。霍兰德的职业兴趣理论反映了他长期专注于职业指导的实践经历，他把对职业环境的研究与对职业兴趣个体差异的研究有机地结合起来，而在霍兰德的职业兴趣类型理论提出之前，二者的研究是相对独立进行的。",

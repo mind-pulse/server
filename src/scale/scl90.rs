@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{FormulaMode, Integer, OperationalRule, QuestionOption, Scale,  Tag};
+use super::{FormulaMode, HTMLElement, Integer, OperationalRule, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Debug, Serialize, Hash, Eq, PartialEq)]
 #[serde(rename_all(serialize = "SCREAMING_SNAKE_CASE"))]
@@ -97,14 +97,39 @@ pub struct Interpretation {
     symptoms: Symptoms,
 }
 
+const INTRODUCTION: Texts = &[
+    &[
+        SentenceItem::Plain("《症状自评量表SCL90》是世界上"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("最著名")),
+        SentenceItem::Plain("的心理健康测试量表之一，是当前使用最为广泛的精神障碍和心理疾病门诊检查量表，将协助您从"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("十个方面")),
+        SentenceItem::Plain("来了解自己的心理健康程度。"),
+    ]
+];
+
+const INSTRUCTION: Texts = &[
+    &[
+        SentenceItem::Plain("该量表共有 "),
+        SentenceItem::HTMLElement(HTMLElement::Strong("90")),
+        SentenceItem::Plain(" 个项目，包含有较广泛的精神病症状学内容，从"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("感觉、情感、思维、意识、行为")),
+        SentenceItem::Plain("直至"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("生活习惯、人际关系、饮食睡眠")),
+        SentenceItem::Plain("等，均有涉及，并采用 10 个因子分别反映 10 个方面的心理症状情况。")
+    ],
+    &[
+        SentenceItem::Plain("以下问题中列出了有些人可能有的症状或问题，请仔细阅读每一条，然后根据该句话与您自己的实际情况相符合的程度（"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("最近一个星期或现在")),
+        SentenceItem::Plain("）进行选择。"),
+    ],
+];
+
+
 pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
     name: "症状自评量表",
     abbreviation: "SCL-90",
-    introduction: &["《症状自评量表SCL90》是世界上最著名的心理健康测试量表之一，是当前使用最为广泛的精神障碍和心理疾病门诊检查量表，将协助您从十个方面来了解自己的心理健康程度。"],
-    instruction: &[
-        "该量表共有90个项目，包含有较广泛的精神病症状学内容，从感觉、情感、思维、意识、行为直至生活习惯、人际关系、饮食睡眠等，均有涉及，并采用10个因子分别反映10个方面的心理症状情况。",
-        "以下问题中列出了有些人可能有的症状或问题，请仔细阅读每一条，然后根据该句话与您自己的实际情况相符合的程度（最近一个星期或现在）进行选择。",
-    ],
+    introduction: INTRODUCTION,
+    instruction: INSTRUCTION,
     idea: None,
     references: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),

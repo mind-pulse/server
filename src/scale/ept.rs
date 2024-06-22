@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use super::{Scale, Tag, Text, Texts, QuestionOption};
+use super::{HTMLElement, PlainText, PlainTexts, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
@@ -28,7 +28,7 @@ enum Type {
 
 #[derive(Debug, Serialize)]
 pub struct Question {
-    title: Text,
+    title: PlainText,
     r#type: Type,
     options: [QuestionOption; 2],
 }
@@ -46,40 +46,49 @@ const QUESTION_OPTIONS: [QuestionOption; 2] = [
 
 #[derive(Debug, Serialize)]
 struct Character {
-    keyword: Text,
-    description: Text,
+    keyword: PlainText,
+    description: PlainText,
 }
 
 #[derive(Debug, Serialize)]
 pub struct TypeInterpretation {
     r#type: Type,
-    desire_trait: Text,
-    basic_confusion: Text,
-    main_features: Text,
-    main_traits: Text,
-    lifestyle: Text,
-    relationships: Text,
+    desire_trait: PlainText,
+    basic_confusion: PlainText,
+    main_features: PlainText,
+    main_traits: PlainText,
+    lifestyle: PlainText,
+    relationships: PlainText,
     characters: &'static [Character],
-    basic_fear: Text,
-    basic_desire: Text,
+    basic_fear: PlainText,
+    basic_desire: PlainText,
 }
 
 #[derive(Debug, Serialize)]
 pub struct Interpretation {
     type_interpretations: &'static [TypeInterpretation],
-    dialog: Texts,
+    dialog: PlainTexts,
 }
+
+const INTRODUCTION: Texts = &[
+    &[SentenceItem::Plain("九型人格测试问卷将有助于你更好地了解自身的优势和弱点，并知道在何种情形下你的行动将更为有效。同时，你还可以通过测评结论知道他人是如何看待他们自己的，以及相互间又是如何相处影响的。")],
+    &[SentenceItem::Plain("九型人格测试属于一种自我测试。九型人格测试主要用于帮助你有效地掌握个人的行为习惯，测试中所回答的问题答案没有好与坏之分、没有正确与错误之别，它仅反映你自己的个性和你的世界观。")],
+];
+
+const INSTRUCTION: Texts = &[
+    &[
+        SentenceItem::Plain("本测试包含 "),
+        SentenceItem::HTMLElement(HTMLElement::Strong("108")),
+        SentenceItem::Plain(" 个项目，在符合你情况的题目下选择是，不符合的选择否。"),
+    ],
+];
+
 
 pub const ENNEAGRAM_PERSONALITY_TEST: Scale<Interpretation, Question> = Scale {
     name: "九型人格测试",
     abbreviation: "EPT",
-    introduction: &[
-        "九型人格测试问卷将有助于你更好地了解自身的优势和弱点，并知道在何种情形下你的行动将更为有效。同时，你还可以通过测评结论知道他人是如何看待他们自己的，以及相互间又是如何相处影响的。",
-        "九型人格测试属于一种自我测试。九型人格测试主要用于帮助你有效地掌握个人的行为习惯，测试中所回答的问题答案没有好与坏之分、没有正确与错误之别，它仅反映你自己的个性和你的世界观。",
-    ],
-    instruction: &[
-        "本测试包含 108 个项目，在符合你情况的题目下选择是，不符合的选择否。",
-    ],
+    introduction: INTRODUCTION,
+    instruction: INSTRUCTION,
     idea: Some(&[
         "人格被分为九型，你必然属于其中一型。而这个型就是你的基本人格型态。",
         "九型人格不仅仅是一种精妙的性格分析工具，更主要的是为个人修养、自我提升和历练提供更深入的洞察力。与当今其它性格分类法不同，九型人格揭示了人们内在最深层的价值观和注意力焦点，它不受表面的外在行为的变化所影响。它可以让人真正地知己知彼；可以帮助人们明白自己的个性，从而完全接纳自己的短处、活出自己的长处；可以让人明白其它不同人的个性类型，从而懂得如何与不同的人交往沟通及融洽相处，与别人建立更真挚、和谐的合作伙伴关系。",
