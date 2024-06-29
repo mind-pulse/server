@@ -249,16 +249,6 @@ pub(super) const PATHS: [ScalePath; 11] = [
     },
 ];
 
-pub(super) fn get_scale_path_by_name(name: &str) -> MindPulseResult<&'static str> {
-    match PATHS.iter().position(|sp| sp.name == name) {
-        None => {
-            error!(message = "name 无效", scale = name);
-            Err(MindPulseError::Response("无效的 name".to_owned()))
-        }
-        Some(idx) => Ok(PATHS[idx].path),
-    }
-}
-
 pub(super) fn get_scale_index_by_path(path: &str) -> MindPulseResult<usize> {
     match PATHS.iter().position(|sp| sp.path == path) {
         None => {
@@ -266,14 +256,5 @@ pub(super) fn get_scale_index_by_path(path: &str) -> MindPulseResult<usize> {
             Err(MindPulseError::Response("无效的 scale".to_owned()))
         }
         Some(idx) => Ok(idx),
-    }
-}
-
-pub(super) fn get_scale_name_by_path(path: &str) -> MindPulseResult<&'static str> {
-    // 通过 path 找 ScalePath 一定能找到
-    let scale_path = PATHS.iter().find(|p| p.path == path);
-    match scale_path {
-        None => Err(MindPulseError::Response("无效的 scale".to_owned())),
-        Some(p) => Ok(p.name),
     }
 }

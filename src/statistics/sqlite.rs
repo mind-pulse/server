@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use serde::Serialize;
 use sqlx::{sqlite::SqlitePoolOptions, Pool, Sqlite};
 use time::macros::offset;
@@ -7,7 +5,7 @@ use tokio::sync::OnceCell;
 
 use crate::{
     error::{MindPulseError, MindPulseResult},
-    scale::{get_scale_index_by_path, get_scale_name_by_path, get_scale_path_by_name, PATHS},
+    scale::{get_scale_index_by_path, PATHS},
 };
 
 type SqlitePool = Pool<Sqlite>;
@@ -90,46 +88,16 @@ pub async fn create_table() -> MindPulseResult<()> {
     Ok(())
 }
 
-async fn select_one_from_old_table<'a>(
-    pool: &SqlitePool,
-    scale: &'a str,
-) -> MindPulseResult<ScaleStatistics<'a>> {
-    trace!(message = "正在旧表中查询一条记录", scale = scale);
-
-    let row: (i32,) = sqlx::query_as("SELECT times FROM statistics WHERE scale = $1")
-        .bind(scale)
-        .fetch_one(pool)
-        .await
-        .map_err(|e| {
-            error!(message = "单条结果中获取 times 失败", error = ?e, scale = scale);
-            e
-        })?;
-
-    debug!(message = "旧表中查询到记录", scale = scale, times = row.0);
-
-    let name = get_scale_name_by_path(scale)?;
-
-    Ok(ScaleStatistics { name, times: row.0 })
-}
-
 pub(super) async fn select_one(scale: &str) -> MindPulseResult<ScaleStatistics<'_>> {
     trace!(message = "正在查询测试统计", scale = scale);
 
     let pool = get_global_pool().await;
 
     let scale_index = get_scale_index_by_path(scale)?;
-    debug!(message = "测试索引", index = scale_index);
+    debug!(message = "测试索引", index = scale_index, scale = scale);
 
-    let mut statistics = select_one_from_old_table(pool, scale).await?;
-    info!(
-        message = "旧表中查询到统计结果",
-        scale = statistics.name,
-        times = statistics.times
-    );
-
-    debug!(message = "新表中查询统计次数", scale = scale);
-
-    let row: (i32,) =
+    debug!(message = "查询统计次数", scale = scale);
+    let (times,): (i32,) =
         sqlx::query_as("SELECT COUNT(*) as times FROM statistics_ip WHERE scale_index = $1")
             .bind(scale_index as i32)
             .fetch_one(pool)
@@ -139,65 +107,15 @@ pub(super) async fn select_one(scale: &str) -> MindPulseResult<ScaleStatistics<'
                 e
             })?;
 
-    debug!(
-        message = "新表中查询到统计次数",
-        scale = scale,
-        times = row.0
-    );
+    info!(message = "查询到统计次数", scale = scale, times = times);
 
-    statistics.times += row.0;
-
-    info!(
-        message = "查询到统计次数",
-        scale = scale,
-        times = statistics.times
-    );
-
-    Ok(statistics)
-}
-
-async fn select_all_from_old_table<'a>(pool: &SqlitePool) -> MindPulseResult<HashMap<String, i32>> {
-    trace!(message = "正在旧表中查询全部测试的统计次数");
-
-    let rows: Vec<(String, i32)> = match sqlx::query_as("SELECT scale, times FROM statistics")
-        .fetch_all(pool)
-        .await
-    {
-        Ok(rows) => rows,
-        Err(err) => match &err {
-            sqlx::Error::Database(e) => {
-                let code = e.code();
-                if code == Some(std::borrow::Cow::Borrowed("1")) {
-                    warn!(message = e.message(), code = ?e.code());
-                    vec![]
-                } else {
-                    error!(message = "获取全部 statistics 失败", error = ?e);
-                    return Err(err.into());
-                }
-            }
-            _ => {
-                error!(message = "获取全部 statistics 失败", error = ?err);
-                return Err(err.into());
-            }
-        },
-    };
-
-    debug!(message = "已在旧表中获取到全部统计次数", rows = ?rows);
-
-    Ok(HashMap::from_iter(rows))
+    Ok(ScaleStatistics { name: scale, times })
 }
 
 pub(super) async fn select_all<'a>() -> MindPulseResult<Vec<ScaleStatistics<'a>>> {
     let pool = get_global_pool().await;
 
-    let old_scale_statistics_list = select_all_from_old_table(pool).await?;
-
-    debug!(
-        message = "已获取到旧表中的统计结果 HashMap",
-        old_list = ?old_scale_statistics_list,
-    );
-
-    trace!(message = "获取新表中全部测试的统计次数");
+    trace!(message = "获取全部测试的统计次数");
     let rows: Vec<(i32, i32)> = sqlx::query_as(
         "select scale_index, count(*) as times
 from statistics_ip
@@ -210,9 +128,6 @@ group by scale_index;",
         e
     })?;
 
-    debug!(message = "已获取新表中全部测试的统计次数", rows = ?rows);
-
-    trace!(message = "初始化 Vec<ScaleStatistics>");
     let mut scale_statistics_list: Vec<ScaleStatistics<'_>> = PATHS
         .iter()
         .map(|p| ScaleStatistics {
@@ -220,20 +135,10 @@ group by scale_index;",
             times: 0,
         })
         .collect();
-    debug!(message = "已初始化 Vec<ScaleStatistics>", list = ?scale_statistics_list);
 
-    trace!(message = "新表中的查询结果合并到 Vec<ScaleStatistics>");
     for (idx, times) in rows.iter() {
         scale_statistics_list[*idx as usize].times = *times;
     }
-    debug!(message = "已将新表的查询结果合并到 Vec<ScaleStatistics>", list = ?scale_statistics_list);
-
-    trace!(message = "合并旧表和新表的查询结果");
-    for item in scale_statistics_list.iter_mut() {
-        let path = get_scale_path_by_name(item.name)?;
-        item.times += old_scale_statistics_list.get(path).unwrap_or(&0);
-    }
-    debug!(message = "旧表和新表的查询结果已合并", list = ?scale_statistics_list);
 
     info!(message = "已获取到全部测试的统计次数", list = ?scale_statistics_list);
 
