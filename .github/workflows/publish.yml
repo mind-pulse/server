@@ -73,7 +73,7 @@ jobs:
           cd target/release
           upx -9 server
           asset_name=mind-pulse-server-$VERSION.tar.gz
-          tar zcvf mind-pulse-server-$VERSION.tar.gz server
+          tar zcvf mind-pulse-server-linux-x64-$VERSION.tar.gz server
           echo "ASSET_PATH=$(pwd)/$asset_name" >> $GITHUB_ENV
           echo "ASSET_NAME=$asset_name" >> $GITHUB_ENV
 
