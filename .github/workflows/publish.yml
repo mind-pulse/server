@@ -73,6 +73,7 @@ jobs:
           cd target/release
           upx -9 server
           tar zcvf mind-pulse-server-$VERSION.tar.gz server
+          echo "ASSET_PATH=$(pwd)/mind-pulse-server-$VERSION.tar.gz" >> $GITHUB_ENV
 
       - name: upload release asset
         uses: actions/github-script@v7
@@ -83,7 +84,7 @@ jobs:
           script: |
             const fs = require("fs")
             const filename = `mind-pulse-server-${process.env.VERSION}.tar.gz`
-            const data = fs.readFileSync("target/release/"+filename)
+            const data = fs.readFileSync(process.env.ASSET_PATH)
             github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
