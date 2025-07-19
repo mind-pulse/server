@@ -4,7 +4,7 @@ use super::{
 };
 
 const INTRODUCTION: Texts = &[&[
-    SentenceItem::Plain("贝克抑郁自评量表BDI（BDI-II是第二版）是抑郁自评量表中"),
+    SentenceItem::Plain("贝克抑郁自评量表 BDI（BDI-II 是第二版）是抑郁自评量表中"),
     SentenceItem::HTMLElement(HTMLElement::Strong("最著名的量表")),
     SentenceItem::Plain("之一，被广泛运用于抑郁心理测试筛查。"),
 ]];
@@ -27,7 +27,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版(EPQ-RSC)的修订. 心理学报. 2000"]),
+    references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000"]),
     warning: None,
     formula_mode: None,
     tags: Tag{ info: Some(&["抑郁"]), normal: Some(&["自评"]), warning: None, error: None },
