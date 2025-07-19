@@ -4,7 +4,7 @@ use super::{
 };
 
 const INTRODUCTION: Texts = &[&[
-    SentenceItem::Plain("抑郁自评量表(Self-Rating Depression Scale，SDS)是由美国杜克大学医学院的 William W. K. Zung 于 1965 年编制的，是目前应用"),
+    SentenceItem::Plain("抑郁自评量表（Self-Rating Depression Scale，SDS）是由美国杜克大学医学院的 William W. K. Zung 于 1965 年编制的，是目前应用"),
     SentenceItem::HTMLElement(HTMLElement::Strong("最广泛")),
     SentenceItem::Plain("的抑郁自评量表之一，能有效地反映抑郁状态的有关症状及其严重程度和变化情况。"),
 ]];

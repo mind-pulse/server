@@ -218,7 +218,7 @@ pub struct Question {
 
 const INTRODUCTION: Texts = &[
     &[
-        SentenceItem::Plain("艾森克人格问卷(Eysenck Personality Questionnaire, 简称EPQ)是英国伦敦大学心理系和精神病研究所艾森克教授编制的，归纳了三个人格的基本因素："),
+        SentenceItem::Plain("艾森克人格问卷（Eysenck Personality Questionnaire, 简称 EPQ）是英国伦敦大学心理系和精神病研究所艾森克教授编制的，归纳了三个人格的基本因素："),
         SentenceItem::HTMLElement(HTMLElement::Strong("内外向性")),
         SentenceItem::Plain("(E)、"),
         SentenceItem::HTMLElement(HTMLElement::Strong("神经质")),
