@@ -55,6 +55,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
     questions: &[
         Question {
             title: "抑郁情绪",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -80,6 +81,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "有罪感",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -105,6 +107,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "自杀",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -130,6 +133,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "入睡困难",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -147,6 +151,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "睡眠不深",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -164,6 +169,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "早醒",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -181,6 +187,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "工作和兴趣",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无异常",
@@ -206,6 +213,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "迟缓：指思维和语言缓慢，注意力难以集中，主动性减退。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -231,6 +239,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "激越",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -256,6 +265,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "精神性焦虑",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -281,6 +291,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "躯体性焦虑：指焦虑的生理症状，包括口干、腹胀、腹泻、打呃、腹绞痛、心悸、头痛、过度换气和叹息、以及尿频和出汗等。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -306,6 +317,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "胃肠道症状",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -323,6 +335,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "全身症状",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -340,6 +353,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "性症状：指性欲减退、月经紊乱等。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无症状，或者不能肯定，或者该项对被评者不适合。",
@@ -357,6 +371,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "疑病",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -382,6 +397,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "体重减轻",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -399,6 +415,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "自知力",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "知道自己有病，表现为忧郁",
@@ -416,6 +433,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "日夜变化（如果症状在早晨或傍晚加重，先指出哪一种，然后按其变化程度评分）",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -433,6 +451,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "人格解体或现实解体：指非真实感或虚无妄想。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -458,6 +477,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "偏执症状",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -483,6 +503,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "强迫症状：指强迫思维和强迫行为。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -500,6 +521,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "能力减退感",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -525,6 +547,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "绝望感",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",
@@ -550,6 +573,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "自卑感",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "无",

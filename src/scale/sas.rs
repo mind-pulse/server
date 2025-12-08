@@ -99,6 +99,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
     questions: &[
         Question {
             title: "我感到比往常更加神经过敏和焦虑",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -120,6 +121,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我无缘无故感到担心",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -141,6 +143,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我容易心烦意乱或感到恐慌",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -162,6 +165,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我感到我的身体好像被分成几块，支离破碎",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -183,6 +187,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我感到事事都很顺利，不会有倒霉的事情发生",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -204,6 +209,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我的四肢抖动和震颤",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -225,6 +231,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我因头痛、颈痛、背痛而烦恼",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -246,6 +253,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我感到无力且容易疲劳",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -267,6 +275,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我感到很平静，能安静坐下来",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -288,6 +297,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我感到我的心跳较快",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -309,6 +319,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我因阵阵的眩晕而不舒服",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -330,6 +341,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我有阵阵要昏倒的感觉",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -351,6 +363,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我呼吸时进气和出气都不费力",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -372,6 +385,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我的手指和脚趾感到麻木和刺痛",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -393,6 +407,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我因胃痛和消化不良而苦恼",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -414,6 +429,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我必须时常排尿",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -435,6 +451,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我的手总是很温暖而干燥",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -456,6 +473,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我觉得脸发烧发红",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -477,6 +495,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我容易入睡，晚上休息很好",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -498,6 +517,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         },
         Question {
             title: "我做恶梦",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",

@@ -108,6 +108,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
     questions: &[
         Question {
             title: "我感到情绪沮丧，郁闷。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -129,6 +130,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我感到早晨心情最好。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -150,6 +152,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我要哭或想哭。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -171,6 +174,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我夜间睡眠不好。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -192,6 +196,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我吃饭像平常一样多。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -213,6 +218,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我的性功能正常。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -234,6 +240,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我感到体重减轻。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -255,6 +262,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我为便秘烦恼。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -276,6 +284,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我的心跳比平时快。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -297,6 +306,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我无故感到疲乏。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -318,6 +328,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我的头脑像平常一样清楚。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -339,6 +350,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我做事情像平常一样不感到困难。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -360,6 +372,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我坐卧难安，难以保持平静。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -381,6 +394,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我对未来感到有希望。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -402,6 +416,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我比平时更容易激怒。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -423,6 +438,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我觉得决定什么事很容易。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -444,6 +460,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我感到自己是有用的和不可缺少的人。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -465,6 +482,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我的生活很有意思。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -486,6 +504,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "假若我死了，别人会过得更好。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",
@@ -507,6 +526,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "我仍旧喜欢自己平时喜欢的东西。",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "从无或偶尔",

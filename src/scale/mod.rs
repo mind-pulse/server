@@ -38,6 +38,7 @@ pub(super) struct QuestionOption {
 #[derive(Debug, Serialize)]
 pub(super) struct Question {
     title: PlainText,
+    is_multiple: bool,
     options: &'static [QuestionOption],
 }
 

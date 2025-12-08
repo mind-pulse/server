@@ -94,6 +94,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
     questions: &[
         Question {
             title: "您每天花多少时间在强迫思维上？每天强迫思维出现的频率有多高？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "完全无强迫思维",
@@ -119,6 +120,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "您的强迫思维对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫思维对每天日常活动的妨碍有多大？回答此题时，请想是否有任何事情因为强迫思维而不去做或较少做）",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "不受妨碍",
@@ -144,6 +146,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "您的强迫思维给您带来多大的苦恼或困扰？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "没有",
@@ -169,6 +172,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "您有多少努力对抗强迫思维？你是否尝试转移注意力或不去想它呢？（重点不在于是否成功转移，而在于你有多努力对抗或尝试频率有多高）",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）",
@@ -194,6 +198,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "您控制强迫思维的能力有多少？您停止或转移强迫思维的效果如何？（不包括通过强迫行为来停止强迫思维）",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "完全控制。我可以完全控制。",
@@ -220,6 +225,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
 
         Question {
             title: "您每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "完全无强迫行为",
@@ -245,6 +251,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "您的强迫行为对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫行为对每天日常活动的妨碍有多大？）",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "不受妨碍",
@@ -270,6 +277,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "假如被制止从事强迫行为时，您有什么感觉？您会多焦虑？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "没有焦虑",
@@ -295,6 +303,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "您有多努力去对抗强迫行为？或尝试停止强迫行为的频率？（仅评估你有多努力对抗强迫行为或尝试频率有多高，而不在于评估您停止强迫行为的效果有多好）",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "一直不断地努力与之对抗（或症状很轻微，不需要积极地对抗）",
@@ -320,6 +329,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
         Question {
             title: "您控制强迫行为的能力如何？您停止强迫（仪式）行为的效果如何？（假如你很少去对抗，那就回想那些少数对抗的情境，以便回答此题。）",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "完全控制。我可以完全控制。",

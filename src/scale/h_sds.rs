@@ -33,6 +33,7 @@ pub struct Question {
     question_type: QuestionType,
     capacity_category: CapacityCategory,
     options: &'static [QuestionOption],
+    is_multiple: bool,
 }
 
 #[derive(Serialize)]
@@ -435,6 +436,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所感兴趣的活动：",
             question_type: QuestionType::InterestedEvent,
             capacity_category: CapacityCategory::R,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "装配修理电器或玩具",
@@ -482,6 +484,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所感兴趣的活动：",
             question_type: QuestionType::InterestedEvent,
             capacity_category: CapacityCategory::A,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "素描/制图或绘画",
@@ -529,6 +532,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所感兴趣的活动：",
             question_type: QuestionType::InterestedEvent,
             capacity_category: CapacityCategory::I,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "读科技图书或杂志",
@@ -576,6 +580,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所感兴趣的活动：",
             question_type: QuestionType::InterestedEvent,
             capacity_category: CapacityCategory::S,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "或单位组织的正式活动",
@@ -623,6 +628,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所感兴趣的活动：",
             question_type: QuestionType::InterestedEvent,
             capacity_category: CapacityCategory::E,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "鼓动他人",
@@ -670,6 +676,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所感兴趣的活动：",
             question_type: QuestionType::InterestedEvent,
             capacity_category: CapacityCategory::C,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "整理好桌面与房间",
@@ -717,6 +724,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所擅长的事：",
             question_type: QuestionType::GoodAt,
             capacity_category: CapacityCategory::R,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "能使用电锯/电钻和锉刀等木工工具",
@@ -764,6 +772,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所擅长的事：",
             question_type: QuestionType::GoodAt,
             capacity_category: CapacityCategory::A,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "能演奏乐器",
@@ -811,6 +820,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所擅长的事：",
             question_type: QuestionType::GoodAt,
             capacity_category: CapacityCategory::I,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "懂得真空管或晶体管的作用",
@@ -858,6 +868,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所擅长的事：",
             question_type: QuestionType::GoodAt,
             capacity_category: CapacityCategory::S,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "有向各种人说明解释的能力",
@@ -905,6 +916,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所擅长的事：",
             question_type: QuestionType::GoodAt,
             capacity_category: CapacityCategory::E,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "担任过学生干部并且干得不错",
@@ -952,6 +964,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您所擅长的事：",
             question_type: QuestionType::GoodAt,
             capacity_category: CapacityCategory::C,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "会熟练的打印中文",
@@ -999,6 +1012,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您喜欢的职业：",
             question_type: QuestionType::LovedJob,
             capacity_category: CapacityCategory::R,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "飞机机械师",
@@ -1046,6 +1060,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您喜欢的职业：",
             question_type: QuestionType::LovedJob,
             capacity_category: CapacityCategory::A,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "乐队指挥",
@@ -1093,6 +1108,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您喜欢的职业：",
             question_type: QuestionType::LovedJob,
             capacity_category: CapacityCategory::I,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "气象学或天文学者",
@@ -1140,6 +1156,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您喜欢的职业：",
             question_type: QuestionType::LovedJob,
             capacity_category: CapacityCategory::S,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "街道、工会或妇联干部",
@@ -1187,6 +1204,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您喜欢的职业：",
             question_type: QuestionType::LovedJob,
             capacity_category: CapacityCategory::E,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "厂长",
@@ -1234,6 +1252,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "（可多选或不选）选择您喜欢的职业：",
             question_type: QuestionType::LovedJob,
             capacity_category: CapacityCategory::C,
+            is_multiple: true,
             options: &[
                 QuestionOption {
                     text: "会计师",
@@ -1281,6 +1300,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的机械操作能力在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::R,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1316,6 +1336,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的体育技能在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::R,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1351,6 +1372,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的科学研究能力在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::I,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1386,6 +1408,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的数学技能在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::I,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1421,6 +1444,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的艺术创作能力在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::A,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1456,6 +1480,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的音乐技能在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::A,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1491,6 +1516,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的解释表达能力在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::S,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1526,6 +1552,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的交际技能在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::S,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1561,6 +1588,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的商业洽谈能力在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::E,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1596,6 +1624,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的领导技能在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::E,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1631,6 +1660,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的事务执行能力在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::C,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",
@@ -1666,6 +1696,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
             title: "满分 7 分的话，您觉得您的办公技能在什么水平：",
             question_type: QuestionType::CapacityCategory,
             capacity_category: CapacityCategory::C,
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "7",

@@ -105,6 +105,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
     questions: &[
         Question {
             title: "以下情况最符合你的是",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我不感到忧郁",
@@ -126,6 +127,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你对未来抱有什么态度？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我对未来并不感到悲观失望",
@@ -147,6 +149,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你是如何看待失败的感觉？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我并无失败的感觉",
@@ -168,6 +171,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你对生活的满意度如何？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我并不觉得我有什么不满意",
@@ -189,6 +193,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你的内疚感有多深？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没有特殊的内疚感",
@@ -210,6 +215,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你是否会对自己感到失望？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没有对自己感到失望",
@@ -231,6 +237,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你会有想要伤害自己的想法吗？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没有要伤害自己的想法",
@@ -252,6 +259,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你是否失去与他人交往的兴趣？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没失去和他人交往的兴趣",
@@ -273,6 +281,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "做决定对你来说，是否感到困难？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我能像平时一样做出决断",
@@ -294,6 +303,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "与过去相比，你是否对你的形象不自信？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我觉得我的形象一点也不比过去糟",
@@ -315,6 +325,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你对工作抱有何种态度？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我能像平时那样工作",
@@ -336,6 +347,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "和以往相比，你是否会很容易就感到疲倦？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "和以往相比，我并不容易疲倦",
@@ -357,6 +369,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "与过去相比，你的胃口如何？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我的胃口不比过去差",
