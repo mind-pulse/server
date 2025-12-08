@@ -2,6 +2,8 @@ use std::ops::RangeInclusive;
 
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Serialize)]
@@ -2470,6 +2472,14 @@ const INSTRUCTION: Texts = &[
 pub const REVISED_NEOPERSONALITY_INVENTORY: Scale<Interpretation, Question> = Scale {
     name: "大五人格测试",
     abbreviation: "NEO-PI-R",
+    primary_category: ScaleCategory::Personality,
+    related_categories: Some(&[
+        ScaleCategory::Emotion,
+        ScaleCategory::MentalHealth,
+        ScaleCategory::Interpersonal,
+        ScaleCategory::CareerAndAcademics,
+        ScaleCategory::Wellbeing,
+    ]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: Some(&[

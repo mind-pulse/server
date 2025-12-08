@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{HTMLElement, PlainText, PlainTexts, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts};
 
 #[derive(Debug, Serialize)]
@@ -33,6 +35,11 @@ const INSTRUCTION: Texts = &[
 pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Question> = Scale {
     name: "耶鲁布朗强迫症量表",
     abbreviation: "Y-BOCS",
+    primary_category: ScaleCategory::Emotion,
+    related_categories: Some(&[
+        ScaleCategory::MentalHealth,
+        ScaleCategory::Behavior,
+    ]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,

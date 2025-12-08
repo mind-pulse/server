@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{HTMLElement, PlainText, PlainTexts, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Debug, Serialize)]
@@ -86,6 +88,12 @@ const INSTRUCTION: Texts = &[
 
 pub const ENNEAGRAM_PERSONALITY_TEST: Scale<Interpretation, Question> = Scale {
     name: "九型人格测试",
+    primary_category: ScaleCategory::Personality,
+    related_categories: Some(&[        
+        ScaleCategory::Emotion,
+        ScaleCategory::Interpersonal,
+        ScaleCategory::AttitudeAndValues,
+    ]),
     abbreviation: "EPT",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,

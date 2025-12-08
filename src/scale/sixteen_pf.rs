@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{Characteristic, HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Serialize)]
@@ -404,6 +406,12 @@ const INSTRUCTION: Texts = &[
 pub const SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE: Scale<Interpretation, Question> = Scale {
     name: "卡特尔16种人格因素问卷",
     abbreviation: "16PF",
+    primary_category: ScaleCategory::Personality,
+    related_categories: Some(&[
+        ScaleCategory::CognitionAndAbility,
+        ScaleCategory::Interpersonal,
+        ScaleCategory::Wellbeing,
+    ]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: Some(&[

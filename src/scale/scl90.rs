@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{FormulaMode, HTMLElement, Integer, OperationalRule, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Debug, Serialize, Hash, Eq, PartialEq)]
@@ -128,6 +130,13 @@ const INSTRUCTION: Texts = &[
 pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
     name: "症状自评量表",
     abbreviation: "SCL-90",
+    primary_category: ScaleCategory::MentalHealth,
+    related_categories: Some(&[
+        ScaleCategory::Emotion,
+        ScaleCategory::Somatic,
+        ScaleCategory::Interpersonal,
+        ScaleCategory::Behavior,
+    ]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,

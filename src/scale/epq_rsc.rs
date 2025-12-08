@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{HTMLElement, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 
@@ -243,7 +245,9 @@ const INSTRUCTION: Texts = &[
 ];
 
 pub const EPQ_RSC: Scale<Interpretation, Question> = Scale {
-    name: "艾森克人格问卷简式量表中国版",
+    name: "艾森克人格问卷简式量表中国版",    
+    primary_category: ScaleCategory::Personality,
+    related_categories: Some(&[ScaleCategory::Emotion, ScaleCategory::MentalHealth]),
     abbreviation: "EPQ-RSC",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,

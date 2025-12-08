@@ -1,3 +1,5 @@
+use crate::scale::ScaleCategory;
+
 use super::{
     HTMLElement, InterpretationItem, Question, QuestionOption, Scale, SentenceItem, Status, Tag,
     Texts,
@@ -22,7 +24,9 @@ const INSTRUCTION: Texts = &[&[
 ]];
 
 pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
-    name: "贝克抑郁自评量表",
+    name: "贝克抑郁自评量表",    
+    primary_category: ScaleCategory::Emotion,
+    related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Somatic]),
     abbreviation: "BDI",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,

@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 /// 问题类型
@@ -418,6 +420,11 @@ const INSTRUCTION: Texts = &[
 
 pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
     name: "霍兰德职业兴趣测评",
+    primary_category: ScaleCategory::CareerAndAcademics,
+    related_categories: Some(&[
+        ScaleCategory::Personality,
+        ScaleCategory::AttitudeAndValues,
+    ]),
     abbreviation: "SDS", // 与抑郁自评量表缩写相同
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,

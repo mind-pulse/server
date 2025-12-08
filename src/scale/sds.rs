@@ -1,3 +1,5 @@
+use crate::scale::ScaleCategory;
+
 use super::{
     FormulaMode, HTMLElement, Integer, InterpretationItem, OperationalRule, Question,
     QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
@@ -24,6 +26,8 @@ const INSTRUCTION: Texts = &[&[
 pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
     name: "抑郁自评量表",
     abbreviation: "SDS",
+    primary_category: ScaleCategory::Emotion,
+    related_categories: Some(&[ScaleCategory::MentalHealth]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
