@@ -20,7 +20,7 @@ enum Symptom {
     /// 敌对
     Hostility,
     /// 恐怖
-    Phobia,
+    PhobicAnxiety,
     /// 偏执
     ParanoidIdeation,
     /// 精神病性
@@ -265,7 +265,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         Question {
             title: "害怕空旷的场所或街道",
             options: &OPTIONS,
-            symptom: Symptom::Phobia,
+            symptom: Symptom::PhobicAnxiety,
         },
         Question {
             title: "感到自己的精力下降，活动减慢",
@@ -325,7 +325,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         Question {
             title: "怕单独出门",
             options: &OPTIONS,
-            symptom: Symptom::Phobia,
+            symptom: Symptom::PhobicAnxiety,
         },
         Question {
             title: "经常责怪自己",
@@ -435,7 +435,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         Question {
             title: "怕乘电车、公共汽车、地铁或火车",
             options: &OPTIONS,
-            symptom: Symptom::Phobia,
+            symptom: Symptom::PhobicAnxiety,
         },
         Question {
             title: "呼吸有困难",
@@ -450,7 +450,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         Question {
             title: "因为感到害怕而避开某些东西、场合或活动",
             options: &OPTIONS,
-            symptom: Symptom::Phobia,
+            symptom: Symptom::PhobicAnxiety,
         },
         Question {
             title: "脑子变空了",
@@ -550,7 +550,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         Question {
             title: "在商店或电影院等人多的地方感到不自在",
             options: &OPTIONS,
-            symptom: Symptom::Phobia,
+            symptom: Symptom::PhobicAnxiety,
         },
         Question {
             title: "感到任何事情都很困难",
@@ -575,7 +575,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         Question {
             title: "单独一人时神经很紧张",
             options: &OPTIONS,
-            symptom: Symptom::Phobia,
+            symptom: Symptom::PhobicAnxiety,
         },
         Question {
             title: "别人对您的成绩没有做出恰当的评价",
@@ -610,7 +610,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         Question {
             title: "害怕会在公共场合晕倒",
             options: &OPTIONS,
-            symptom: Symptom::Phobia,
+            symptom: Symptom::PhobicAnxiety,
         },
         Question {
             title: "感到别人想占自己的便宜",
