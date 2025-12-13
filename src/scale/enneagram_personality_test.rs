@@ -107,7 +107,7 @@ pub const ENNEAGRAM_PERSONALITY_TEST: Scale<Interpretation, Question> = Scale {
     references: None,
     warning: Some("此测试未被心理学界广泛认可，不能正确反映出测试者的人格情况。"),
     formula_mode: None,
-    tags: Tag{ info: Some(&[ "人格"]), normal: Some(&["自评"]), warning: None, error: None },
+    tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: None, error: None },
     interpretation: Interpretation { 
         dialog: &[
             "人格最健康的时候，随时有人格整合的可能，例如：第 9 型的出现了第 3 型的特征，由原本的内向保守，变得充满活力，基本欲望得到满足，基本恐惧隐藏。健康的人格令人活出真我，心理平衡、充分发挥自己的潜能和能力对社会作出贡献。",

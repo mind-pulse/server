@@ -244,18 +244,23 @@ const INSTRUCTION: Texts = &[
     ]
 ];
 
-pub const EPQ_RSC: Scale<Interpretation, Question> = Scale {
+pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpretation, Question> = Scale {
     name: "艾森克人格问卷简式量表中国版",    
     primary_category: ScaleCategory::Personality,
     related_categories: Some(&[ScaleCategory::Emotion, ScaleCategory::MentalHealth]),
     abbreviation: "EPQ-RSC",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
-    idea: None,
-    references: None,
+    idea: Some(&[
+        "此测试能够帮助你了解自己性格中的核心特质，它基于经典的心理学理论，将人格分为情绪稳定性、内外向倾向、行事风格三个主要维度。",
+        "它的原理就像描绘一幅性格简笔画：通过一系列生活情境中的感受与选择，客观地勾勒出你在这些维度上的位置。中国版量表经过了严谨的调整，使其更贴合我们的文化背景和日常表达。",
+        "在科学性上，该量表拥有良好的信度与效度。简单来说，就是测试结果稳定可靠，且能真实反映它想要测量的人格特质，因此被广泛应用于心理健康、职业评估和个人成长等领域。",
+        "你可以将测试结果视为一份实用的“性格参考地图”，它不能定义你，但能帮助你更清晰、更系统地观察自己，为自我了解与提升提供一个科学的起点。",
+    ]),
+    references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000"]),
     formula_mode: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),
-    tags: Tag{ info: Some(&[ "人格"]), normal: Some(&["自评"]), warning: Some(&["16+"]), error: None },
+    tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
     interpretation: Interpretation { 
         norm: NORM,
         temperaments: Temperaments {

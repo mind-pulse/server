@@ -1,53 +1,50 @@
 use crate::scale::ScaleCategory;
 
 use super::{
-    FormulaMode, HTMLElement, Integer, InterpretationItem, OperationalRule, Question,
-    QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
+    HTMLElement, InterpretationItem, Question, QuestionOption, Scale, SentenceItem, Status, Tag,
+    Texts,
 };
 
 const INTRODUCTION: Texts = &[&[
-    SentenceItem::Plain("抑郁自评量表（Self-Rating Depression Scale，SDS）是由美国杜克大学医学院的 William W. K. Zung 于 1965 年编制的，是目前应用"),
-    SentenceItem::HTMLElement(HTMLElement::Strong("最广泛")),
-    SentenceItem::Plain("的抑郁自评量表之一，能有效地反映抑郁状态的有关症状及其严重程度和变化情况。"),
+    SentenceItem::Plain("贝克抑郁自评量表 BDI（BDI-II 是第二版）是抑郁自评量表中"),
+    SentenceItem::HTMLElement(HTMLElement::Strong("最著名的量表")),
+    SentenceItem::Plain("之一，被广泛运用于抑郁心理测试筛查。"),
 ]];
 
 const INSTRUCTION: Texts = &[&[
     SentenceItem::Plain("本量表包含 "),
-    SentenceItem::HTMLElement(HTMLElement::Strong("20")),
-    SentenceItem::Plain(
-        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您",
-    ),
+    SentenceItem::HTMLElement(HTMLElement::Strong("13")),
+    SentenceItem::Plain(" 个项目，分为 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("4")),
+    SentenceItem::Plain(" 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您"),
     SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
     SentenceItem::Plain(
         "的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。",
     ),
 ]];
 
-pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
-    name: "抑郁自评量表",
-    abbreviation: "SDS",
+pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<i8>], Question> = Scale {
+    name: "贝克抑郁自评量表",    
     primary_category: ScaleCategory::Emotion,
-    related_categories: Some(&[ScaleCategory::MentalHealth]),
+    related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Somatic]),
+    abbreviation: "BDI",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
     references: None,
     warning: None,
-    formula_mode: Some(FormulaMode{
-        operational_rule: OperationalRule::Multiply(1.25),
-        integer: Some(Integer::Round),
-    }),
-    tags: Tag{ info: Some(&["抑郁"]), normal: Some(&["自评"]), warning: None, error: None },
+    formula_mode: None,
+    tags: Tag{ info: Some(&["抑郁"]), normal: None, warning: None, error: None },
     interpretation: &[
         InterpretationItem{
-            range: [0, 53],
+            range: [0, 5],
             description: "正常",
             advice: Some(&["请继续保持积极阳光的生活态度，面对人生，相信你会遇到很多惊喜，同时也能给他人带来快乐！"]),
             symptom: None,
             status: Status::Normal,
         },
         InterpretationItem{
-            range: [53, 63],
+            range: [5, 8],
             description: "轻度抑郁",
             advice: Some(&[
                 "与他人交流： 与亲朋好友分享感受，寻求支持和理解，有时候倾诉可以减轻心理负担。",
@@ -68,7 +65,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
             status: Status::Mild,
         },
         InterpretationItem{
-            range: [63, 73],
+            range: [8, 16],
             description: "中度抑郁",
             advice: Some(&[
                 "首先建议您寻求心理医生、心理治疗师或精神医生的帮助，同时可以通过以下办法缓解症状：",
@@ -94,7 +91,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
             status: Status::Moderate,
         },
         InterpretationItem{
-            range: [73, 100],
+            range: [16, 40],
             description: "重度抑郁",
             advice: Some(&[
                 "对于重度抑郁症，专业治疗是至关重要的，强烈建议您去精神专科医院门诊寻求专业帮助，住院治疗。",
@@ -111,442 +108,288 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Questio
     ],
     questions: &[
         Question {
-            title: "我感到情绪沮丧，郁闷。",
+            title: "以下情况最符合你的是",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我不感到忧郁",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "我感到忧郁或沮丧",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "我整天忧郁，无法摆脱",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我十分忧郁，已经承受不住",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
                 },
             ],
         },
         Question {
-            title: "我感到早晨心情最好。",
+            title: "你对未来抱有什么态度？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
+                    text: "我对未来并不感到悲观失望",
+                    point: 0,
                 },
                 QuestionOption {
-                    text: "有时",
-                    point: 3,
+                    text: "我感到前途不太乐观",
+                    point: 1,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我感到我对前途不抱希望",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "总是如此",
-                    point: 1,
+                    text: "我感到今后毫无希望，不可能有所好转",
+                    point: 3,
                 },
             ],
         },
         Question {
-            title: "我要哭或想哭。",
+            title: "你是如何看待失败的感觉？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我并无失败的感觉",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "我觉得和大多数人相比我是失败的",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "回顾我的一生，我觉得那是一连串的失败",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我觉得我是个彻底失败的人",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
                 },
             ],
         },
         Question {
-            title: "我夜间睡眠不好。",
+            title: "你对生活的满意度如何？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我并不觉得我有什么不满意",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "我觉得我不能像平时那样享受生活",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "任何事情都不能使我感到满意一些",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我对所有的事情都不满意",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
                 },
             ],
         },
         Question {
-            title: "我吃饭像平常一样多。",
+            title: "你的内疚感有多深？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
+                    text: "我没有特殊的内疚感",
+                    point: 0,
                 },
                 QuestionOption {
-                    text: "有时",
-                    point: 3,
+                    text: "我有时感到内疚或觉得自己没价值",
+                    point: 1,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我感到非常内疚",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "总是如此",
-                    point: 1,
+                    text: "我觉得自己非常坏，一钱不值",
+                    point: 3,
                 },
             ],
         },
         Question {
-            title: "我的性功能正常。",
+            title: "你是否会对自己感到失望？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
+                    text: "我没有对自己感到失望",
+                    point: 0,
                 },
                 QuestionOption {
-                    text: "有时",
-                    point: 3,
+                    text: "我对自己感到失望",
+                    point: 1,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我讨厌自己",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "总是如此",
-                    point: 1,
+                    text: "我憎恨自己",
+                    point: 3,
                 },
             ],
         },
         Question {
-            title: "我感到体重减轻。",
+            title: "你会有想要伤害自己的想法吗？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我没有要伤害自己的想法",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "我感到还是死掉的好",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "我考虑过自杀",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "如果有机会，我还会杀了自己",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
                 },
             ],
         },
         Question {
-            title: "我为便秘烦恼。",
+            title: "你是否失去与他人交往的兴趣？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我没失去和他人交往的兴趣",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "和平时相比，我和他人交往的兴趣有所减退",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "我已失去大部分和人交往的兴趣，我对他们没有感情",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我对他人全无兴趣，也完全不理睬别人",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
                 },
             ],
         },
         Question {
-            title: "我的心跳比平时快。",
+            title: "做决定对你来说，是否感到困难？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我能像平时一样做出决断",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "我尝试避免做决定",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "对我而言，做出决断十分困难",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我无法做出任何决断",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
                 },
             ],
         },
         Question {
-            title: "我无故感到疲乏。",
+            title: "与过去相比，你是否对你的形象不自信？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我觉得我的形象一点也不比过去糟",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "我担心我看起来老了，不吸引人了",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "我觉得我的外表肯定变了，变得不具吸引力",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我觉得我的形象丑陋不堪且讨人厌",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
                 },
             ],
         },
         Question {
-            title: "我的头脑像平常一样清楚。",
+            title: "你对工作抱有何种态度？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
+                    text: "我能像平时那样工作",
+                    point: 0,
                 },
                 QuestionOption {
-                    text: "有时",
-                    point: 3,
+                    text: "我做事时，要额外地努力才能开始",
+                    point: 1,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我必须努力迫使自己，方能干事",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "总是如此",
-                    point: 1,
+                    text: "我完全不能做事情",
+                    point: 3,
                 },
             ],
         },
         Question {
-            title: "我做事情像平常一样不感到困难。",
+            title: "和以往相比，你是否会很容易就感到疲倦？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
+                    text: "和以往相比，我并不容易疲倦",
+                    point: 0,
                 },
                 QuestionOption {
-                    text: "有时",
-                    point: 3,
+                    text: "我比过去容易觉得疲倦",
+                    point: 1,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我做任何事都感到疲倦",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "总是如此",
-                    point: 1,
+                    text: "我太易疲倦了，不能干任何事",
+                    point: 3,
                 },
             ],
         },
         Question {
-            title: "我坐卧难安，难以保持平静。",
+            title: "与过去相比，你的胃口如何？",
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "从无或偶尔",
+                    text: "我的胃口不比过去差",
+                    point: 0,
+                },
+                QuestionOption {
+                    text: "我的胃口没有过去那样好",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "有时",
+                    text: "现在我的胃口比过去差多了",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "经常",
+                    text: "我一点食欲都没有",
                     point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
-                },
-            ],
-        },
-        Question {
-            title: "我对未来感到有希望。",
-            is_multiple: false,
-            options: &[
-                QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
-                },
-                QuestionOption {
-                    text: "有时",
-                    point: 3,
-                },
-                QuestionOption {
-                    text: "经常",
-                    point: 2,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "我比平时更容易激怒。",
-            is_multiple: false,
-            options: &[
-                QuestionOption {
-                    text: "从无或偶尔",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "有时",
-                    point: 2,
-                },
-                QuestionOption {
-                    text: "经常",
-                    point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
-                },
-            ],
-        },
-        Question {
-            title: "我觉得决定什么事很容易。",
-            is_multiple: false,
-            options: &[
-                QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
-                },
-                QuestionOption {
-                    text: "有时",
-                    point: 3,
-                },
-                QuestionOption {
-                    text: "经常",
-                    point: 2,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "我感到自己是有用的和不可缺少的人。",
-            is_multiple: false,
-            options: &[
-                QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
-                },
-                QuestionOption {
-                    text: "有时",
-                    point: 3,
-                },
-                QuestionOption {
-                    text: "经常",
-                    point: 2,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "我的生活很有意思。",
-            is_multiple: false,
-            options: &[
-                QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
-                },
-                QuestionOption {
-                    text: "有时",
-                    point: 3,
-                },
-                QuestionOption {
-                    text: "经常",
-                    point: 2,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "假若我死了，别人会过得更好。",
-            is_multiple: false,
-            options: &[
-                QuestionOption {
-                    text: "从无或偶尔",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "有时",
-                    point: 2,
-                },
-                QuestionOption {
-                    text: "经常",
-                    point: 3,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 4,
-                },
-            ],
-        },
-        Question {
-            title: "我仍旧喜欢自己平时喜欢的东西。",
-            is_multiple: false,
-            options: &[
-                QuestionOption {
-                    text: "从无或偶尔",
-                    point: 4,
-                },
-                QuestionOption {
-                    text: "有时",
-                    point: 3,
-                },
-                QuestionOption {
-                    text: "经常",
-                    point: 2,
-                },
-                QuestionOption {
-                    text: "总是如此",
-                    point: 1,
                 },
             ],
         },

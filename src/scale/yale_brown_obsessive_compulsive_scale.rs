@@ -46,7 +46,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
     references: None,
     warning: None,
     formula_mode: None,
-    tags: Tag{ info: Some(&["强迫"]), normal: Some(&["自评"]), warning: None, error: None },
+    tags: Tag{ info: Some(&["强迫"]), normal: None, warning: None, error: None },
     interpretation: &[
         InterpretationItem {
             range: ScoreStandard { 

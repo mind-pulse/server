@@ -418,7 +418,7 @@ const INSTRUCTION: Texts = &[
     ],
 ];
 
-pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
+pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale {
     name: "霍兰德职业兴趣测评",
     primary_category: ScaleCategory::CareerAndAcademics,
     related_categories: Some(&[
@@ -436,7 +436,7 @@ pub const SELF_DIRECTED_SEARCH: Scale<Interpretation, Question> = Scale {
     references: None,
     warning: None,
     formula_mode: None,
-    tags: Tag{ info: Some(&["职业", "高考", "就业", "专业"]), normal: Some(&["自评"]), warning: None, error: None },
+    tags: Tag{ info: Some(&["职业", "高考", "就业", "专业"]), normal: None, warning: None, error: None },
     interpretation: Interpretation { capacity_category_interpretations: &CAPACITY_CATEGORY_INTERPRETATIONS, career_information: &CAREER_INFORMATION },
     questions: &[
         Question {

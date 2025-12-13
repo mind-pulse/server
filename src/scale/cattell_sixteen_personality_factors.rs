@@ -403,7 +403,7 @@ const INSTRUCTION: Texts = &[
     &[SentenceItem::Plain("5．有些题目你可能从未思考过，或者感到不太容易回答。对于这样的题目，同样要求你做出一种"), SentenceItem::HTMLElement(HTMLElement::Strong("倾向性")), SentenceItem::Plain("的选择。")],
 ];
 
-pub const SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE: Scale<Interpretation, Question> = Scale {
+pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
     name: "卡特尔16种人格因素问卷",
     abbreviation: "16PF",
     primary_category: ScaleCategory::Personality,
@@ -429,7 +429,7 @@ pub const SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE: Scale<Interpretation, Questi
     references: None,
     formula_mode: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),
-    tags: Tag{ info: Some(&[ "人格"]), normal: Some(&["自评"]), warning: Some(&["16+"]), error: None },
+    tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
     interpretation: Interpretation { 
         normal_range: [3, 8],
         norm: NORM, 

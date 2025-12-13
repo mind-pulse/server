@@ -19,13 +19,13 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
     abbreviation: "HAMD",
     primary_category: ScaleCategory::Emotion,
     related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Somatic]),
-    introduction: INTRODUCTION,
     idea: None,
+    introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     references: Some(&["张作记主编.《行为医学量表手册》（光盘版）[M].中华医学电子音像出版社.2005年"]),
     warning: Some("此为量表非自评，仅供心理科和精神科医生、实习生使用，如需自评抑郁状态，请使用抑郁自评量表（SDS）"),
     formula_mode: None,
-    tags: Tag{ info: None, normal: None, warning: Some(&["医用"]), error: None },
+    tags: Tag{ info: None, normal: None, warning: None, error: Some(&["医用"]) },
     interpretation: &[
         InterpretationItem {
             range: [0, 8],

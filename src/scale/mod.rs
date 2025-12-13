@@ -1,30 +1,34 @@
-mod bdi;
-mod epq_rsc;
-mod ept;
-mod h_sds;
-mod hamd;
-mod neo_pi_r;
-mod sas;
-mod scl90;
-mod sds;
-mod sixteen_pf;
-mod y_bocs;
+// 量表模块命名尽量使用全称，避免缩写名称重复。
+// 缩写严格使用官方命名。
+// 前端路由可以使用自定义缩写（比如添加前缀以区别相同缩写的量表）以避免冲突。
+
+mod beck_depression_inventory;
+mod cattell_sixteen_personality_factors;
+mod enneagram_personality_test;
+mod eysenck_personality_questionnaire;
+mod hamilton_depression_scale;
+mod holland_occupational_interest;
+mod neo_personality_inventory_revised;
+mod self_rating_anxiety_scale;
+mod self_rating_depression_scale;
+mod symptom_checklist_90;
+mod yale_brown_obsessive_compulsive_scale;
 
 use serde::Serialize;
 
 use crate::error::{MindPulseError, MindPulseResult};
 
-pub(super) use self::bdi::BECK_DEPRESSION_RATING_SCALE;
-pub(super) use self::epq_rsc::EPQ_RSC;
-pub(super) use self::ept::ENNEAGRAM_PERSONALITY_TEST;
-pub(super) use self::h_sds::SELF_DIRECTED_SEARCH;
-pub(super) use self::hamd::HAMILTON_DEPRESSION_SCALE;
-pub(super) use self::neo_pi_r::REVISED_NEOPERSONALITY_INVENTORY;
-pub(super) use self::sas::SELF_RATING_ANXIETY_SCALE;
-pub(super) use self::scl90::SYMPTOM_CHECKLIST_90;
-pub(super) use self::sds::SELF_RATING_DEPRESSION_SCALE;
-pub(super) use self::sixteen_pf::SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE;
-pub(super) use self::y_bocs::YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE;
+pub(super) use self::beck_depression_inventory::BECK_DEPRESSION_INVENTORY;
+pub(super) use self::cattell_sixteen_personality_factors::SIXTEEN_PERSONALITY_FACTORS;
+pub(super) use self::enneagram_personality_test::ENNEAGRAM_PERSONALITY_TEST;
+pub(super) use self::eysenck_personality_questionnaire::EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE;
+pub(super) use self::hamilton_depression_scale::HAMILTON_DEPRESSION_SCALE;
+pub(super) use self::holland_occupational_interest::HOLLAND_OCCUPATIONAL_INTEREST;
+pub(super) use self::neo_personality_inventory_revised::NEO_PERSONALITY_INVENTORY_REVISED;
+pub(super) use self::self_rating_anxiety_scale::SELF_RATING_ANXIETY_SCALE;
+pub(super) use self::self_rating_depression_scale::SELF_RATING_DEPRESSION_SCALE;
+pub(super) use self::symptom_checklist_90::SYMPTOM_CHECKLIST_90;
+pub(super) use self::yale_brown_obsessive_compulsive_scale::YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE;
 
 /// 心理学自评量表的顶层分类枚举（覆盖全面、结构稳定）
 /// 每个变体下方注释列出该类别的经典量表示例（中文名 + 英文名 + 说明），
@@ -165,29 +169,39 @@ pub(super) struct FormulaMode {
 
 #[derive(Debug, Serialize)]
 pub(super) struct Scale<'r, I, Q> {
+    /// 名称
     name: PlainText,
     /// 分类
     primary_category: ScaleCategory,
     /// 相关分类
     #[serde(skip_serializing_if = "Option::is_none")]
     related_categories: Option<&'r [ScaleCategory]>,
+    /// 简称
     abbreviation: PlainText,
+
     /// 对量表的说明
     instruction: Texts,
+    /// 问题列表
     questions: &'r [Q],
+    /// 解释
     interpretation: I,
+
     /// 简介
     introduction: Texts,
+    /// 参考文献
     #[serde(skip_serializing_if = "Option::is_none")]
     references: Option<PlainTexts>,
+    /// 警告
     #[serde(skip_serializing_if = "Option::is_none")]
     warning: Option<PlainText>,
     /// js 计算用到的表达式，和用"<SUM>"替代
     #[serde(skip_serializing_if = "Option::is_none")]
     formula_mode: Option<FormulaMode>,
-    tags: Tag,
     /// 理念
     idea: Option<PlainTexts>,
+
+    /// 标签
+    tags: Tag,
 }
 
 #[derive(Debug, Serialize)]
@@ -238,16 +252,28 @@ pub(super) type Texts = &'static [Sentence];
 
 #[derive(Debug, Serialize)]
 pub(super) struct ScaleListItem<'r> {
+    /// 名称
     name: PlainText,
+    /// 前端路径
     path: PlainText,
+    /// 预计测试时长（分钟）
+    duration: [u32; 2],
+    /// 问题总数
+    total_questions: u32,
     /// 分类
     primary_category: ScaleCategory,
     /// 相关分类
     #[serde(skip_serializing_if = "Option::is_none")]
     related_categories: Option<&'r [ScaleCategory]>,
+    /// 一句话描述
+    description: &'r str,
+    /// 简介
     introduction: Texts,
+    /// 警告
     warning: Option<PlainText>,
+    /// 标签
     tags: Tag,
+    /// 是否禁用
     disabled: bool,
 }
 
@@ -257,40 +283,61 @@ impl ScaleListItem<'_> {
     }
 }
 
+/// 计算预计测试时长（分钟）
+///
+/// 每个问题耗时 20 秒为标准计算
+const fn estimated_duration(total_questions: u32) -> [u32; 2] {
+    let min = (total_questions * 10 / 60) as u32;
+    let max = (total_questions * 30 / 60) as u32;
+    [min, max]
+}
+
 pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
     ScaleListItem {
-        name: SELF_DIRECTED_SEARCH.name,
+        name: HOLLAND_OCCUPATIONAL_INTEREST.name,
         path: "h_sds",
-        primary_category: SELF_DIRECTED_SEARCH.primary_category,
-        related_categories: SELF_DIRECTED_SEARCH.related_categories,
-        introduction: SELF_DIRECTED_SEARCH.introduction,
-        warning: SELF_DIRECTED_SEARCH.warning,
-        tags: SELF_DIRECTED_SEARCH.tags,
+        duration: estimated_duration(HOLLAND_OCCUPATIONAL_INTEREST.questions.len() as u32),
+        total_questions: HOLLAND_OCCUPATIONAL_INTEREST.questions.len() as u32,
+        description: "发现你天生热爱的事，匹配最适合你的职业方向",
+        primary_category: HOLLAND_OCCUPATIONAL_INTEREST.primary_category,
+        related_categories: HOLLAND_OCCUPATIONAL_INTEREST.related_categories,
+        introduction: HOLLAND_OCCUPATIONAL_INTEREST.introduction,
+        warning: HOLLAND_OCCUPATIONAL_INTEREST.warning,
+        tags: HOLLAND_OCCUPATIONAL_INTEREST.tags,
         disabled: false,
     },
     ScaleListItem {
-        name: REVISED_NEOPERSONALITY_INVENTORY.name,
+        name: NEO_PERSONALITY_INVENTORY_REVISED.name,
+        duration: estimated_duration(NEO_PERSONALITY_INVENTORY_REVISED.questions.len() as u32),
         path: "neo_pi_r",
-        primary_category: REVISED_NEOPERSONALITY_INVENTORY.primary_category,
-        related_categories: REVISED_NEOPERSONALITY_INVENTORY.related_categories,
-        introduction: REVISED_NEOPERSONALITY_INVENTORY.introduction,
-        warning: REVISED_NEOPERSONALITY_INVENTORY.warning,
-        tags: REVISED_NEOPERSONALITY_INVENTORY.tags,
+        total_questions: NEO_PERSONALITY_INVENTORY_REVISED.questions.len() as u32,
+        description: "五大维度，一眼看懂你独一无二的性格底色",
+        primary_category: NEO_PERSONALITY_INVENTORY_REVISED.primary_category,
+        related_categories: NEO_PERSONALITY_INVENTORY_REVISED.related_categories,
+        introduction: NEO_PERSONALITY_INVENTORY_REVISED.introduction,
+        warning: NEO_PERSONALITY_INVENTORY_REVISED.warning,
+        tags: NEO_PERSONALITY_INVENTORY_REVISED.tags,
         disabled: false,
     },
     ScaleListItem {
-        name: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.name,
+        name: SIXTEEN_PERSONALITY_FACTORS.name,
         path: "16pf",
-        primary_category: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.primary_category,
-        related_categories: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.related_categories,
-        introduction: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.introduction,
-        warning: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.warning,
-        tags: SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE.tags,
+        duration: estimated_duration(SIXTEEN_PERSONALITY_FACTORS.questions.len() as u32),
+        total_questions: SIXTEEN_PERSONALITY_FACTORS.questions.len() as u32,
+        description: "16个维度，一眼看懂你独一无二的人格特征",
+        primary_category: SIXTEEN_PERSONALITY_FACTORS.primary_category,
+        related_categories: SIXTEEN_PERSONALITY_FACTORS.related_categories,
+        introduction: SIXTEEN_PERSONALITY_FACTORS.introduction,
+        warning: SIXTEEN_PERSONALITY_FACTORS.warning,
+        tags: SIXTEEN_PERSONALITY_FACTORS.tags,
         disabled: false,
     },
     ScaleListItem {
         name: ENNEAGRAM_PERSONALITY_TEST.name,
         path: "ept",
+        duration: estimated_duration(ENNEAGRAM_PERSONALITY_TEST.questions.len() as u32),
+        total_questions: ENNEAGRAM_PERSONALITY_TEST.questions.len() as u32,
+        description: "九种视角，让你更了解自己",
         primary_category: ENNEAGRAM_PERSONALITY_TEST.primary_category,
         related_categories: ENNEAGRAM_PERSONALITY_TEST.related_categories,
         introduction: ENNEAGRAM_PERSONALITY_TEST.introduction,
@@ -299,18 +346,31 @@ pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
         disabled: false,
     },
     ScaleListItem {
-        name: EPQ_RSC.name,
+        name: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE.name,
         path: "epq_rsc",
-        primary_category: EPQ_RSC.primary_category,
-        related_categories: EPQ_RSC.related_categories,
-        introduction: EPQ_RSC.introduction,
-        warning: EPQ_RSC.warning,
-        tags: EPQ_RSC.tags,
+        duration: estimated_duration(
+            EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE
+                .questions
+                .len() as u32,
+        ),
+        total_questions: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE
+            .questions
+            .len() as u32,
+        description: "源自国际经典、专为中国优化的性格探索工具",
+        primary_category: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE.primary_category,
+        related_categories: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE
+            .related_categories,
+        introduction: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE.introduction,
+        warning: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE.warning,
+        tags: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE.tags,
         disabled: false,
     },
     ScaleListItem {
         name: SYMPTOM_CHECKLIST_90.name,
         path: "scl90",
+        duration: estimated_duration(SYMPTOM_CHECKLIST_90.questions.len() as u32),
+        total_questions: SYMPTOM_CHECKLIST_90.questions.len() as u32,
+        description: "像体检一样简单，为你的心理健康做一次全面快筛",
         primary_category: SYMPTOM_CHECKLIST_90.primary_category,
         related_categories: SYMPTOM_CHECKLIST_90.related_categories,
         introduction: SYMPTOM_CHECKLIST_90.introduction,
@@ -319,18 +379,24 @@ pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
         disabled: false,
     },
     ScaleListItem {
-        name: BECK_DEPRESSION_RATING_SCALE.name,
+        name: BECK_DEPRESSION_INVENTORY.name,
         path: "bdi",
-        primary_category: BECK_DEPRESSION_RATING_SCALE.primary_category,
-        related_categories: BECK_DEPRESSION_RATING_SCALE.related_categories,
-        introduction: BECK_DEPRESSION_RATING_SCALE.introduction,
-        warning: BECK_DEPRESSION_RATING_SCALE.warning,
-        tags: BECK_DEPRESSION_RATING_SCALE.tags,
+        duration: estimated_duration(BECK_DEPRESSION_INVENTORY.questions.len() as u32),
+        total_questions: BECK_DEPRESSION_INVENTORY.questions.len() as u32,
+        description: "13个问题帮你温和地看清自己的情绪状态",
+        primary_category: BECK_DEPRESSION_INVENTORY.primary_category,
+        related_categories: BECK_DEPRESSION_INVENTORY.related_categories,
+        introduction: BECK_DEPRESSION_INVENTORY.introduction,
+        warning: BECK_DEPRESSION_INVENTORY.warning,
+        tags: BECK_DEPRESSION_INVENTORY.tags,
         disabled: false,
     },
     ScaleListItem {
         name: SELF_RATING_DEPRESSION_SCALE.name,
         path: "sds",
+        duration: estimated_duration(SELF_RATING_DEPRESSION_SCALE.questions.len() as u32),
+        total_questions: SELF_RATING_DEPRESSION_SCALE.questions.len() as u32,
+        description: "快速自测情绪状态，用20个问题看清你是否被抑郁悄悄困扰",
         primary_category: SELF_RATING_DEPRESSION_SCALE.primary_category,
         related_categories: SELF_RATING_DEPRESSION_SCALE.related_categories,
         introduction: SELF_RATING_DEPRESSION_SCALE.introduction,
@@ -341,6 +407,9 @@ pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
     ScaleListItem {
         name: SELF_RATING_ANXIETY_SCALE.name,
         path: "sas",
+        duration: estimated_duration(SELF_RATING_ANXIETY_SCALE.questions.len() as u32),
+        total_questions: SELF_RATING_ANXIETY_SCALE.questions.len() as u32,
+        description: "用科学方式读懂自己的情绪，为内心的平静提供清晰指引",
         primary_category: SELF_RATING_ANXIETY_SCALE.primary_category,
         related_categories: SELF_RATING_ANXIETY_SCALE.related_categories,
         introduction: SELF_RATING_ANXIETY_SCALE.introduction,
@@ -351,6 +420,9 @@ pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
     ScaleListItem {
         name: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.name,
         path: "y_bocs",
+        duration: estimated_duration(YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.questions.len() as u32),
+        total_questions: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.questions.len() as u32,
+        description: "专为强迫症设计的科学自测工具，10题看清困扰程度",
         primary_category: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.primary_category,
         related_categories: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.related_categories,
         introduction: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.introduction,
@@ -361,6 +433,9 @@ pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
     ScaleListItem {
         name: HAMILTON_DEPRESSION_SCALE.name,
         path: "hamd",
+        duration: estimated_duration(HAMILTON_DEPRESSION_SCALE.questions.len() as u32),
+        total_questions: HAMILTON_DEPRESSION_SCALE.questions.len() as u32,
+        description: "他评量表，用于评估抑郁状态",
         primary_category: HAMILTON_DEPRESSION_SCALE.primary_category,
         related_categories: HAMILTON_DEPRESSION_SCALE.related_categories,
         introduction: HAMILTON_DEPRESSION_SCALE.introduction,

@@ -17,10 +17,11 @@ use tracing_subscriber::fmt::time::OffsetTime;
 use crate::error::MindPulseResult;
 use crate::logger::Logger;
 use crate::scale::{
-    BECK_DEPRESSION_RATING_SCALE, ENNEAGRAM_PERSONALITY_TEST, EPQ_RSC, HAMILTON_DEPRESSION_SCALE,
-    PATHS, REVISED_NEOPERSONALITY_INVENTORY, SELF_DIRECTED_SEARCH, SELF_RATING_ANXIETY_SCALE,
-    SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE, SYMPTOM_CHECKLIST_90,
-    YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
+    BECK_DEPRESSION_INVENTORY, ENNEAGRAM_PERSONALITY_TEST,
+    EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE, HAMILTON_DEPRESSION_SCALE,
+    HOLLAND_OCCUPATIONAL_INTEREST, NEO_PERSONALITY_INVENTORY_REVISED, PATHS,
+    SELF_RATING_ANXIETY_SCALE, SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTORS,
+    SYMPTOM_CHECKLIST_90, YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
 };
 use crate::statistics::{create_table, get_statistics, insert_statistics_ip};
 
@@ -41,17 +42,17 @@ impl JsonRender for Response {
 
 #[handler]
 async fn h_sds(res: &mut Response) {
-    res.json(SELF_DIRECTED_SEARCH);
+    res.json(HOLLAND_OCCUPATIONAL_INTEREST);
 }
 
 #[handler]
 async fn neo_pi_r(res: &mut Response) {
-    res.json(REVISED_NEOPERSONALITY_INVENTORY);
+    res.json(NEO_PERSONALITY_INVENTORY_REVISED);
 }
 
 #[handler]
 async fn sixteen_pf(res: &mut Response) {
-    res.json(SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE);
+    res.json(SIXTEEN_PERSONALITY_FACTORS);
 }
 
 #[handler]
@@ -66,12 +67,12 @@ async fn y_bocs(res: &mut Response) {
 
 #[handler]
 async fn epq_rsc(res: &mut Response) {
-    res.json(EPQ_RSC);
+    res.json(EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE);
 }
 
 #[handler]
 async fn bdi(res: &mut Response) {
-    res.json(BECK_DEPRESSION_RATING_SCALE);
+    res.json(BECK_DEPRESSION_INVENTORY);
 }
 
 #[handler]

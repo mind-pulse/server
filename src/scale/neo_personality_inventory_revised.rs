@@ -2469,7 +2469,7 @@ const INSTRUCTION: Texts = &[
     ],
 ];
 
-pub const REVISED_NEOPERSONALITY_INVENTORY: Scale<Interpretation, Question> = Scale {
+pub const NEO_PERSONALITY_INVENTORY_REVISED: Scale<Interpretation, Question> = Scale {
     name: "大五人格测试",
     abbreviation: "NEO-PI-R",
     primary_category: ScaleCategory::Personality,
@@ -2489,7 +2489,7 @@ pub const REVISED_NEOPERSONALITY_INVENTORY: Scale<Interpretation, Question> = Sc
     references: None,
     warning: Some("适用于初中三年级以上文化水平的人群。"),
     formula_mode: None,
-    tags: Tag{ info: Some(&["人格"]), normal: Some(&["自评"]), warning: Some(&["初三+"]), error: None },
+    tags: Tag{ info: Some(&["人格"]), normal: None, warning: Some(&["初三+"]), error: None },
     interpretation: INTERPRETATION,
     questions: QUESTIONS,
 };

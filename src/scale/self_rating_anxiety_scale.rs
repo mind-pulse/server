@@ -37,7 +37,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         operational_rule: OperationalRule::Multiply(1.25),
         integer: Some(Integer::Round),
     }),
-    tags: Tag{ info: Some(&["焦虑"]), normal: Some(&["自评"]), warning: None, error: None },
+    tags: Tag{ info: Some(&["焦虑"]), normal: None, warning: None, error: None },
     interpretation: &[
         InterpretationItem{
             range: [0, 50],
