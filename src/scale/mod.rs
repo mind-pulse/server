@@ -8,6 +8,7 @@ mod enneagram_personality_test;
 mod eysenck_personality_questionnaire;
 mod hamilton_depression_scale;
 mod holland_occupational_interest;
+mod holland_occupational_interest_highschool_cn;
 mod neo_personality_inventory_revised;
 mod self_rating_anxiety_scale;
 mod self_rating_depression_scale;
@@ -29,6 +30,7 @@ pub(super) use self::self_rating_anxiety_scale::SELF_RATING_ANXIETY_SCALE;
 pub(super) use self::self_rating_depression_scale::SELF_RATING_DEPRESSION_SCALE;
 pub(super) use self::symptom_checklist_90::SYMPTOM_CHECKLIST_90;
 pub(super) use self::yale_brown_obsessive_compulsive_scale::YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE;
+pub(super) use crate::scale::holland_occupational_interest_highschool_cn::HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN;
 
 /// 心理学自评量表的顶层分类枚举（覆盖全面、结构稳定）
 /// 每个变体下方注释列出该类别的经典量表示例（中文名 + 英文名 + 说明），
@@ -292,7 +294,7 @@ const fn estimated_duration(total_questions: u32) -> [u32; 2] {
     [min, max]
 }
 
-pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
+pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
     ScaleListItem {
         name: HOLLAND_OCCUPATIONAL_INTEREST.name,
         path: "h_sds",
@@ -304,6 +306,21 @@ pub(super) const PATHS: [ScaleListItem<'static>; 11] = [
         introduction: HOLLAND_OCCUPATIONAL_INTEREST.introduction,
         warning: HOLLAND_OCCUPATIONAL_INTEREST.warning,
         tags: HOLLAND_OCCUPATIONAL_INTEREST.tags,
+        disabled: false,
+    },
+    ScaleListItem {
+        name: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.name,
+        path: "h_sds_hs",
+        duration: estimated_duration(
+            HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.questions.len() as u32
+        ),
+        total_questions: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.questions.len() as u32,
+        description: "发现你天生热爱的事，匹配最适合你的大学专业方向",
+        primary_category: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.primary_category,
+        related_categories: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.related_categories,
+        introduction: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.introduction,
+        warning: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.warning,
+        tags: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.tags,
         disabled: false,
     },
     ScaleListItem {

@@ -7,7 +7,7 @@ use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Te
 /// 问题类型
 #[derive(Serialize)]
 #[serde(rename_all(serialize = "SCREAMING_SNAKE_CASE"))]
-enum QuestionType {
+pub(super) enum QuestionType {
     /// 感兴趣的事
     InterestedEvent,
     /// 擅长的事
@@ -20,7 +20,7 @@ enum QuestionType {
 
 /// 人格类型
 #[derive(Serialize)]
-enum CapacityCategory {
+pub(super) enum CapacityCategory {
     R,
     A,
     I,
@@ -31,21 +31,21 @@ enum CapacityCategory {
 
 #[derive(Serialize)]
 pub struct Question {
-    title: PlainText,
-    question_type: QuestionType,
-    capacity_category: CapacityCategory,
-    options: &'static [QuestionOption],
-    is_multiple: bool,
+    pub(super) title: PlainText,
+    pub(super) question_type: QuestionType,
+    pub(super) capacity_category: CapacityCategory,
+    pub(super) options: &'static [QuestionOption],
+    pub(super) is_multiple: bool,
 }
 
 #[derive(Serialize)]
-struct CapacityCategoryInterpretation {
-    capacity_category: CapacityCategory,
-    name: PlainText,
+pub(super) struct CapacityCategoryInterpretation {
+    pub(super) capacity_category: CapacityCategory,
+    pub(super) name: PlainText,
     /// 人格特征
-    personality_trait: PlainText,
+    pub(super) personality_trait: PlainText,
     /// 职业特征
-    occupational_stigma: PlainText,
+    pub(super) occupational_stigma: PlainText,
 }
 
 const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
@@ -88,7 +88,7 @@ const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
 ];
 
 #[derive(Serialize)]
-struct CareerInformation {
+pub(super) struct CareerInformation {
     code: PlainText,
     information: PlainText,
 }

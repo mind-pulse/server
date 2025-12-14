@@ -19,9 +19,10 @@ use crate::logger::Logger;
 use crate::scale::{
     BECK_DEPRESSION_INVENTORY, ENNEAGRAM_PERSONALITY_TEST,
     EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE, HAMILTON_DEPRESSION_SCALE,
-    HOLLAND_OCCUPATIONAL_INTEREST, NEO_PERSONALITY_INVENTORY_REVISED, PATHS,
-    SELF_RATING_ANXIETY_SCALE, SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTORS,
-    SYMPTOM_CHECKLIST_90, YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
+    HOLLAND_OCCUPATIONAL_INTEREST, HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN,
+    NEO_PERSONALITY_INVENTORY_REVISED, PATHS, SELF_RATING_ANXIETY_SCALE,
+    SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTORS, SYMPTOM_CHECKLIST_90,
+    YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
 };
 use crate::statistics::{create_table, get_statistics, insert_statistics_ip};
 
@@ -43,6 +44,11 @@ impl JsonRender for Response {
 #[handler]
 async fn h_sds(res: &mut Response) {
     res.json(HOLLAND_OCCUPATIONAL_INTEREST);
+}
+
+#[handler]
+async fn h_sds_hs(res: &mut Response) {
+    res.json(HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN);
 }
 
 #[handler]
@@ -105,6 +111,7 @@ async fn serve() {
         .push(Router::with_path("list").get(list))
         .push(Router::with_path("scales").get(list))
         .push(Router::with_path("h_sds").get(h_sds))
+        .push(Router::with_path("h_sds_hs").get(h_sds_hs))
         .push(Router::with_path("neo_pi_r").get(neo_pi_r))
         .push(Router::with_path("16pf").get(sixteen_pf))
         .push(Router::with_path("epq_rsc").get(epq_rsc))
