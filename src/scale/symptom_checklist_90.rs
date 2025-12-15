@@ -82,15 +82,15 @@ struct SymptomInterpretation {
 #[serde(rename_all(serialize = "UPPERCASE"))]
 struct Symptoms {
     somatization:SymptomInterpretation ,
-    obsessive_compulsiive:SymptomInterpretation ,
-    sensitive_of_interpersonal_relationship:SymptomInterpretation ,
-    despondent:SymptomInterpretation ,
+    obsessive_compulsive:SymptomInterpretation ,
+    interpersonal_sensitivity:SymptomInterpretation ,
+    depression:SymptomInterpretation ,
     anxiety:SymptomInterpretation ,
     hostility:SymptomInterpretation ,
-    phobia:SymptomInterpretation ,
-    bigotry:SymptomInterpretation ,
-    psychotic:SymptomInterpretation ,
-    other:SymptomInterpretation ,
+    phobic_anxiety:SymptomInterpretation ,
+    paranoid_ideation:SymptomInterpretation ,
+    psychoticism:SymptomInterpretation ,
+    others:SymptomInterpretation ,
 }
 
 #[derive(Debug, Serialize)]
@@ -164,14 +164,14 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
                 name: "躯体化", 
                 symptom: "主要反映身体不适感，包括心血管、胃肠道、呼吸和其他系统的不适，和头痛、背痛、肌肉酸痛，以及焦虑等躯体不适表现。"
             }, 
-            obsessive_compulsiive: SymptomInterpretation { 
+            obsessive_compulsive: SymptomInterpretation { 
                 name: "强迫症状", 
                 symptom: "主要指那些明知没有必要，但又无法摆脱的无意义的思想、冲动和行为，还有一些比较一般的认知障碍的行为征象也在这一因子中反映。"
             },
-            sensitive_of_interpersonal_relationship: SymptomInterpretation { 
+            interpersonal_sensitivity: SymptomInterpretation { 
                 name: "人际关系敏感", 
                 symptom: "主要是指某些人际的不自在与自卑感，特别是与其他人相比较时更加突出。在人际交往中的自卑感，心神不安，明显的不自在，以及人际交流中的不良自我暗示，消极的期待等是这方面症状的典型原因。" }, 
-            despondent: SymptomInterpretation {
+            depression: SymptomInterpretation {
                 name: "抑郁", 
                 symptom: "苦闷的情感与心境为代表性症状，还以生活兴趣的减退，动力缺乏，活力丧失等为特征。还表现出失望、悲观以及与抑郁相联系的认知和躯体方面的感受，另外，还包括有关死亡的思想和自杀观念。"
             }, 
@@ -183,19 +183,19 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
                 name: "敌对", 
                 symptom: "主要从三方面来反映敌对的表现：思想、感情及行为。其项目包括厌烦的感觉，摔物，争论直到不可控制的脾气暴发等各方面。" 
             }, 
-            phobia: SymptomInterpretation { 
+            phobic_anxiety: SymptomInterpretation { 
                 name: "恐怖", 
                 symptom: "恐惧的对象包括出门旅行，空旷场地，人群或公共场所和交通工具。此外，还有社交恐怖。" 
             },
-            bigotry: SymptomInterpretation { 
+            paranoid_ideation: SymptomInterpretation { 
                 name: "偏执",
                 symptom: "主要指投射性思维，敌对，猜疑，妄想，被动体验和夸大等。" 
             }, 
-            psychotic: SymptomInterpretation { 
+            psychoticism: SymptomInterpretation { 
                 name: "精神病性", 
                 symptom: "反映各式各样的急性症状和行为，即限定不严的精神病性过程的症状表现。" 
             }, 
-            other: SymptomInterpretation { 
+            others: SymptomInterpretation { 
                 name: "其它项目", 
                 symptom: "作为附加项目或其他，作为第10个因子来处理，以便使各因子分之和等于总分。" 
             }
