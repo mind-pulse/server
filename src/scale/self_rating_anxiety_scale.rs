@@ -1,8 +1,8 @@
 use crate::scale::ScaleCategory;
 
 use super::{
-    FormulaMode, HTMLElement, Integer, InterpretationItem, OperationalRule, Question,
-    QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
+    ComfortingWord, CriticalWarning, FormulaMode, HTMLElement, Integer, InterpretationItem,
+    OperationalRule, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
 };
 
 const INTRODUCTION: Texts = &[
@@ -23,7 +23,7 @@ const INSTRUCTION: Texts = &[&[
     ),
 ]];
 
-pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
+pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> = Scale {
     name: "焦虑自评量表",
     abbreviation: "SAS",
     primary_category: ScaleCategory::Emotion,
@@ -37,65 +37,82 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         operational_rule: OperationalRule::Multiply(1.25),
         integer: Some(Integer::Round),
     }),
-    tags: Tag{ info: Some(&["焦虑"]), normal: None, warning: None, error: None },
+    tags: Tag{ info: Some(&["焦虑", "压力", "失眠"]), normal: None, warning: None, error: None },
     interpretation: &[
         InterpretationItem{
             range: [0, 50],
             description: "正常",
-            advice: None,
+            critical_warning: None,
+            comforting_word: ComfortingWord {
+                text: "很高兴看到你拥有比较平稳的心态！这说明你最近在情绪调节和生活平衡上做得不错。就像定期体检一样，偶尔关注自己的心理状态，是爱自己的重要方式。",
+                caution: None,
+            },
+            advice: Some(&["请继续保持这份内心的平和，你积极的生活态度不仅能滋养自己，也能像阳光一样温暖身边的人。"]),
             symptom: None,
             status: Status::Normal,
         },
         InterpretationItem{
             range: [50, 60],
-            description: "轻度焦虑",
+            description: "轻度焦虑",            
+            critical_warning: None,
+            comforting_word: ComfortingWord {
+                text: "你可能正感受到一些焦虑情绪的波动，这是生活中常见的反应，很多人都会经历。",
+                caution: None,
+            },
             advice: Some(&[
-                "以下几点也许对您自我调节有帮助：",
-                "自我释放：找个空旷的地方，比如山间，找个人少的地方放声大喊几声，将自己不满的情绪全部释放出来。",
-                "保证充足睡眠：睡眠是一定要保证充足的，如果身体得不到足够的休息，我们的身体就会显得很疲惫，精神不佳，倦怠懒言，紧接着情绪就会变得敏感，免疫力也会随之下降。",
-                "自我注意力转移：找一件能吸引自己，带给自己乐趣的事情做，或者做一些运动，这对于防止胡思乱想有比较明显的帮助，同时也可增强你的适应能力。",
-                "请注意，这些方法仅供参考，如果您的焦虑症状严重或持续，请及时咨询专业医生。",
+                "给情绪一个出口：找个安全私密的空间（比如自己的房间、车内），大声播放一首喜欢的歌并跟着唱，或者写日记、画画，把纷乱的想法“倒”出来。",
+                "呵护你的睡眠：试着建立规律的作息，睡前一小时远离手机。充足的睡眠是情绪的“稳定器”，休息好了，我们会更有精力面对挑战。",
+                "转移注意力：主动做一些能带来小确幸的事，比如散步、做一道菜、拼图。当注意力投入在具体的事情上，胡思乱想的空间就变小了。",
             ]),
             symptom: Some(&[
-                "您可能有一些身体不适，如心慌、胸闷、厌食、心跳加快、疲惫感、失眠、多梦等。",
-                "您可能情绪消沉、消极、焦躁，具体行为表现如坐立不安、走来走去、注意力分散等。",
-                "您可能有过分的担心和恐惧，如对于生活失去信心和兴趣，极度的厌世，不想与任何人交流，只想一个人安静地待着。",
+                "身体上：可能会比较容易感到疲劳、失眠，或有心慌、胸闷等紧张感。",
+                "情绪上：有时会感到烦躁、坐立不安，或对一些事情过分担心。",
+                "想法上：偶尔会想一个人静静，对事物的兴趣可能有所下降。",
             ]),
             status: Status::Mild,
         },
         InterpretationItem{
             range: [60, 70],
-            description: "中度焦虑",
+            description: "中度焦虑",            
+            critical_warning: None,
+            comforting_word: ComfortingWord {
+                text: "焦虑情绪对你目前的影响已经比较明显，这段时间你可能感觉比较辛苦，情绪上的困扰已经带来了一些实实在在的影响。",
+                caution: Some("请记住，感到焦虑不是你的错，也不是软弱的表现。这恰恰说明你正在努力应对一些压力，而寻求改变本身就是一种勇气。"),
+            },
             advice: Some(&[
-                "首先建议您寻求心理医生的帮助，如果暂时无法就医，可以通过以下办法缓解您的症状：",
-                "深呼吸: 慢慢地吸气，然后慢慢地呼气，重复几次。",
-                "放松训练: 通过肌肉松弛训练、冥想、瑜伽等方式来放松身体和心灵。",
-                "运动: 运动可以帮助释放紧张情绪，增加身体的健康感。",
-                "规律作息: 保持规律的作息时间，有助于身体和心灵的平衡。",
-                "请注意，这些方法仅有可能缓解您的症状，只有及时就医才能彻底治愈。",
+                "即时舒缓技巧：尝试“478呼吸法”（吸气4秒，屏息7秒，呼气8秒），快速平复生理上的紧张感。",
+                "学习放松训练：每天抽出10分钟，跟随引导音频进行正念冥想或渐进式肌肉放松，像锻炼肌肉一样锻炼你的“放松能力”。",
+                "让身体动起来：规律的运动（如快走、瑜伽）是天然的焦虑缓解剂，能有效释放压力，提升情绪。",
+                "建立生活节奏：尽量固定每天吃饭、睡觉、活动的时间，稳定的生活框架能带来安全感。",
             ]),
             symptom: Some(&[
-                "您可能有各种各样不同的症状表现，其中最为明显的就是躯体症状表现和情绪症状表现：",
-                "您常常有心慌、胸闷气短、呼吸急促、头晕、头痛、尿频、尿急、恶心、呕吐、腹痛、腹泻等症状；",
-                "您还会存在着明显的害怕和恐惧的心理，而且自己还会不由自主的出现各种各样的小动作。",
+                "身体反应更频繁：可能会经常感到头晕、头痛、肠胃不适，或肌肉紧绷。",
+                "情绪消耗较大：紧张、害怕的感觉比较强烈，甚至有时不知道为什么就心慌起来。",
+                "行为变化：可能会下意识地避免一些场合，或发现自己很难集中注意力。",
             ]),
             status: Status::Moderate,
         },
         InterpretationItem{
             range: [70, 100],
             description: "重度焦虑",
+            critical_warning: Some(CriticalWarning {
+                title:"需要立即寻求帮助",
+                content:"重度焦虑需要专业医疗干预，请立即联系精神科医生或前往医院，进行全面的评估。"
+            }),
+            comforting_word: ComfortingWord {
+                text: "看到这个结果，你或许会感到害怕或无助。请首先知道：你并不孤单，这种情况是可以被有效治疗的。",
+                caution: Some("强烈的焦虑感就像心灵的重感冒，它需要专业医生的“诊断”和“处方”。主动寻求帮助，是此刻你能为自己做的最强大、最正确的事情。"),
+            },
             advice: Some(&[
-                "重度焦虑症的症状可能对个体的日常生活造成显著影响，因此寻求专业帮助是至关重要的。心理治疗、药物治疗或二者结合可能是有效的治疗方法。",
-                "您应该立即寻求医生、心理医生或其他专业健康专家的帮助。及早的干预和治疗有助于缓解症状和提高生活质量。"
+                "立即联系专业人士：建议优先考虑前往医院的精神科或心理科，进行全面的评估。也可以寻求有资质的心理咨询师/治疗师的帮助。",
+                "你不是负担：将你的感受告诉你信任的家人或朋友，获得他们的支持。你的痛苦是真实的，值得被认真对待。",
+                "安全第一：如果脑海中出现伤害自己或他人的念头，请立即拨打心理援助热线（24小时全国生命危机干预热线：400-161-9995），或前往最近的医院急诊室。保护你的生命安全永远是第一位。"
             ]),
+            // 重度焦虑尽量减少症状描述，避免增加用户的焦虑
             symptom: Some(&[
-                "您可能有严重的身体、情绪和行为上的症状，下面是一些可能的表现：",
-                "身体：高度紧张和肌肉紧绷，可能导致慢性的肌肉疼痛；心跳急速，可能伴随心悸；深呼吸困难，有时可能出现呼吸过快或呼吸不规律；持续的胃部不适，可能导致消化系统问题，如胃溃疡或胃肠道紊乱。",
-                "情绪：持续的强烈焦虑和紧张感，常伴有强烈的害怕和恐慌感，深度的无助感和绝望感，易激动，情绪波动明显。",
-                "行为：避免与焦虑有关的人、地或事物产生交集；难以集中注意力，思维混乱；失眠或睡眠质量极差；可能伴随有自伤或自杀的念头。",
-                "社交回避：避免社交场合，可能由于担心被批评、被评价或引起注意。",
-                "强迫症状：有时重度焦虑症可能伴随有强迫症状，如强烈的重复行为或思维。",
-                "生活：对日常生活活动的参与可能受到明显影响，包括工作、学习和家庭生活。",
+                "身体长期处于“警报”状态，比如心慌、胸闷、肌肉紧绷疼痛或严重的睡眠问题。",
+                "情绪被强烈的紧张、恐惧或无助感淹没，难以放松，甚至影响基本的思考与注意力。",
+                "日常生活、工作或社交变得异常困难，可能会产生回避行为，或出现一些自己无法控制的担忧与念头。",
             ]),
             status: Status::Major,
         },

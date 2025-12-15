@@ -137,13 +137,41 @@ pub(super) struct Question {
 }
 
 #[derive(Debug, Serialize)]
-pub(super) struct InterpretationItem<I> {
+pub(super) struct ComfortingWord {
+    /// 安慰语
+    text: PlainText,
+    /// 强调语，存储警告信息
+    #[serde(skip_serializing_if = "Option::is_none")]
+    caution: Option<PlainText>,
+}
+
+#[derive(Debug, Serialize)]
+pub(super) struct CriticalWarning {
+    title: PlainText,
+    content: PlainText,
+}
+
+#[derive(Debug, Serialize)]
+pub(super) struct InterpretationItem<I>
+where
+    I: PartialOrd + Serialize + Copy,
+{
+    /// 范围，左开右闭
     range: [I; 2],
+    /// 描述
     description: PlainText,
+    /// 极度危险提醒
+    #[serde(skip_serializing_if = "Option::is_none")]
+    critical_warning: Option<CriticalWarning>,
+    /// 安慰语
+    comforting_word: ComfortingWord,
+    /// 建议
     #[serde(skip_serializing_if = "Option::is_none")]
     advice: Option<PlainTexts>,
+    /// 症状
     #[serde(skip_serializing_if = "Option::is_none")]
     symptom: Option<PlainTexts>,
+    /// 状态
     status: Status,
 }
 

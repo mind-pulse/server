@@ -1,8 +1,8 @@
-use crate::scale::ScaleCategory;
+use serde::Serialize;
 
-use super::{
-    InterpretationItem, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
-};
+use crate::scale::{PlainText, ScaleCategory};
+
+use super::{Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts};
 
 const INTRODUCTION: Texts = &[
     &[SentenceItem::Plain("汉密尔顿抑郁量表（Hamilton Depression Scale，HAMD）是由 Hamilton 编制，是临床上评定抑郁状态时应用得最为普遍的量表。")], 
@@ -14,7 +14,14 @@ const INSTRUCTION: Texts = &[
     &[SentenceItem::Plain("应由经过训练的两名评定员对被评定者进行汉密尔顿抑郁量表联合检查。一般采用交谈与观察方式，待检查结束后，两名评定员分别独立评分。若需比较治疗前后抑郁症状和病情的变化，则于入组时，评定当时或入组前一周的情况，治疗后 2-6 周，再次评定，以资比较。")],
 ];
 
-pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
+#[derive(Debug, Serialize)]
+pub struct InterpretationItem {
+    range: [u8; 2],
+    description: PlainText,
+    status: Status,
+}
+
+pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Scale {
     name: "汉密尔顿抑郁量表",
     abbreviation: "HAMD",
     primary_category: ScaleCategory::Emotion,
@@ -30,29 +37,21 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem<i8>], Question> 
         InterpretationItem {
             range: [0, 8],
             description: "正常",
-            advice: None,
-            symptom: None,
             status: Status::Normal,
         },
         InterpretationItem {
             range: [8, 20],
             description: "可能有抑郁症",
-            advice: None,
-            symptom: None,
             status: Status::Mild,
         },
         InterpretationItem {
             range: [20, 35],
             description: "肯定有抑郁症",
-            advice: None,
-            symptom: None,
             status: Status::Moderate,
         },
         InterpretationItem {
             range: [35, 76],
             description: "严重抑郁症",
-            advice: None,
-            symptom: None,
             status: Status::Major,
         },
     ],
