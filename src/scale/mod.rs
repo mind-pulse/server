@@ -334,7 +334,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         introduction: HOLLAND_OCCUPATIONAL_INTEREST.introduction,
         warning: HOLLAND_OCCUPATIONAL_INTEREST.warning,
         tags: HOLLAND_OCCUPATIONAL_INTEREST.tags,
-        disabled: false,
+        disabled: true,
     },
     ScaleListItem {
         name: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.name,
@@ -486,7 +486,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         introduction: HAMILTON_DEPRESSION_SCALE.introduction,
         warning: HAMILTON_DEPRESSION_SCALE.warning,
         tags: HAMILTON_DEPRESSION_SCALE.tags,
-        disabled: false,
+        disabled: true,
     },
 ];
 
