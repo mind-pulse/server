@@ -1,8 +1,11 @@
 use serde::Serialize;
 
-use crate::scale::ScaleCategory;
+use crate::scale::{ComfortingWord, CriticalWarning, ScaleCategory};
 
-use super::{HTMLElement, PlainText, PlainTexts, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts};
+use super::{
+    HTMLElement, PlainText, PlainTexts, Question, QuestionOption, Scale, SentenceItem, Status, Tag,
+    Texts,
+};
 
 #[derive(Debug, Serialize)]
 struct ScoreStandard {
@@ -13,9 +16,26 @@ struct ScoreStandard {
 #[derive(Debug, Serialize)]
 pub struct InterpretationItem {
     range: ScoreStandard,
+
+    /// 标签，如"正常"、"轻度"、"中度"、"重度"
     label: PlainText,
-    description: Option<PlainTexts>,
+
+    /// 安慰语 - 包含核心结论和重要提醒
+    comforting_word: ComfortingWord,
+
+    /// 症状描述 - 用户可能正在经历的具体表现
+    #[serde(skip_serializing_if = "Option::is_none")]
+    symptoms: Option<PlainTexts>,
+
+    /// 具体建议 - 非专业的行动指南
+    #[serde(skip_serializing_if = "Option::is_none")]
     advice: Option<PlainTexts>,
+
+    /// 极度危险提醒 - 仅用于重度情况
+    #[serde(skip_serializing_if = "Option::is_none")]
+    critical_warning: Option<CriticalWarning>,
+
+    /// 状态 - 用于前端样式
     status: Status,
 }
 
@@ -23,14 +43,103 @@ const INTRODUCTION: Texts = &[
     &[SentenceItem::Plain("耶鲁布朗强迫量表是美国 GOODMAN 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。")]
 ];
 
-const INSTRUCTION: Texts = &[
-    &[
-        SentenceItem::Plain("本量表包含 "),
-        SentenceItem::HTMLElement(HTMLElement::Strong("10")),
-        SentenceItem::Plain(" 个项目，为保证调查结果的准确性，务必请您仔细阅读测试内容，依照你主要的强迫症状作答。"),
-    ],
-];
+const INSTRUCTION: Texts = &[&[
+    SentenceItem::Plain("本量表包含 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("10")),
+    SentenceItem::Plain(
+        " 个项目，为保证调查结果的准确性，务必请您仔细阅读测试内容，依照你主要的强迫症状作答。",
+    ),
+]];
 
+const INTERPRETATION: &[InterpretationItem] = &[
+    InterpretationItem {
+        range: ScoreStandard {
+            total: [0, 5],
+            any: [0, 5],
+        },
+        label: "正常",
+        comforting_word: ComfortingWord {
+            text: "您的得分在正常范围内，这是一个积极的信号。",
+            caution: Some("心理状态会随时间和压力变化，继续保持对自己心理健康的关注是有益的。"),
+        },
+        symptoms: None,
+        advice: Some(&[
+            "继续保持良好的生活习惯和压力管理。",
+            "如果未来感到压力大时，可以尝试散步、深呼吸等简单的放松方法。",
+        ]),
+        critical_warning: None,
+        status: Status::Normal,
+    },
+    InterpretationItem {
+        range: ScoreStandard {
+            total: [6, 15],
+            any: [6, 9],
+        },
+        label: "轻度",
+        comforting_word: ComfortingWord {
+            text: "您的得分显示有轻度强迫倾向，这在很多人身上都会出现。",
+            caution: Some("这些感觉在压力大时更常见，并不代表你有严重问题，但值得关注。"),
+        },
+        symptoms: Some(&[
+            "偶尔会反复思考某些想法",
+            "可能有一些小的习惯或检查行为",
+            "大多数时候能够正常生活和工作",
+        ]),
+        advice: Some(&[
+            "尝试记录什么时候这些感觉会出现，了解自己的压力源。",
+            "可以学习一些放松技巧，比如冥想或渐进式肌肉放松。",
+            "如果这些感觉持续困扰你，可以考虑和专业心理工作者聊一聊。",
+        ]),
+        critical_warning: None,
+        status: Status::Mild,
+    },
+    InterpretationItem {
+        range: ScoreStandard {
+            total: [16, 25],
+            any: [10, 14],
+        },
+        label: "中度",
+        comforting_word: ComfortingWord {
+            text: "您的得分显示有中度强迫倾向，这可能需要更多关注和支持。",
+            caution: Some("中度强迫并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+        },
+        symptoms: Some(&[
+            "重复的想法或行为已经明显影响日常效率",
+            "可能需要花较多时间处理这些感觉",
+            "有时会感到疲惫或烦躁",
+        ]),
+        advice: Some(&[
+            "建议联系心理咨询师或心理医生进行专业评估。",
+            "可以请家人或朋友支持你寻求帮助。",
+            "专业的帮助可以教你有效的方法来应对这些困扰。",
+        ]),
+        critical_warning: None,
+        status: Status::Moderate,
+    },
+    InterpretationItem {
+        range: ScoreStandard { total: [26, 40], any: [15, 20] },
+        label: "重度",
+        comforting_word: ComfortingWord {
+            text: "您的得分显示有重度强迫倾向，这已经严重影响到生活。",
+            caution: Some("重度强迫是可以治疗的医疗状况。寻求专业帮助是改善的第一步。"),
+        },
+        symptoms: Some(&[
+            "这些感觉几乎每天都在影响你",
+            "需要大量时间来处理这些想法或行为",
+            "已经影响到了基本的生活安排",
+        ]),
+        advice: Some(&[
+            "建议尽快联系心理医生或精神科医生进行评估。",
+            "专业的治疗和支持可以帮助你改善这种情况。",
+            "你可以从预约一次专业的评估开始。",
+        ]),
+        critical_warning: Some(CriticalWarning {
+            title: "重要提醒",
+            content: "如果这些困扰让你感到非常痛苦，或者有伤害自己的想法，请立即联系专业医疗人员或拨打心理援助热线。",
+        }),
+        status: Status::Major,
+    },
+];
 
 pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Question> = Scale {
     name: "耶鲁布朗强迫症量表",
@@ -47,57 +156,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
     warning: None,
     formula_mode: None,
     tags: Tag{ info: Some(&["强迫"]), normal: None, warning: None, error: None },
-    interpretation: &[
-        InterpretationItem {
-            range: ScoreStandard { 
-                total: [0, 5], 
-                any: [0, 5],
-            },
-            label: "无强迫思维和行为",
-            description: None,
-            advice: Some(&["请继续保持积极阳光的生活态度，面对人生，相信你会遇到很多惊喜，同时也能给他人带来快乐！"]),
-            status: Status::Normal,
-        },
-        InterpretationItem {
-            range: ScoreStandard { 
-                total: [6, 15], 
-                any: [6, 9],
-            },
-            label: "轻度",
-            description: Some(&[
-                "您可能有轻度的强迫症，症状已经对您的生活、学习或职业开始造成一定的影响。",
-                "您的症状会随着环境和情绪的变化不断的波动，如果不能尽早的解决，很容易会朝着严重的程度发展、泛化。"
-            ]),
-            advice: Some(&["此时是治疗效果最理想的时期，建议尽早治疗。"]),
-            status: Status::Mild,
-        },
-        InterpretationItem {
-            range: ScoreStandard { 
-                total: [16, 25], 
-                any: [10, 14],
-            },
-            label: "中度",
-            description: Some(&[
-                "您可能有中度的强迫症，症状的频率或严重程度已经对生活、学习或职业造成明显的障碍。",
-                "完成您的工作或学习任务对您来说比较困难，甚至在没有出现有效的改善前，您可能产生抑郁症状，甚至出现自杀念头。"
-            ]),
-            advice: Some(&["必须接受心理治疗或者药物治疗。"]),
-            status: Status::Moderate,
-        },
-        InterpretationItem {
-            range: ScoreStandard { 
-                total: [26, 40], 
-                any: [15, 20],
-            },
-            label: "重度",
-            description: Some(&[
-                "您的强迫症状已经非常严重，完全无法完成工作或学习任务，无法屡行您的社会角色功能，甚至连衣食住行等生活功能都无法进行。",
-                "您可能已经无法出门，将自己禁锢家中，无时无刻都有强迫思考，无时无刻都在执行强迫行为。"
-            ]),
-            advice: Some(&["此时极易发展出抑郁症状，通常需要强制治疗。"]),
-            status: Status::Major,
-        },
-    ],
+    interpretation: INTERPRETATION,
     questions: &[
         Question {
             title: "您每天花多少时间在强迫思维上？每天强迫思维出现的频率有多高？",
