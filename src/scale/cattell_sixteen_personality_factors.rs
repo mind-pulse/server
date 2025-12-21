@@ -2,7 +2,9 @@ use serde::Serialize;
 
 use crate::scale::ScaleCategory;
 
-use super::{Characteristic, HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
+use super::{
+    Characteristic, HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts,
+};
 
 #[derive(Serialize)]
 enum Factor {
@@ -367,21 +369,21 @@ pub struct Interpretation {
     second_personality_factor: &'static [SecondPersonalityFactor; 4],
 }
 
-const INTRODUCTION: Texts = &[
-    &[
-        SentenceItem::Plain("从"),
-    SentenceItem::HTMLElement(HTMLElement::Strong("乐群、聪慧、自律、独立、敏感、冒险、怀疑")),
-        SentenceItem::Plain("等 "),
-        SentenceItem::HTMLElement(HTMLElement::Strong("16")),
-        SentenceItem::Plain(" 个相对独立的人格特点对人进行描绘，并可以了解应试者在"),
-        SentenceItem::HTMLElement(HTMLElement::Strong("环境适应、专业成就和心理健康")),
-        SentenceItem::Plain("等方面的表现。在人事管理中，16PF 能够预测应试者的"),
-        SentenceItem::HTMLElement(HTMLElement::Strong("工作稳定性、工作效率和压力承受能力")),
-        SentenceItem::Plain("等。可广泛应用于"),
-        SentenceItem::HTMLElement(HTMLElement::Strong("心理咨询、人员选拔和职业指导")),
-        SentenceItem::Plain("的各个环节，为人事决策和人事诊断提供个人心理素质的参考依据。"),
-    ]
-];
+const INTRODUCTION: Texts = &[&[
+    SentenceItem::Plain("从"),
+    SentenceItem::HTMLElement(HTMLElement::Strong(
+        "乐群、聪慧、自律、独立、敏感、冒险、怀疑",
+    )),
+    SentenceItem::Plain("等 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("16")),
+    SentenceItem::Plain(" 个相对独立的人格特点对人进行描绘，并可以了解应试者在"),
+    SentenceItem::HTMLElement(HTMLElement::Strong("环境适应、专业成就和心理健康")),
+    SentenceItem::Plain("等方面的表现。在人事管理中，16PF 能够预测应试者的"),
+    SentenceItem::HTMLElement(HTMLElement::Strong("工作稳定性、工作效率和压力承受能力")),
+    SentenceItem::Plain("等。可广泛应用于"),
+    SentenceItem::HTMLElement(HTMLElement::Strong("心理咨询、人员选拔和职业指导")),
+    SentenceItem::Plain("的各个环节，为人事决策和人事诊断提供个人心理素质的参考依据。"),
+]];
 
 const INSTRUCTION: Texts = &[
     &[
@@ -389,7 +391,9 @@ const INSTRUCTION: Texts = &[
         SentenceItem::HTMLElement(HTMLElement::Strong("187")),
         SentenceItem::Plain(" 道题目，都是有关个人的"),
         SentenceItem::HTMLElement(HTMLElement::Strong("兴趣和态度")),
-        SentenceItem::Plain("等问题。每个人对这些问题是会有不同看法的，回答也是不同的，因而对问题如何回答，并"),
+        SentenceItem::Plain(
+            "等问题。每个人对这些问题是会有不同看法的，回答也是不同的，因而对问题如何回答，并",
+        ),
         SentenceItem::HTMLElement(HTMLElement::Strong("没有对与不对之分")),
         SentenceItem::Plain("，只是表明你对这些问题的态度。请你要尽量表达个人的意见，"),
         SentenceItem::HTMLElement(HTMLElement::Strong("不要有顾虑")),
@@ -399,9 +403,290 @@ const INSTRUCTION: Texts = &[
     &[SentenceItem::Plain("1．每一测题只能选择一个答案。")],
     &[SentenceItem::Plain("2．不可漏掉任何题目。")],
     &[SentenceItem::Plain("3．尽量不选择 B 答案。")],
-    &[SentenceItem::Plain("4．本测验不计时间，但应凭自己的直觉反应进行作答，不要迟疑不决，拖延时间。一定要在"), SentenceItem::HTMLElement(HTMLElement::Strong("一个小时以内")), SentenceItem::Plain("完成整个测验。")],
-    &[SentenceItem::Plain("5．有些题目你可能从未思考过，或者感到不太容易回答。对于这样的题目，同样要求你做出一种"), SentenceItem::HTMLElement(HTMLElement::Strong("倾向性")), SentenceItem::Plain("的选择。")],
+    &[
+        SentenceItem::Plain(
+            "4．本测验不计时间，但应凭自己的直觉反应进行作答，不要迟疑不决，拖延时间。一定要在",
+        ),
+        SentenceItem::HTMLElement(HTMLElement::Strong("一个小时以内")),
+        SentenceItem::Plain("完成整个测验。"),
+    ],
+    &[
+        SentenceItem::Plain(
+            "5．有些题目你可能从未思考过，或者感到不太容易回答。对于这样的题目，同样要求你做出一种",
+        ),
+        SentenceItem::HTMLElement(HTMLElement::Strong("倾向性")),
+        SentenceItem::Plain("的选择。"),
+    ],
 ];
+
+const INTERPRETATION: Interpretation = Interpretation {
+    normal_range: [3, 8],
+    norm: NORM,
+    first_personality_factor: &[
+        FirstPersonalityFactor {
+            factor: Factor::A,
+            name: "乐群性",
+            characteristic: Characteristic {
+                low: &[
+                    "缄默，孤独，冷漠。标准分低于3者通常固执，对人冷漠，落落寡合，喜欢吹毛求疵，宁愿独自工作，对事而不对人，不轻易放弃自己的主见，为人做事的标准常常很高。严谨而不苟且。",
+                ],
+                high: &[
+                    "外向，热情，乐群。标准分高过 8 者，通常和蔼可亲，与人相处，合作与适应的能力特强。喜欢和别人共同工作，参加或组织各种社团活动，不斤斤计较，容易接受别人的批评。萍水相逢也可以一见如故。",
+                ],
+            },
+            occupations: "教师和推销员多系高 A，而物理学家和电机工程师则多系低 A。前者需要时时应付人与人之间的复杂情绪或行为问题，而仍然能够保证其乐观的态度；后者则必须极端地冷静严肃与正确，才能圆满地完成任务。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::B,
+            name: "聪慧性",
+            characteristic: Characteristic {
+                low: &[
+                    "思想迟钝，学识浅薄，抽象思考能力弱。低者通常学习与了解能力不强，不能“举一隅而以三隅反”。迟钝的原因可能由于情绪不稳定，心理病态或失常所致。",
+                ],
+                high: &[
+                    "聪明，富有才识，善于抽象思考。高者通常学习能力强，思考敏捷正确，教育、文化水准高，个人心身状态健康。机警者多有高 B，高 B 反映心理机能的正常。",
+                ],
+            },
+            occupations: "专业训练需要高 B，但从事例行职务的人，如打字员、电话生、家庭主妇等，则因高B而对例行琐务发生厌恶，不能久安其职。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::C,
+            name: "稳定性",
+            characteristic: Characteristic {
+                low: &[
+                    "情绪激动，易生烦恼。低者通常不能以“逆来顺受”的态度应付生活上所遭遇的阻扰和挫折，容易受环境的支配而心神动摇不定。不能面对现实，时时会暴躁不安、心身疲乏，甚至于失眠、噩梦、恐怖等症状。所有神经病人和精神病人都属低C。",
+                ],
+                high: &[
+                    "情绪稳定而成熟，能面对现实。高者通常以沉着的态度应付现实各项问题。行动充满魄力。能振奋勇气，维持团队的精神。有时高C也可能由于不能彻底解决许多生活难题，而不得不自我宽解。",
+                ],
+            },
+            occupations: "教师、机械工程师、推销员、救火队员等，凡需要应付日常生活各种难题者应有高 C。但是凡能随心所欲安排自己工作进度的人，如作家、邮差或清道工等，则虽系低 C，尚无大碍。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::E,
+            name: "恃强性",
+            characteristic: Characteristic {
+                low: &[
+                    "谦逊，顺从，通融，恭顺。低者通常行为温顺，迎合别人的意旨，也可能因为希望可遇而不可求，即使处在十全十美的境地，而有“事事不如人”之感，许多精神病人都有这样消极的心情。",
+                ],
+                high: &[
+                    "好强固执，独立积极。高者通常自视甚高，自以为是。可能非常地武断，而时常驾驭不及他的人和反抗权势者。",
+                ],
+            },
+            occupations: "一般来说，领袖以及有地位有成就的人多属高E。救火队员和飞行员的因素E高。男人较女人高。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::F,
+            name: "兴奋性",
+            characteristic: Characteristic {
+                low: &[
+                    "严肃，谨慎，冷静，寡言。低者通常行动拘谨，内省而不轻易发言，较消极、忧郁。有时候可能过分深思熟虑，又近乎骄傲自满。在职责上，他常是认真而可靠的工作人员。",
+                ],
+                high: &[
+                    "轻松兴奋，随遇而安。高者通常活泼、愉快、健谈，对人对事热心而富有感情。但是有时也可能会冲动，以致行为变化莫测。",
+                ],
+            },
+            occupations: "行政主管人员多有高F。竞选人必有高F，才能够获得选民的爱戴，实验技术人员则不必有高 F。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::G,
+            name: "有恒性",
+            characteristic: Characteristic {
+                low: &[
+                    "苟且敷衍，缺乏奉公守法的精神。低者通常缺乏较高的目标和理想，对于人群及社会没有绝对的责任感，甚至于有时不惜执法犯法，不择手段已达到某一目的。但他常能有效地解决实际问题，而无须浪费时间和精力。",
+                ],
+                high: &[
+                    "持恒负责，做事尽职。高者通常细心周到，有始有终。是非善恶是他的行为指针。所结交的朋友多是努力苦干的人，而不十分欣赏诙谐有趣的人。",
+                ],
+            },
+            occupations: "各种社团组织的领袖需要高 G。业务管理和警察具有极高的因素 G。任性纵欲，放火杀人的罪犯，因素 G极低。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::H,
+            name: "敢为性",
+            characteristic: Characteristic {
+                low: &[
+                    "畏怯退缩，缺乏自信心。低者通常在人群中羞怯，有不自然的姿态，有强烈的自卑感。拙于发言，更不愿和陌生人交谈。凡是采取观望的态度，有时由于过分的自我意识而忽视了社会环境中的重要事物与活动。",
+                ],
+                high: &[
+                    "冒险敢为，少有顾忌。高者通常不掩饰，不畏缩，有敢做敢为的精神，使他能经历艰辛而保持刚毅的一面。有时可能太粗心大意，忽视细节，遭受无谓的打击与挫折。可能无聊多事，喜欢向异性殷勤卖力。",
+                ],
+            },
+            occupations: "因素H常随年龄而增强。救火队员和飞行员有高H，事务员多是低H。团队领导人必具有高H。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::I,
+            name: "敏感性",
+            characteristic: Characteristic {
+                low: &[
+                    "理智的，着重现实，自恃其力。低者常以客观、坚强、独立的态度处理当前的问题。重视文化修养，可能过分冷酷无情。",
+                ],
+                high: &[
+                    "敏感，感情用事。高者通常心肠软，易受感动，较女性化，爱好艺术，富于幻想。有时过分不切实际，缺乏耐心和恒心，不喜欢接近粗俗的人和做笨重的工作。在团体活动中，不着实际的看法与行为常常减低了团队的工作效率。",
+                ],
+            },
+            occupations: "室内设计师、音乐家、艺人、女人属高I，而工程师、外科医生、统计师等则多低 I。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::L,
+            name: "怀疑性",
+            characteristic: Characteristic {
+                low: &[
+                    "信赖随和，易与人相处。通常无猜忌，不与人角逐竞争，顺应合作，善于体贴人。",
+                ],
+                high: &[
+                    "怀疑，刚愎，固执己见。通常怀疑、不信任别人，与人相处常常斤斤计较，不顾及到别人的利益。",
+                ],
+            },
+            occupations: "在团体活动中，低 L 是以团体福利为前提的忠实分子，因素L过分高者常常成事不足、败事有余。工程师、机工、精神病护理员多是低 L，而行政人员和警察常是高 L。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::M,
+            name: "幻想性",
+            characteristic: Characteristic {
+                low: &[
+                    "现实，合乎成规，力求妥善合理。通常先要斟酌现实条件，而后决定取舍，不鲁莽从事。在紧要关头时，也能保持镇静，有时可能过分重视现实，为人索然寡趣。",
+                ],
+                high: &[
+                    "幻想的，狂放不羁。高者通常忽视生活的细节，只以本身的动机、当时兴趣等主观因素为行为的出发点。可能富有创造力，有时也过分不务实际，近乎冲动，因而容易被人误解及奚落。",
+                ],
+            },
+            occupations: "艺术家、作家及从事研究者多有高 M。低 M多选择需要实际、机警、脚踏实地的工作。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::N,
+            name: "世故性",
+            characteristic: Characteristic {
+                low: &[
+                    "坦白，直率，天真。低者通常思想简单，感情用事。与人无争，与世无杵，自许，心满意足。但有时显得幼稚、粗鲁、笨拙，似乎缺乏教养。",
+                ],
+                high: &[
+                    "精明能干，世故。高者通常处事老练，行为得体。能冷静分析一切，近乎狡猾。对于一切事物的看法是理智、客观的。",
+                ],
+            },
+            occupations: "科学家、工程师、飞行员多是高 N，牧师神父、护士等多是低N。牧师的因素 N 不应太高，低 N 使他不苛求责难，能容忍同情信徒的缺点。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::O,
+            name: "忧虑性",
+            characteristic: Characteristic {
+                low: &[
+                    "乐群，沉着，有自信心。低者通常有信心，不轻易动摇，信任自己有应付问题的能力，有安全感，能适应世俗。有时因为缺乏同情，而引发别人的反感与恶意。",
+                ],
+                high: &[
+                    "忧虑抑郁，烦恼自扰。高者通常觉得世道艰辛，人生不如意事常八九，甚至沮丧悲观，时时有患得患失之感。自觉不容于人，也缺乏和人接近的勇气。各种神经病和精神病人都有高 O。",
+                ],
+            },
+            occupations: "年老的女招待，低级办事员，以及终生碌碌未尽如意的作家、编辑等有高 O。职业运动员、电机工、救火队员、护士等多是低 O。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::Q1,
+            name: "实验性",
+            characteristic: Characteristic {
+                low: &[
+                    "保守的，尊重传统观念与行为标准。低者通常无条件地接受社会中许多相沿已久而有权威性的见解，不愿尝试探求新的境界。常常激烈地反对新思想以及一切新的变动。在政治与宗教信仰上，墨守成规，可能被称为老顽固或时代的落伍者。",
+                ],
+                high: &[
+                    "自由的，批评激进，不拘泥现实。高者通常喜欢考验一切现有的理论与实施，而予以新的评价，不轻易判断是非，企图了解较前卫的思想与行为。可能广见多闻。愿意充实自己的生活经验。",
+                ],
+            },
+            occupations: "行政主管人员、前卫的政治家、科学家都必须具有高 Q1，护士、牧师神父与许多受高深教育的技工等则多有低Q1，神经病人的因素 Q1 也比较低。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::Q2,
+            name: "独立性",
+            characteristic: Characteristic {
+                low: &[
+                    "依赖，随群附和。低者通常宁欲与人共同工作，而不愿独立孤行。常常放弃个人的主见而附和取得别人的好感，需要团体的支持以维持其自信心，却并非真正的乐群者。",
+                ],
+                high: &[
+                    "自立自强，当机立断。高者通常能够自作主张，独自完成自己的工作计划，不依赖别人，也不受社会舆论的约束，同样也无意控制或支配别人，不嫌恶人，但是也不需要别人的好感。",
+                ],
+            },
+            occupations: "科学家、行政主管人员等多有高 Q2，低 Q2 者不能胜任需要有随机应变能力的职务。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::Q3,
+            name: "自律性",
+            characteristic: Characteristic {
+                low: &[
+                    "矛盾冲突，不顾大体。低者通常既不能克制自己，又不能尊重礼俗，更不愿考虑别人的需要，充满矛盾却无法解决。生活适应有问题者多低 Q3。",
+                ],
+                high: &[
+                    "知己知彼，自律严谨。高者通常言行一致，能够合理地支配自己的感情行动。为人处世，总能保持其自尊心，赢得别人的尊重，有时却不免太固执己见。",
+                ],
+            },
+            occupations: "高 Q3 者多具有领袖能力的才干，主管人员、电机工和生产部门的成功也需要高 Q3。",
+        },
+        FirstPersonalityFactor {
+            factor: Factor::Q4,
+            name: "紧张性",
+            characteristic: Characteristic {
+                low: &[
+                    "心平气和，闲散宁静，低者通常知足常乐，保持内心的平衡。也可能过分疏懒，缺乏进取心。",
+                ],
+                high: &[
+                    "紧张闲扰，激动挣扎。高者通常缺乏耐心，心神不安，态度兴奋。时常感觉疲乏，又无法彻底摆脱以求宁静。在社群中，他对人与事都缺乏信心。每日生活战战兢兢，不能自给。",
+                ],
+            },
+            occupations: "未能在生活或职业中发挥本身才智潜能的人多具有高 Q4，如餐店招待、家庭主妇等。",
+        },
+    ],
+    second_personality_factor: &[
+        SecondPersonalityFactor {
+            key: "X1",
+            name: "适应与焦虑型",
+            expression: "(38+2*L+3*O+4*Q4-2*C-2*H-2*Q2)/10",
+            characteristic: Characteristic {
+                low: &[
+                    "生活适应顺利，通常感到心满意足，能做到所期望的及自认为重要的事情。也可能对困难的工作缺乏毅力，遇事有知难而退、不肯奋斗努力的倾向。",
+                ],
+                high: &[
+                    "对自己生活和工作状态感到不满意。可能会使心情受到破坏和影响身体健康。",
+                ],
+            },
+        },
+        SecondPersonalityFactor {
+            key: "X2",
+            name: "内向与外向型",
+            expression: "(2*A+3*E+4*F+5*H-2*Q2-11)/10",
+            characteristic: Characteristic {
+                low: &[
+                    "内倾，趋于胆小，自足，在与别人接触中常采取克制态度，有利于从事精细工作。",
+                ],
+                high: &[
+                    "外倾，开朗，善于交际，不受拘束，有利于从事贸易工作。",
+                ],
+            },
+        },
+        SecondPersonalityFactor {
+            key: "X3",
+            name: "感情用事与安详机警型",
+            expression: "(77+2*C+2*E+2*F+2*N-4*A-6*I-2*M)/10",
+            characteristic: Characteristic {
+                low: &[
+                    "情感丰富而感到困扰不安，可能是缺乏信心，颓丧的类型，对生活中的细节较为含蓄敏感，性格温和，讲究生活艺术，采取行动前再三思考，顾虑太多。",
+                ],
+                high: &[
+                    "富有事业心，果断，刚毅，有进取精神，精力充沛，行动迅速，但常忽视生活上的细节，只对明显的事物注意，有时会考虑不周，不计后果，贸然行事。"
+                ],
+            },
+        },
+        SecondPersonalityFactor {
+            key: "X4",
+            name: "怯懦与果敢型",
+            expression: "(4*E+3*M+4*Q1+4*Q2-3*A-2*G)/10",
+            characteristic: Characteristic {
+                low: &[
+                    "怯懦，顺从，依赖别人，纯洁，个性被动，受人驱使而不能独立，为获取别人的欢心会事事迁就。",
+                ],
+                high: &[
+                    "果断，独立，有气魄，有攻击性倾向，通常会主动寻找可以施展这种行为的环境或机会，以充分表现自己的独创能力，并从中取得利益。"
+                ],
+            },
+        },
+    ],
+};
 
 pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
     name: "卡特尔16种人格因素问卷",
@@ -430,274 +715,7 @@ pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
     formula_mode: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),
     tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
-    interpretation: Interpretation { 
-        normal_range: [3, 8],
-        norm: NORM, 
-        first_personality_factor: &[
-            FirstPersonalityFactor {
-                factor: Factor::A,
-                name: "乐群性",
-                characteristic: Characteristic {
-                    low: &[
-                        "缄默，孤独，冷漠。标准分低于3者通常固执，对人冷漠，落落寡合，喜欢吹毛求疵，宁愿独自工作，对事而不对人，不轻易放弃自己的主见，为人做事的标准常常很高。严谨而不苟且。",
-                    ],
-                    high: &[
-                        "外向，热情，乐群。标准分高过 8 者，通常和蔼可亲，与人相处，合作与适应的能力特强。喜欢和别人共同工作，参加或组织各种社团活动，不斤斤计较，容易接受别人的批评。萍水相逢也可以一见如故。",
-                    ],
-                },
-                occupations: "教师和推销员多系高 A，而物理学家和电机工程师则多系低 A。前者需要时时应付人与人之间的复杂情绪或行为问题，而仍然能够保证其乐观的态度；后者则必须极端地冷静严肃与正确，才能圆满地完成任务。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::B,
-                name: "聪慧性",
-                characteristic: Characteristic {
-                    low: &[
-                        "思想迟钝，学识浅薄，抽象思考能力弱。低者通常学习与了解能力不强，不能“举一隅而以三隅反”。迟钝的原因可能由于情绪不稳定，心理病态或失常所致。",
-                    ],
-                    high: &[
-                        "聪明，富有才识，善于抽象思考。高者通常学习能力强，思考敏捷正确，教育、文化水准高，个人心身状态健康。机警者多有高 B，高 B 反映心理机能的正常。",
-                    ],
-                },
-                occupations: "专业训练需要高 B，但从事例行职务的人，如打字员、电话生、家庭主妇等，则因高B而对例行琐务发生厌恶，不能久安其职。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::C,
-                name: "稳定性",
-                characteristic: Characteristic {
-                    low: &[
-                        "情绪激动，易生烦恼。低者通常不能以“逆来顺受”的态度应付生活上所遭遇的阻扰和挫折，容易受环境的支配而心神动摇不定。不能面对现实，时时会暴躁不安、心身疲乏，甚至于失眠、噩梦、恐怖等症状。所有神经病人和精神病人都属低C。",
-                    ],
-                    high: &[
-                        "情绪稳定而成熟，能面对现实。高者通常以沉着的态度应付现实各项问题。行动充满魄力。能振奋勇气，维持团队的精神。有时高C也可能由于不能彻底解决许多生活难题，而不得不自我宽解。",
-                    ],
-                },
-                occupations: "教师、机械工程师、推销员、救火队员等，凡需要应付日常生活各种难题者应有高 C。但是凡能随心所欲安排自己工作进度的人，如作家、邮差或清道工等，则虽系低 C，尚无大碍。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::E,
-                name: "恃强性",
-                characteristic: Characteristic {
-                    low: &[
-                        "谦逊，顺从，通融，恭顺。低者通常行为温顺，迎合别人的意旨，也可能因为希望可遇而不可求，即使处在十全十美的境地，而有“事事不如人”之感，许多精神病人都有这样消极的心情。",
-                    ],
-                    high: &[
-                        "好强固执，独立积极。高者通常自视甚高，自以为是。可能非常地武断，而时常驾驭不及他的人和反抗权势者。",
-                    ],
-                },
-                occupations: "一般来说，领袖以及有地位有成就的人多属高E。救火队员和飞行员的因素E高。男人较女人高。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::F,
-                name: "兴奋性",
-                characteristic: Characteristic {
-                    low: &[
-                        "严肃，谨慎，冷静，寡言。低者通常行动拘谨，内省而不轻易发言，较消极、忧郁。有时候可能过分深思熟虑，又近乎骄傲自满。在职责上，他常是认真而可靠的工作人员。",
-                    ],
-                    high: &[
-                        "轻松兴奋，随遇而安。高者通常活泼、愉快、健谈，对人对事热心而富有感情。但是有时也可能会冲动，以致行为变化莫测。",
-                    ],
-                },
-                occupations: "行政主管人员多有高F。竞选人必有高F，才能够获得选民的爱戴，实验技术人员则不必有高 F。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::G,
-                name: "有恒性",
-                characteristic: Characteristic {
-                    low: &[
-                        "苟且敷衍，缺乏奉公守法的精神。低者通常缺乏较高的目标和理想，对于人群及社会没有绝对的责任感，甚至于有时不惜执法犯法，不择手段已达到某一目的。但他常能有效地解决实际问题，而无须浪费时间和精力。",
-                    ],
-                    high: &[
-                        "持恒负责，做事尽职。高者通常细心周到，有始有终。是非善恶是他的行为指针。所结交的朋友多是努力苦干的人，而不十分欣赏诙谐有趣的人。",
-                    ],
-                },
-                occupations: "各种社团组织的领袖需要高 G。业务管理和警察具有极高的因素 G。任性纵欲，放火杀人的罪犯，因素 G极低。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::H,
-                name: "敢为性",
-                characteristic: Characteristic {
-                    low: &[
-                        "畏怯退缩，缺乏自信心。低者通常在人群中羞怯，有不自然的姿态，有强烈的自卑感。拙于发言，更不愿和陌生人交谈。凡是采取观望的态度，有时由于过分的自我意识而忽视了社会环境中的重要事物与活动。",
-                    ],
-                    high: &[
-                        "冒险敢为，少有顾忌。高者通常不掩饰，不畏缩，有敢做敢为的精神，使他能经历艰辛而保持刚毅的一面。有时可能太粗心大意，忽视细节，遭受无谓的打击与挫折。可能无聊多事，喜欢向异性殷勤卖力。",
-                    ],
-                },
-                occupations: "因素H常随年龄而增强。救火队员和飞行员有高H，事务员多是低H。团队领导人必具有高H。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::I,
-                name: "敏感性",
-                characteristic: Characteristic {
-                    low: &[
-                        "理智的，着重现实，自恃其力。低者常以客观、坚强、独立的态度处理当前的问题。重视文化修养，可能过分冷酷无情。",
-                    ],
-                    high: &[
-                        "敏感，感情用事。高者通常心肠软，易受感动，较女性化，爱好艺术，富于幻想。有时过分不切实际，缺乏耐心和恒心，不喜欢接近粗俗的人和做笨重的工作。在团体活动中，不着实际的看法与行为常常减低了团队的工作效率。",
-                    ],
-                },
-                occupations: "室内设计师、音乐家、艺人、女人属高I，而工程师、外科医生、统计师等则多低 I。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::L,
-                name: "怀疑性",
-                characteristic: Characteristic {
-                    low: &[
-                        "信赖随和，易与人相处。通常无猜忌，不与人角逐竞争，顺应合作，善于体贴人。",
-                    ],
-                    high: &[
-                        "怀疑，刚愎，固执己见。通常怀疑、不信任别人，与人相处常常斤斤计较，不顾及到别人的利益。",
-                    ],
-                },
-                occupations: "在团体活动中，低 L 是以团体福利为前提的忠实分子，因素L过分高者常常成事不足、败事有余。工程师、机工、精神病护理员多是低 L，而行政人员和警察常是高 L。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::M,
-                name: "幻想性",
-                characteristic: Characteristic {
-                    low: &[
-                        "现实，合乎成规，力求妥善合理。通常先要斟酌现实条件，而后决定取舍，不鲁莽从事。在紧要关头时，也能保持镇静，有时可能过分重视现实，为人索然寡趣。",
-                    ],
-                    high: &[
-                        "幻想的，狂放不羁。高者通常忽视生活的细节，只以本身的动机、当时兴趣等主观因素为行为的出发点。可能富有创造力，有时也过分不务实际，近乎冲动，因而容易被人误解及奚落。",
-                    ],
-                },
-                occupations: "艺术家、作家及从事研究者多有高 M。低 M多选择需要实际、机警、脚踏实地的工作。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::N,
-                name: "世故性",
-                characteristic: Characteristic {
-                    low: &[
-                        "坦白，直率，天真。低者通常思想简单，感情用事。与人无争，与世无杵，自许，心满意足。但有时显得幼稚、粗鲁、笨拙，似乎缺乏教养。",
-                    ],
-                    high: &[
-                        "精明能干，世故。高者通常处事老练，行为得体。能冷静分析一切，近乎狡猾。对于一切事物的看法是理智、客观的。",
-                    ],
-                },
-                occupations: "科学家、工程师、飞行员多是高 N，牧师神父、护士等多是低N。牧师的因素 N 不应太高，低 N 使他不苛求责难，能容忍同情信徒的缺点。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::O,
-                name: "忧虑性",
-                characteristic: Characteristic {
-                    low: &[
-                        "乐群，沉着，有自信心。低者通常有信心，不轻易动摇，信任自己有应付问题的能力，有安全感，能适应世俗。有时因为缺乏同情，而引发别人的反感与恶意。",
-                    ],
-                    high: &[
-                        "忧虑抑郁，烦恼自扰。高者通常觉得世道艰辛，人生不如意事常八九，甚至沮丧悲观，时时有患得患失之感。自觉不容于人，也缺乏和人接近的勇气。各种神经病和精神病人都有高 O。",
-                    ],
-                },
-                occupations: "年老的女招待，低级办事员，以及终生碌碌未尽如意的作家、编辑等有高 O。职业运动员、电机工、救火队员、护士等多是低 O。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::Q1,
-                name: "实验性",
-                characteristic: Characteristic {
-                    low: &[
-                        "保守的，尊重传统观念与行为标准。低者通常无条件地接受社会中许多相沿已久而有权威性的见解，不愿尝试探求新的境界。常常激烈地反对新思想以及一切新的变动。在政治与宗教信仰上，墨守成规，可能被称为老顽固或时代的落伍者。",
-                    ],
-                    high: &[
-                        "自由的，批评激进，不拘泥现实。高者通常喜欢考验一切现有的理论与实施，而予以新的评价，不轻易判断是非，企图了解较前卫的思想与行为。可能广见多闻。愿意充实自己的生活经验。",
-                    ],
-                },
-                occupations: "行政主管人员、前卫的政治家、科学家都必须具有高 Q1，护士、牧师神父与许多受高深教育的技工等则多有低Q1，神经病人的因素 Q1 也比较低。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::Q2,
-                name: "独立性",
-                characteristic: Characteristic {
-                    low: &[
-                        "依赖，随群附和。低者通常宁欲与人共同工作，而不愿独立孤行。常常放弃个人的主见而附和取得别人的好感，需要团体的支持以维持其自信心，却并非真正的乐群者。",
-                    ],
-                    high: &[
-                        "自立自强，当机立断。高者通常能够自作主张，独自完成自己的工作计划，不依赖别人，也不受社会舆论的约束，同样也无意控制或支配别人，不嫌恶人，但是也不需要别人的好感。",
-                    ],
-                },
-                occupations: "科学家、行政主管人员等多有高 Q2，低 Q2 者不能胜任需要有随机应变能力的职务。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::Q3,
-                name: "自律性",
-                characteristic: Characteristic {
-                    low: &[
-                        "矛盾冲突，不顾大体。低者通常既不能克制自己，又不能尊重礼俗，更不愿考虑别人的需要，充满矛盾却无法解决。生活适应有问题者多低 Q3。",
-                    ],
-                    high: &[
-                        "知己知彼，自律严谨。高者通常言行一致，能够合理地支配自己的感情行动。为人处世，总能保持其自尊心，赢得别人的尊重，有时却不免太固执己见。",
-                    ],
-                },
-                occupations: "高 Q3 者多具有领袖能力的才干，主管人员、电机工和生产部门的成功也需要高 Q3。",
-            },
-            FirstPersonalityFactor {
-                factor: Factor::Q4,
-                name: "紧张性",
-                characteristic: Characteristic {
-                    low: &[
-                        "心平气和，闲散宁静，低者通常知足常乐，保持内心的平衡。也可能过分疏懒，缺乏进取心。",
-                    ],
-                    high: &[
-                        "紧张闲扰，激动挣扎。高者通常缺乏耐心，心神不安，态度兴奋。时常感觉疲乏，又无法彻底摆脱以求宁静。在社群中，他对人与事都缺乏信心。每日生活战战兢兢，不能自给。",
-                    ],
-                },
-                occupations: "未能在生活或职业中发挥本身才智潜能的人多具有高 Q4，如餐店招待、家庭主妇等。",
-            },
-        ],
-        second_personality_factor: &[
-            SecondPersonalityFactor {
-                key: "X1",
-                name: "适应与焦虑型",
-                expression: "(38+2*L+3*O+4*Q4-2*C-2*H-2*Q2)/10",
-                characteristic: Characteristic { 
-                    low: &[
-                        "生活适应顺利，通常感到心满意足，能做到所期望的及自认为重要的事情。也可能对困难的工作缺乏毅力，遇事有知难而退、不肯奋斗努力的倾向。",
-                    ],
-                    high: &[
-                        "对自己生活和工作状态感到不满意。可能会使心情受到破坏和影响身体健康。",
-                    ],
-                },
-            },
-            SecondPersonalityFactor {
-                key: "X2",
-                name: "内向与外向型",
-                expression: "(2*A+3*E+4*F+5*H-2*Q2-11)/10",
-                characteristic: Characteristic { 
-                    low: &[
-                        "内倾，趋于胆小，自足，在与别人接触中常采取克制态度，有利于从事精细工作。",
-                    ], 
-                    high: &[
-                        "外倾，开朗，善于交际，不受拘束，有利于从事贸易工作。",
-                    ],
-                },
-            },
-            SecondPersonalityFactor {
-                key: "X3",
-                name: "感情用事与安详机警型",
-                expression: "(77+2*C+2*E+2*F+2*N-4*A-6*I-2*M)/10",
-                characteristic: Characteristic {
-                    low: &[
-                        "情感丰富而感到困扰不安，可能是缺乏信心，颓丧的类型，对生活中的细节较为含蓄敏感，性格温和，讲究生活艺术，采取行动前再三思考，顾虑太多。",
-                    ], 
-                    high: &[
-                        "富有事业心，果断，刚毅，有进取精神，精力充沛，行动迅速，但常忽视生活上的细节，只对明显的事物注意，有时会考虑不周，不计后果，贸然行事。"
-                    ],
-                },
-            },
-            SecondPersonalityFactor {
-                key: "X4",
-                name: "怯懦与果敢型",
-                expression: "(4*E+3*M+4*Q1+4*Q2-3*A-2*G)/10",
-                characteristic: Characteristic { 
-                    low: &[
-                        "怯懦，顺从，依赖别人，纯洁，个性被动，受人驱使而不能独立，为获取别人的欢心会事事迁就。",
-                    ],
-                    high: &[
-                        "果断，独立，有气魄，有攻击性倾向，通常会主动寻找可以施展这种行为的环境或机会，以充分表现自己的独创能力，并从中取得利益。"
-                    ],
-                },
-            },
-        ],
-    },
+    interpretation: INTERPRETATION,
     questions: &[
         Question {
             title: "我很明了本测试的说明：",

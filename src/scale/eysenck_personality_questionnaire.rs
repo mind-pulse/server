@@ -150,11 +150,11 @@ struct HighLow {
 #[derive(Debug, Serialize)]
 struct ScoreInterpret {
     /// 中间型
-    medium: &'static [ScoreInterpretItem],  
+    medium: &'static [ScoreInterpretItem],
     /// 倾向型
-    moderate: HighLow,               
+    moderate: HighLow,
     /// 典型
-    extreme: HighLow,                
+    extreme: HighLow,
 }
 
 #[derive(Debug, Serialize)]
@@ -202,19 +202,19 @@ enum Dimension {
 
 #[derive(Debug, Serialize)]
 struct SceneSuggestion {
-    study: PlainText,   // 学习建议
-    life: PlainText,    // 生活建议
-    work: PlainText,    // 工作/职业建议
+    study: PlainText, // 学习建议
+    life: PlainText,  // 生活建议
+    work: PlainText,  // 工作/职业建议
 }
 
 // 气质类型
 #[derive(Debug, Serialize)]
 struct Temperament {
-    core_trait: PlainText,          // 核心特质（通俗版）
-    daily_performance: PlainText,   // 日常表现（接地气描述）
+    core_trait: PlainText,             // 核心特质（通俗版）
+    daily_performance: PlainText,      // 日常表现（接地气描述）
     scene_suggestion: SceneSuggestion, // 场景建议（学习/生活/工作）
-    notice: PlainText,              // 注意事项（避坑/发挥优势）
-    summary: PlainText,             // 极简总结（一句话记住）
+    notice: PlainText,                 // 注意事项（避坑/发挥优势）
+    summary: PlainText,                // 极简总结（一句话记住）
 }
 
 #[derive(Debug, Serialize)]
@@ -284,14 +284,14 @@ const PHLEGMATIC: Temperament = Temperament {
     summary: "稳重有耐力，适配长期场景，注意提升灵活度"
 };
 
-
-
 /// 人格维度 - 内外倾向（E）
 const E_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "内外倾向",
     notice: None,
     core_explain: "这个维度看你“精力来源”：外向的人靠社交充电，内向的人靠独处充电，没有好坏之分",
-    supplementary: Some("人格是复杂的，即使外向的人也需要独处，内向的人也能做好社交，关键是适配自己的节奏"),
+    supplementary: Some(
+        "人格是复杂的，即使外向的人也需要独处，内向的人也能做好社交，关键是适配自己的节奏",
+    ),
     score_interpret: ScoreInterpret {
         medium: &[
             ScoreInterpretItem {
@@ -339,7 +339,7 @@ const E_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                     title: "工作建议",
                     content: "选独立工作、专注思考的岗位（科研、设计），避开频繁对外沟通的工作",
                 },
-            ]
+            ],
         },
         extreme: HighLow {
             high: &[
@@ -369,16 +369,17 @@ const E_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                     title: "避坑提醒",
                     content: "别因为怕社交，错过重要的机会（比如面试、合作）",
                 },
-            ]
-        }
-    }
+            ],
+        },
+    },
 };
 
 /// 人格维度 - 神经质/情绪稳定性（N）
 const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "神经质",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
-    core_explain: "这个维度看你“情绪波动程度”：高分=情绪容易波动（敏感），低分=情绪稳定（冷静），无好坏",
+    core_explain:
+        "这个维度看你“情绪波动程度”：高分=情绪容易波动（敏感），低分=情绪稳定（冷静），无好坏",
     supplementary: Some("情绪波动大的人更能感知细节，情绪稳定的人更能抗压，只是适配不同场景"),
     score_interpret: ScoreInterpret {
         medium: &[
@@ -427,7 +428,7 @@ const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                     title: "工作建议",
                     content: "选高压、需要决策的岗位（管理、应急救援），避开需要细腻感知的工作",
                 },
-            ]
+            ],
         },
         extreme: HighLow {
             high: &[
@@ -457,16 +458,17 @@ const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                     title: "避坑提醒",
                     content: "别因为自己冷静，忽略身边人的情感需求",
                 },
-            ]
-        }
-    }
+            ],
+        },
+    },
 };
 
 /// 人格维度 - 精神质（P）
 const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "精神质",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
-    core_explain: "这个维度看你“是否从众”：高分=更独立、不盲从规则，低分=更温和、愿意配合别人，无好坏",
+    core_explain:
+        "这个维度看你“是否从众”：高分=更独立、不盲从规则，低分=更温和、愿意配合别人，无好坏",
     supplementary: Some("独立的人适合创新，配合的人适合团队，只是适配不同角色"),
     score_interpret: ScoreInterpret {
         medium: &[
@@ -495,7 +497,8 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                 },
                 ScoreInterpretItem {
                     title: "工作建议",
-                    content: "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
+                    content:
+                        "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
                 },
             ],
             low: &[
@@ -513,9 +516,10 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                 },
                 ScoreInterpretItem {
                     title: "工作建议",
-                    content: "选需要团队协作、沟通的岗位（人力资源、客服、教师），避开需要独断决策的工作",
+                    content:
+                        "选需要团队协作、沟通的岗位（人力资源、客服、教师），避开需要独断决策的工作",
                 },
-            ]
+            ],
         },
         extreme: HighLow {
             high: &[
@@ -529,7 +533,8 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                 },
                 ScoreInterpretItem {
                     title: "工作建议",
-                    content: "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
+                    content:
+                        "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
                 },
                 ScoreInterpretItem {
                     title: "生活建议",
@@ -557,16 +562,17 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                     title: "避坑提醒",
                     content: "别因为迁就别人，放弃自己的目标和想法",
                 },
-            ]
-        }
-    }
+            ],
+        },
+    },
 };
 
 /// 人格维度 - 效度/掩饰性（L）
 const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "掩饰性",
     notice: None,
-    core_explain: "这个维度看你“回答是否真实”：高分=可能想展现自己的好形象，低分=回答更坦诚，仅参考测试效度",
+    core_explain:
+        "这个维度看你“回答是否真实”：高分=可能想展现自己的好形象，低分=回答更坦诚，仅参考测试效度",
     supplementary: None,
     score_interpret: ScoreInterpret {
         medium: &[
@@ -603,7 +609,7 @@ const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                     title: "实用建议",
                     content: "测试结果参考性高，可以重点看自己的人格倾向",
                 },
-            ]
+            ],
         },
         extreme: HighLow {
             high: &[
@@ -625,9 +631,9 @@ const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                     title: "实用建议",
                     content: "测试结果很真实，但也要结合实际，别完全按测试下结论",
                 },
-            ]
-        }
-    }
+            ],
+        },
+    },
 };
 
 const INTRODUCTION: Texts = &[
@@ -669,11 +675,11 @@ const INTERPRETATION: Interpretation = Interpretation {
         n: &N_DIMENSION,
         p: &P_DIMENSION,
         l: &L_DIMENSION,
-    }
+    },
 };
 
 pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpretation, Question> = Scale {
-    name: "艾森克人格问卷简式量表中国版",    
+    name: "艾森克人格问卷简式量表中国版",
     primary_category: ScaleCategory::Personality,
     related_categories: Some(&[ScaleCategory::Emotion, ScaleCategory::MentalHealth]),
     abbreviation: "EPQ-RSC",
@@ -690,7 +696,7 @@ pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpret
     warning: Some("本量表仅适用 16 岁以上的人群。"),
     tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
     interpretation: INTERPRETATION,
-    questions: &[        
+    questions: &[
         Question {
             title: "你的情绪是否时起时落?",
             dimension: Dimension::N,

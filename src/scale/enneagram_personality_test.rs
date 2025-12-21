@@ -27,7 +27,6 @@ enum Type {
     Peacemaker,
 }
 
-
 #[derive(Debug, Serialize)]
 pub struct Question {
     title: PlainText,
@@ -77,19 +76,16 @@ const INTRODUCTION: Texts = &[
     &[SentenceItem::Plain("九型人格测试属于一种自我测试。九型人格测试主要用于帮助你有效地掌握个人的行为习惯，测试中所回答的问题答案没有好与坏之分、没有正确与错误之别，它仅反映你自己的个性和你的世界观。")],
 ];
 
-const INSTRUCTION: Texts = &[
-    &[
-        SentenceItem::Plain("本测试包含 "),
-        SentenceItem::HTMLElement(HTMLElement::Strong("108")),
-        SentenceItem::Plain(" 个项目，在符合你情况的题目下选择是，不符合的选择否。"),
-    ],
-];
-
+const INSTRUCTION: Texts = &[&[
+    SentenceItem::Plain("本测试包含 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("108")),
+    SentenceItem::Plain(" 个项目，在符合你情况的题目下选择是，不符合的选择否。"),
+]];
 
 pub const ENNEAGRAM_PERSONALITY_TEST: Scale<Interpretation, Question> = Scale {
     name: "九型人格测试",
     primary_category: ScaleCategory::Personality,
-    related_categories: Some(&[        
+    related_categories: Some(&[
         ScaleCategory::Emotion,
         ScaleCategory::Interpersonal,
         ScaleCategory::AttitudeAndValues,
@@ -108,7 +104,7 @@ pub const ENNEAGRAM_PERSONALITY_TEST: Scale<Interpretation, Question> = Scale {
     warning: Some("此测试未被心理学界广泛认可，不能正确反映出测试者的人格情况。"),
     formula_mode: None,
     tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: None, error: None },
-    interpretation: Interpretation { 
+    interpretation: Interpretation {
         dialog: &[
             "人格最健康的时候，随时有人格整合的可能，例如：第 9 型的出现了第 3 型的特征，由原本的内向保守，变得充满活力，基本欲望得到满足，基本恐惧隐藏。健康的人格令人活出真我，心理平衡、充分发挥自己的潜能和能力对社会作出贡献。",
             "一般的时候基本欲望和基本恐惧浮现，由自我取代了真我，自我过分膨胀，自我防卫机制出现，心理变得不平衡，容易与人发生冲突，为了满足基本欲望，可以不惜一切伤害人，也很容易屈服在社会的阴影下，人格的优点未能充分发挥。不健康的人格，自我防卫机制失灵，可以导致人格陷落，如第五型人出现了第七型的缺点如失控、信口开河和生活奢侈等。严重的会导致精神病，甚至自毁。当人格于极健康和不健康的时候，是有整合和陷落的现象，这会导致错误地判断人的基本人格，尤其是极健康的时候。",
