@@ -106,7 +106,7 @@ async fn list(res: &mut Response) {
     res.json(PATHS);
 }
 
-async fn serve() {
+async fn serve(port: u16) {
     let router = Router::new()
         .push(Router::with_path("list").get(list))
         .push(Router::with_path("scales").get(list))
@@ -127,7 +127,10 @@ async fn serve() {
 
     let service = Service::new(router).hoop(Logger);
 
-    let listener = TcpListener::new("127.0.0.1:9999").bind().await;
+    let address = format!("127.0.0.1:{}", port);
+    info!("Server running on {}", address);
+
+    let listener = TcpListener::new(&address).bind().await;
     Server::new(listener).serve(service).await;
 }
 
@@ -179,7 +182,13 @@ async fn main() -> MindPulseResult<()> {
 
     create_table().await?;
 
-    serve().await;
+    // 解析命令行参数获取端口号，默认为 4819
+    let port = std::env::args()
+        .nth(1)
+        .and_then(|arg| arg.parse::<u16>().ok())
+        .unwrap_or(4819);
+
+    serve(port).await;
 
     Ok(())
 }
