@@ -22,7 +22,7 @@ use crate::scale::{
     SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTORS, SYMPTOM_CHECKLIST_90,
     YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
 };
-use crate::statistics::{create_statistics_table, get_statistics, insert_statistics_ip};
+use crate::statistics::{create_statistics_table, handle_get_statistics, handle_insert_record};
 
 trait JsonRender {
     fn json<S>(&mut self, data: S)
@@ -120,8 +120,8 @@ async fn serve(port: u16) {
         .push(Router::with_path("sas").get(sas))
         .push(Router::with_path("y_bocs").get(y_bocs))
         .push(Router::with_path("sds").get(sds))
-        .push(Router::with_path("statistics").get(insert_statistics_ip))
-        .push(Router::with_path("get_statistics").get(get_statistics));
+        .push(Router::with_path("statistics").get(handle_insert_record))
+        .push(Router::with_path("get_statistics").get(handle_get_statistics));
 
     let service = Service::new(router).hoop(Logger);
 

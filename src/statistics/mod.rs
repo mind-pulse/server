@@ -8,66 +8,81 @@ use self::sqlite::{insert_completed_test, query_all_statistics, query_scale_stat
 
 pub use self::sqlite::create_statistics_table;
 
-fn get_scale_query(req: &Request) -> Option<String> {
+/// 从请求参数中获取量表路径
+fn extract_scale_param(req: &Request) -> Option<String> {
     req.query("scale")
 }
 
-fn get_client_type(req: &Request) -> Option<u8> {
+/// 从请求参数中获取客户端类型
+fn extract_client_type(req: &Request) -> Option<u8> {
     req.query("clientType")
 }
 
+/// 获取查询统计信息的处理器
 #[handler]
-pub(super) async fn get_statistics(req: &Request, res: &mut Response) -> MindPulseResult<()> {
-    trace!(message = "查询统计数次");
-    let scale = get_scale_query(req);
+pub(super) async fn handle_get_statistics(
+    req: &Request,
+    res: &mut Response,
+) -> MindPulseResult<()> {
+    trace!(message = "Querying statistics data");
+
+    let scale = extract_scale_param(req);
 
     match scale {
         None => {
-            debug!(message = "未获取到 scale，查询全部记录");
+            debug!(message = "No scale specified, querying all records");
             res.render(Json(query_all_statistics().await?));
         }
-        Some(s) => {
-            debug!(message = "获取到 scale，查询单条记录", scale = s);
-            res.render(Json(query_scale_statistics(&s).await?));
+        Some(scale_path) => {
+            debug!(
+                message = "Querying specified scale record",
+                scale = scale_path
+            );
+            res.render(Json(query_scale_statistics(&scale_path).await?));
         }
     };
 
     Ok(())
 }
 
+/// 处理插入测试记录的请求
 #[handler]
-pub(super) async fn insert_statistics_ip(req: &Request, res: &mut Response) -> MindPulseResult<()> {
-    trace!(message = "插入一条测试记录");
+pub(super) async fn handle_insert_record(req: &Request, res: &mut Response) -> MindPulseResult<()> {
+    trace!(message = "Inserting test record");
 
-    let scale = get_scale_query(req);
-    let scale = match scale {
+    // 获取并验证量表路径参数
+    let scale_path = match extract_scale_param(req) {
         None => {
-            error!(message = "scale 无效", scale = scale);
+            error!(message = "Missing required scale parameter");
             res.status_code(StatusCode::BAD_REQUEST);
-            return Err("scale 无效".into());
+            return Err("Missing scale parameter".into());
         }
-        Some(s) => s,
+        Some(path) => path,
     };
 
-    let client_type = match get_client_type(req) {
+    // 获取并验证客户端类型参数
+    let client_type = match extract_client_type(req) {
         None => {
-            error!(message = "client_type 无效");
+            error!(message = "Missing required client_type parameter");
             res.status_code(StatusCode::BAD_REQUEST);
-            return Err("client_type 无效".into());
+            return Err("Missing client_type parameter".into());
         }
-        Some(n) => n,
+        Some(ty) => ty,
     };
 
-    let scale_index = get_scale_index_by_path(&scale)?;
+    // 解析量表索引
+    let scale_index = get_scale_index_by_path(&scale_path)?;
     debug!(
-        message = "获取到 scale 索引",
-        scale = scale,
+        message = "Successfully resolved scale index",
+        scale = scale_path,
         index = scale_index
     );
 
-    let client_ip: &str = req.header("X-Forwarded-For").unwrap_or("");
-    debug!(message = "当前请求客户端的 IP", addr = client_ip);
+    // 获取客户端 IP 地址
+    let client_ip = req.header("X-Forwarded-For").unwrap_or("").trim();
+    debug!(message = "Retrieved client IP address", ip = client_ip);
 
+    // 插入测试记录
     insert_completed_test(scale_index, client_type, client_ip).await?;
 
     Ok(())
