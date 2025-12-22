@@ -1285,7 +1285,7 @@ const C_SUBDIMENSIONS: [SubdimensionInterpretation; 6] = [
 ];
 
 // ===================== 核心维度解释 =====================
-const DIMENSIONS: &'static [DimensionInterpretation; 5] = &[
+const DIMENSIONS: &[DimensionInterpretation; 5] = &[
     // 神经质（N）
     DimensionInterpretation {
         dimension: Dimension::N,
