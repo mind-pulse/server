@@ -79,7 +79,13 @@ pub(super) async fn handle_insert_record(req: &Request, res: &mut Response) -> M
     );
 
     // 获取客户端 IP 地址
-    let client_ip = req.header("X-Forwarded-For").unwrap_or("").trim();
+    let client_ip = req
+        .header("X-Forwarded-For")
+        .unwrap_or("")
+        .split(',')
+        .next()
+        .unwrap_or("")
+        .trim();
     debug!(message = "Retrieved client IP address", ip = client_ip);
 
     // 插入测试记录
