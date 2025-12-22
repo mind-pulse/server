@@ -123,6 +123,18 @@ enum ScaleCategory {
 type PlainText = &'static str;
 type PlainTexts = &'static [PlainText];
 
+#[derive(Debug, Serialize)]
+pub struct SymptomGuidance {
+    /// 当该因子阳性时，可以告诉用户“你可以尝试做的事”
+    pub self_help: PlainTexts,
+
+    /// 需要提醒用户注意的信号（但不等于诊断）
+    pub watch_out: PlainTexts,
+
+    /// 何时建议寻求专业帮助（非常重要）
+    pub seek_help_when: PlainTexts,
+}
+
 #[derive(Debug, Serialize, Clone)]
 pub(super) struct QuestionOption {
     text: PlainText,
