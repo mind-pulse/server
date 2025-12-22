@@ -10,7 +10,7 @@ use super::{
 #[derive(Debug, Serialize, Hash, Eq, PartialEq)]
 #[serde(rename_all(serialize = "SCREAMING_SNAKE_CASE"))]
 enum Symptom {
-    /// 驱体化
+    /// 躯体化
     Somatization,
     /// 强迫症状
     ObsessiveCompulsive,
