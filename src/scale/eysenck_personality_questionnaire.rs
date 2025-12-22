@@ -1,7 +1,8 @@
 use serde::Serialize;
 
-use super::{HTMLElement, QuestionOption, Scale, SentenceItem, Tag, Texts};
+use crate::scale::{PlainText, ScaleCategory};
 
+use super::{HTMLElement, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
@@ -135,36 +136,48 @@ const NORM: Norm = Norm {
 };
 
 #[derive(Debug, Serialize)]
-struct HighLow {
-    high: &'static [&'static str],
-    low: &'static [&'static str],
+pub struct ScoreInterpretItem {
+    title: PlainText,
+    content: PlainText,
 }
 
 #[derive(Debug, Serialize)]
-struct DimensionScoreInterpretation {
-    /// 中间型，解释文本是由句子组成的文本数组。
-    osculant: &'static [&'static str],
+struct HighLow {
+    high: &'static [ScoreInterpretItem],
+    low: &'static [ScoreInterpretItem],
+}
+
+#[derive(Debug, Serialize)]
+struct ScoreInterpret {
+    /// 中间型
+    medium: &'static [ScoreInterpretItem],
     /// 倾向型
-    inclined: HighLow,
+    moderate: HighLow,
     /// 典型
-    typical: HighLow,
+    extreme: HighLow,
 }
 
 #[derive(Debug, Serialize)]
 struct DimensionInterpretation {
-    label: &'static str,
-    notice: Option<&'static str>,
-    supplementary: Option<&'static [&'static str]>,
-    dimension: DimensionScoreInterpretation,
+    /// 维度名称
+    label: PlainText,
+    /// 重要提示
+    notice: Option<PlainText>,
+    /// 核心解释
+    core_explain: PlainText,
+    /// 补充说明
+    supplementary: Option<PlainText>,
+    /// 得分水平解读
+    score_interpret: ScoreInterpret,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 struct Dimensions {
-    e: DimensionInterpretation,
-    n: DimensionInterpretation,
-    p: DimensionInterpretation,
-    l: DimensionInterpretation,
+    e: &'static DimensionInterpretation,
+    n: &'static DimensionInterpretation,
+    p: &'static DimensionInterpretation,
+    l: &'static DimensionInterpretation,
 }
 
 #[derive(Debug, Serialize)]
@@ -174,7 +187,6 @@ pub struct Interpretation {
     temperaments: Temperaments,
     // todo: 结果解释暂时直接写在前端，需要后续移动回后端
 }
-
 
 #[derive(Debug, Serialize)]
 enum Dimension {
@@ -189,36 +201,444 @@ enum Dimension {
 }
 
 #[derive(Debug, Serialize)]
-struct Temperaments {
-    sanguine: &'static [&'static str],
-    choleric: &'static [&'static str],
-    melancholic: &'static [&'static str],
-    phlegmatic: &'static [&'static str],
+struct SceneSuggestion {
+    study: PlainText, // 学习建议
+    life: PlainText,  // 生活建议
+    work: PlainText,  // 工作/职业建议
 }
 
-// /// 气质类型
-// #[derive(Debug, Serialize)]
-// enum Temperament {
-//     /// 多血质
-//     Sanguine,
-//     /// 胆汁质
-//     Choleric,
-//     /// 抑郁质
-//     Melancholic,
-//     /// 粘液质
-//     Phlegmatic,
-// }
+// 气质类型
+#[derive(Debug, Serialize)]
+struct Temperament {
+    core_trait: PlainText,             // 核心特质（通俗版）
+    daily_performance: PlainText,      // 日常表现（接地气描述）
+    scene_suggestion: SceneSuggestion, // 场景建议（学习/生活/工作）
+    notice: PlainText,                 // 注意事项（避坑/发挥优势）
+    summary: PlainText,                // 极简总结（一句话记住）
+}
+
+#[derive(Debug, Serialize)]
+struct Temperaments {
+    sanguine: &'static Temperament,    // 多血质
+    choleric: &'static Temperament,    // 胆汁质
+    melancholic: &'static Temperament, // 抑郁质
+    phlegmatic: &'static Temperament,  // 粘液质
+}
 
 #[derive(Debug, Serialize)]
 pub struct Question {
-    title: &'static str,
+    title: PlainText,
     options: &'static [QuestionOption],
     dimension: Dimension,
 }
 
+/// 气质类型 - 多血质（sanguine）
+const SANGUINE: Temperament = Temperament {
+    core_trait: "多血质（活泼型）：天生反应快、爱社交、适应力强，注意力容易分散（无好坏，只是先天倾向）",
+    daily_performance: "跟人相处轻松不尴尬，学新东西上手快，但做长期枯燥的事容易没耐心；情绪来得快去得也快，很少钻牛角尖",
+    scene_suggestion: SceneSuggestion {
+        study: "适合拆分长任务（比如把背书拆成20分钟一段），用小组讨论、边讲边学的方式（比如给同学讲题），避免独自死记硬背",
+        life: "可以多参加社交、运动类活动释放精力，但要留一点独处时间（比如睡前10分钟安静看书），避免精力透支",
+        work: "适配需要临场应变、对外沟通的岗位（销售、活动策划、主持人、客服）；避开长期独处、重复机械的工作（如仓库管理、数据录入）"
+    },
+    notice: "优势是灵活善交际，短板是容易三分钟热度；可以用“定小目标+及时奖励”的方式，弥补专注力不足的问题",
+    summary: "活泼灵活，适配多变场景，注意稳住专注力"
+};
+
+/// 气质类型 - 胆汁质（choleric）
+const CHOLERIC: Temperament = Temperament {
+    core_trait: "胆汁质（冲动型）：天生精力足、做事果断、脾气急，情绪反应强烈（无好坏，只是先天倾向）",
+    daily_performance: "做事情雷厉风行，喜欢主导和挑战，但容易因为小事发火；目标感强，不服输，讨厌拖沓",
+    scene_suggestion: SceneSuggestion {
+        study: "适合短时间高强度冲刺（比如考前集中刷题），避免磨磨蹭蹭；生气时先停1分钟再学习，别带着情绪做题",
+        life: "可以通过跑步、拳击等运动释放情绪，少跟人硬碰硬；说话时放慢语速，避免脱口而出伤到人",
+        work: "适配需要决策、抗压、快速行动的岗位（导游、销售管理、应急救援、演讲）；避开需要耐心、反复沟通的工作（如客服、心理咨询）"
+    },
+    notice: "优势是果敢有冲劲，短板是容易急躁；可以养成“先思考后行动”的习惯，比如做决定前数3秒",
+    summary: "果敢有冲劲，适配高压场景，注意控制情绪"
+};
+
+/// 气质类型 - 抑郁质（melancholic）
+const MELANCHOLIC: Temperament = Temperament {
+    core_trait: "抑郁质（敏感型）：天生观察细、想得多、重细节，情绪体验深（无好坏，和抑郁症无关）",
+    daily_performance: "能注意到别人忽略的细节，做事追求完美，但容易多愁善感；不喜欢热闹，独处时更放松",
+    scene_suggestion: SceneSuggestion {
+        study: "适合深度思考的方式（比如精读、整理笔记、复盘错题），避开嘈杂的学习环境；别过度纠结细节，先完成再完美",
+        life: "可以写日记梳理情绪，少参加人多的聚会，跟1-2个知心朋友相处就好；别胡思乱想，不确定的事直接问清楚",
+        work: "适配需要细心、专注、独立思考的岗位（校对、设计师、科研、档案管理、艺术创作）；避开需要频繁社交、快速决策的工作（如销售、公关）"
+    },
+    notice: "优势是细心有深度，短板是容易内耗；可以用“列清单”的方式，减少胡思乱想，聚焦具体事",
+    summary: "细腻有深度，适配精细场景，注意别内耗"
+};
+
+/// 气质类型 - 粘液质（phlegmatic）
+const PHLEGMATIC: Temperament = Temperament {
+    core_trait: "粘液质（稳重型）：天生冷静、有耐心、能坚持，反应偏慢（无好坏，只是先天倾向）",
+    daily_performance: "做事慢条斯理但不容易出错，不喜欢变来变去；情绪稳定，很少大喜大悲，是身边人的“定心丸”",
+    scene_suggestion: SceneSuggestion {
+        study: "适合长期积累的方式（比如每天背10个单词），避开临时抱佛脚；学新东西时别着急，给自己足够的适应时间",
+        life: "可以尝试偶尔突破舒适区（比如学一个新技能），别太循规蹈矩；跟急性子的人相处时，提前沟通节奏",
+        work: "适配需要稳重、耐心、长期坚持的岗位（医生、法官、会计、教师、心理咨询）；避开需要快速应变、频繁变动的工作（如创业、直播）"
+    },
+    notice: "优势是稳重有耐力，短板是不够灵活；可以多关注新信息，偶尔尝试“快速做小决定”，提升应变力",
+    summary: "稳重有耐力，适配长期场景，注意提升灵活度"
+};
+
+/// 人格维度 - 内外倾向（E）
+const E_DIMENSION: DimensionInterpretation = DimensionInterpretation {
+    label: "内外倾向",
+    notice: None,
+    core_explain: "这个维度看你“精力来源”：外向的人靠社交充电，内向的人靠独处充电，没有好坏之分",
+    supplementary: Some(
+        "人格是复杂的，即使外向的人也需要独处，内向的人也能做好社交，关键是适配自己的节奏",
+    ),
+    score_interpret: ScoreInterpret {
+        medium: &[
+            ScoreInterpretItem {
+                title: "核心特点",
+                content: "既喜欢跟人玩，也能独处，精力分配比较均衡",
+            },
+            ScoreInterpretItem {
+                title: "实用建议",
+                content: "学习/工作可以“社交+独处”结合（比如上午小组讨论，下午独自整理）",
+            },
+        ],
+        moderate: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "喜欢社交，精力靠跟人相处充电，做事偏主动",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "用小组讨论、边讲边学的方式，避免长期独自死记硬背",
+                },
+                ScoreInterpretItem {
+                    title: "生活建议",
+                    content: "多参加社交活动，但每天留10分钟独处，避免精力透支",
+                },
+                ScoreInterpretItem {
+                    title: "工作建议",
+                    content: "选团队协作、对外沟通的岗位（销售、运营），避开长期独处的工作",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "喜欢独处，精力靠安静环境充电，做事偏谨慎",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "选安静的环境学习，用精读、整理笔记的方式，避开频繁小组讨论",
+                },
+                ScoreInterpretItem {
+                    title: "生活建议",
+                    content: "少参加人多的聚会，跟1-2个朋友相处就好，别勉强自己社交",
+                },
+                ScoreInterpretItem {
+                    title: "工作建议",
+                    content: "选独立工作、专注思考的岗位（科研、设计），避开频繁对外沟通的工作",
+                },
+            ],
+        },
+        extreme: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "几乎离不开社交，一独处就觉得无聊，做事特别主动",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "刻意留独处时间（比如睡前看书），避免过度依赖外界认可",
+                },
+                ScoreInterpretItem {
+                    title: "避坑提醒",
+                    content: "别因为太想社交，忽略自己的真实感受",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "非常不喜欢社交，甚至回避多人场合，独处时最放松",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "必要社交前做心理建设（比如提前想好想说的话），别完全封闭自己",
+                },
+                ScoreInterpretItem {
+                    title: "避坑提醒",
+                    content: "别因为怕社交，错过重要的机会（比如面试、合作）",
+                },
+            ],
+        },
+    },
+};
+
+/// 人格维度 - 神经质/情绪稳定性（N）
+const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
+    label: "神经质",
+    notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
+    core_explain:
+        "这个维度看你“情绪波动程度”：高分=情绪容易波动（敏感），低分=情绪稳定（冷静），无好坏",
+    supplementary: Some("情绪波动大的人更能感知细节，情绪稳定的人更能抗压，只是适配不同场景"),
+    score_interpret: ScoreInterpret {
+        medium: &[
+            ScoreInterpretItem {
+                title: "核心特点",
+                content: "情绪不算特别稳定，但也不会轻易崩溃，能应对日常压力",
+            },
+            ScoreInterpretItem {
+                title: "实用建议",
+                content: "压力大时做3次深呼吸，别立刻做决定",
+            },
+        ],
+        moderate: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "情绪容易波动，一点小事可能开心/难过很久，对细节特别敏感",
+                },
+                ScoreInterpretItem {
+                    title: "学习建议",
+                    content: "情绪不好时先停学，做5分钟拉伸，别带着情绪做题",
+                },
+                ScoreInterpretItem {
+                    title: "生活建议",
+                    content: "写日记梳理情绪，别憋在心里；少刷负面信息，避免情绪内耗",
+                },
+                ScoreInterpretItem {
+                    title: "工作建议",
+                    content: "选能发挥“敏感优势”的岗位（文案、设计、用户调研），避开高压应急的工作",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "情绪特别稳定，很少生气/难过，面对压力也能冷静",
+                },
+                ScoreInterpretItem {
+                    title: "学习建议",
+                    content: "可以偶尔逼自己“感性一点”，比如多思考题目背后的逻辑，别只看答案",
+                },
+                ScoreInterpretItem {
+                    title: "生活建议",
+                    content: "多关注身边人的情绪，别因为自己冷静，忽略别人的感受",
+                },
+                ScoreInterpretItem {
+                    title: "工作建议",
+                    content: "选高压、需要决策的岗位（管理、应急救援），避开需要细腻感知的工作",
+                },
+            ],
+        },
+        extreme: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "情绪极易波动，容易焦虑、紧张，一点小事就想很多",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "每天花10分钟冥想，把担心的事写下来，逐个解决，别想太多",
+                },
+                ScoreInterpretItem {
+                    title: "避坑提醒",
+                    content: "别因为情绪不好，否定自己的能力",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "情绪过于稳定，甚至有点“冷漠”，对开心/难过的事反应淡",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "刻意体验情绪（比如看一部感人的电影），别让自己变得太麻木",
+                },
+                ScoreInterpretItem {
+                    title: "避坑提醒",
+                    content: "别因为自己冷静，忽略身边人的情感需求",
+                },
+            ],
+        },
+    },
+};
+
+/// 人格维度 - 精神质（P）
+const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
+    label: "精神质",
+    notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
+    core_explain:
+        "这个维度看你“是否从众”：高分=更独立、不盲从规则，低分=更温和、愿意配合别人，无好坏",
+    supplementary: Some("独立的人适合创新，配合的人适合团队，只是适配不同角色"),
+    score_interpret: ScoreInterpret {
+        medium: &[
+            ScoreInterpretItem {
+                title: "核心特点",
+                content: "既愿意配合别人，也有自己的想法，不会完全盲从",
+            },
+            ScoreInterpretItem {
+                title: "实用建议",
+                content: "团队中可以先听别人的意见，再说出自己的想法，兼顾协作和独立",
+            },
+        ],
+        moderate: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "特别独立，不喜欢被规则束缚，做事有自己的节奏，不太在意别人的看法",
+                },
+                ScoreInterpretItem {
+                    title: "学习建议",
+                    content: "按自己的方法学习，别照搬别人的计划；遇到不同意见，先听再反驳",
+                },
+                ScoreInterpretItem {
+                    title: "生活建议",
+                    content: "可以保留自己的个性，但别故意跟人对着干，避免冲突",
+                },
+                ScoreInterpretItem {
+                    title: "工作建议",
+                    content:
+                        "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "特别温和，愿意配合别人，在意身边人的感受，不喜欢冲突",
+                },
+                ScoreInterpretItem {
+                    title: "学习建议",
+                    content: "别因为怕别人不高兴，不敢提自己的问题；可以主动跟同学交流想法",
+                },
+                ScoreInterpretItem {
+                    title: "生活建议",
+                    content: "保留自己的底线，别一味迁就别人，避免委屈自己",
+                },
+                ScoreInterpretItem {
+                    title: "工作建议",
+                    content:
+                        "选需要团队协作、沟通的岗位（人力资源、客服、教师），避开需要独断决策的工作",
+                },
+            ],
+        },
+        extreme: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "极度独立，甚至有点“自我”，完全不按规则来，不在意别人的评价",
+                },
+                ScoreInterpretItem {
+                    title: "学习建议",
+                    content: "按自己的方法学习，别照搬别人的计划；遇到不同意见，先听再反驳",
+                },
+                ScoreInterpretItem {
+                    title: "工作建议",
+                    content:
+                        "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
+                },
+                ScoreInterpretItem {
+                    title: "生活建议",
+                    content: "可以保留自己的个性，但别故意跟人对着干，避免冲突",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "适当考虑别人的感受，别因为太自我，影响人际关系",
+                },
+                ScoreInterpretItem {
+                    title: "避坑提醒",
+                    content: "创新也要兼顾实际，别脱离团队/规则空谈想法",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "极度温和，甚至有点“没主见”，总是迁就别人，害怕冲突",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "刻意练习说“不”，比如不想帮别人做事时，直接说明原因",
+                },
+                ScoreInterpretItem {
+                    title: "避坑提醒",
+                    content: "别因为迁就别人，放弃自己的目标和想法",
+                },
+            ],
+        },
+    },
+};
+
+/// 人格维度 - 效度/掩饰性（L）
+const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
+    label: "掩饰性",
+    notice: None,
+    core_explain:
+        "这个维度看你“回答是否真实”：高分=可能想展现自己的好形象，低分=回答更坦诚，仅参考测试效度",
+    supplementary: None,
+    score_interpret: ScoreInterpret {
+        medium: &[
+            ScoreInterpretItem {
+                title: "核心特点",
+                content: "回答比较真实，没有刻意隐瞒，也没有刻意表现自己",
+            },
+            ScoreInterpretItem {
+                title: "实用建议",
+                content: "测试结果有参考价值，可以结合自己的实际情况看",
+            },
+        ],
+        moderate: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "可能想展现自己“更好”的一面，回答时有所隐瞒",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "可以重新做一次测试，按真实想法回答，结果会更准",
+                },
+                ScoreInterpretItem {
+                    title: "提醒",
+                    content: "这不是“不诚实”，只是想给人留好印象，很正常",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "回答特别坦诚，完全按自己的真实想法来，没有隐瞒",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "测试结果参考性高，可以重点看自己的人格倾向",
+                },
+            ],
+        },
+        extreme: HighLow {
+            high: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "回答时过度掩饰，可能完全没按真实想法来",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "隔几天再做一次测试，放松心态，别刻意“装好人”，结果才有用",
+                },
+            ],
+            low: &[
+                ScoreInterpretItem {
+                    title: "核心特点",
+                    content: "回答极度坦诚，甚至有点“口无遮拦”",
+                },
+                ScoreInterpretItem {
+                    title: "实用建议",
+                    content: "测试结果很真实，但也要结合实际，别完全按测试下结论",
+                },
+            ],
+        },
+    },
+};
+
 const INTRODUCTION: Texts = &[
     &[
-        SentenceItem::Plain("艾森克人格问卷(Eysenck Personality Questionnaire, 简称EPQ)是英国伦敦大学心理系和精神病研究所艾森克教授编制的，归纳了三个人格的基本因素："),
+        SentenceItem::Plain("艾森克人格问卷（Eysenck Personality Questionnaire, 简称 EPQ）是英国伦敦大学心理系和精神病研究所艾森克教授编制的，归纳了三个人格的基本因素："),
         SentenceItem::HTMLElement(HTMLElement::Strong("内外向性")),
         SentenceItem::Plain("(E)、"),
         SentenceItem::HTMLElement(HTMLElement::Strong("神经质")),
@@ -234,207 +654,49 @@ const INTRODUCTION: Texts = &[
     ]
 ];
 
-const INSTRUCTION: Texts = &[
-    &[
-        SentenceItem::Plain("该量表共有 "),
-        SentenceItem::HTMLElement(HTMLElement::Strong("48")),
-        SentenceItem::Plain(" 个项目，请仔细阅读每一条，然后根据该句话与您自己的实际情况相符合的程度进行选择。"),
-    ]
-];
+const INSTRUCTION: Texts = &[&[
+    SentenceItem::Plain("该量表共有 "),
+    SentenceItem::HTMLElement(HTMLElement::Strong("48")),
+    SentenceItem::Plain(
+        " 个项目，请仔细阅读每一条，然后根据该句话与您自己的实际情况相符合的程度进行选择。",
+    ),
+]];
 
-pub const EPQ_RSC: Scale<Interpretation, Question> = Scale {
+const INTERPRETATION: Interpretation = Interpretation {
+    norm: NORM,
+    temperaments: Temperaments {
+        sanguine: &SANGUINE,
+        choleric: &CHOLERIC,
+        melancholic: &MELANCHOLIC,
+        phlegmatic: &PHLEGMATIC,
+    },
+    dimensions: Dimensions {
+        e: &E_DIMENSION,
+        n: &N_DIMENSION,
+        p: &P_DIMENSION,
+        l: &L_DIMENSION,
+    },
+};
+
+pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpretation, Question> = Scale {
     name: "艾森克人格问卷简式量表中国版",
+    primary_category: ScaleCategory::Personality,
+    related_categories: Some(&[ScaleCategory::Emotion, ScaleCategory::MentalHealth]),
     abbreviation: "EPQ-RSC",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
-    idea: None,
-    references: None,
+    idea: Some(&[
+        "此测试能够帮助你了解自己性格中的核心特质，它基于经典的心理学理论，将人格分为情绪稳定性、内外向倾向、行事风格三个主要维度。",
+        "它的原理就像描绘一幅性格简笔画：通过一系列生活情境中的感受与选择，客观地勾勒出你在这些维度上的位置。中国版量表经过了严谨的调整，使其更贴合我们的文化背景和日常表达。",
+        "在科学性上，该量表拥有良好的信度与效度。简单来说，就是测试结果稳定可靠，且能真实反映它想要测量的人格特质，因此被广泛应用于心理健康、职业评估和个人成长等领域。",
+        "你可以将测试结果视为一份实用的“性格参考地图”，它不能定义你，但能帮助你更清晰、更系统地观察自己，为自我了解与提升提供一个科学的起点。",
+    ]),
+    references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000"]),
     formula_mode: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),
-    tags: Tag{ info: Some(&[ "人格"]), normal: Some(&["自评"]), warning: Some(&["16+"]), error: None },
-    interpretation: Interpretation { 
-        norm: NORM,
-        temperaments: Temperaments {
-            sanguine: &[
-                "多血质是人的气质类型之一。多血质的人表现出这样的特点：容易形成有朝气、热情、活泼、爱交际、有同情心、思想灵活等品质；也容易出现变化无常、粗枝大叶、浮躁、缺乏一贯性等特点。这种人活泼、好动、敏感、反应迅速、喜欢与人交往、注意力容易转移、兴趣和情感易变换等等。这种人适宜于做要求反应迅速而灵活的工作。",
-                "外向，活泼好动,善于交际；思维敏捷；容易接受新鲜事物；情绪情感容易产生也容易变化和消失，容易外露；体验不深刻等。",
-                "多血质是职业多面手，专长多，能力强，精于调整、调和各类关系，有经营管理、分析设计和规划能力，会推销商品。适于经济规划、统计、设计、商业推销、节目主持、相声演员等。"
-            ],
-            choleric: &[
-                "胆汁质（bilious temperament），人的四种性格类型之一，其特点是“情感发生迅速、强烈、持久，动作的发生也是迅速、强烈、有力。属于这一类型的人都热情，直爽，精力旺盛，脾气急躁，心境变化剧烈，易动感情，具有外倾性。",
-                "反应迅速，情绪有时激烈、冲动，很外向。",
-                "胆汁质的人较适合做反应迅速、动作有力、应急性强、危险性较大、难度较高而费力的工作。他们大都可能成为出色的导游员、勘探工作者、推销员、节目主持人、演讲者、外事接待员等。",
-            ],
-            melancholic: &[
-                "抑郁质是人的一种气质类型，抑郁质特点：抑郁质的人神经类型属于弱型，他们体验情绪的方式较少，稳定的情感产生也很慢，但对情感的体验深刻、有力、持久，而且具有高度的情绪易感性。抑郁质的人为人小心谨慎，思考透彻，在困难面前容易优柔寡断。",
-                "抑郁质的人一般表现为行为孤僻、不太合群、观察细致、非常敏感、表情腼腆、多愁善感、行动迟缓、优柔寡断，具有明显的内倾性。",
-                "抑郁质适合的职业：校对、打字、排版、检察员、雕刻工作、刺绣工作、保管员、机要秘书、艺术工作者、哲学家、科学家等。",
-            ],
-            phlegmatic: &[
-                "粘液质人的表现特点：粘液质相当于神经活动强而均衡的安静型。这种气质的人平静，善于克制忍让，生活有规律，不为无关事情分心，埋头苦干，有耐久力，态度持重，不卑不亢，不爱空谈，严肃认真；但不够灵活，注意力不易转移，因循守旧，对事业缺乏热情。",
-                "粘液质适合的职业：外科医生、法官、管理人员、出纳员、会计、播音员、话务员、调解员、教师、人力人事管理主管、心理咨询师等。",
-            ],
-        },
-        dimensions: Dimensions {
-            e: DimensionInterpretation{
-                notice: None,
-                label: "内外倾向",
-                supplementary: Some(&[
-                    "需要注意的是，这些是一般性的趋势，而个体差异仍然存在。人格是复杂多面的，还受到其他因素的影响，如环境、个人经历和文化背景。因此，这只是一种大致的描述，具体的行为表现还需要考虑其他因素。",
-                ]),
-                dimension: DimensionScoreInterpretation { 
-                    osculant: &[
-                        "社交灵活性：在社交方面可能表现出一定的灵活性，既能够与他人交往，又能够独立行动，具有一定的自主性。",
-                        "适度的社交活动：可能喜欢参与社交活动，但不会过分依赖社交，也能够独自度过一段时间。",
-                        "合理的冒险倾向：可能愿意尝试新事物和冒险，但不会过于冲动，会在适当时机考虑风险和后果。",
-                        "适度的能量水平：在能量和活跃度方面可能表现出适度的水平，既不过于亢奋，也不过于沉闷。",
-                        "社交技能：可能具备一定的社交技能，能够与不同类型的人建立关系，但不会过分追求社交成功。",
-                    ], 
-                    inclined: HighLow { 
-                        high: &[
-                            "社交活跃：较高外向性得分的人通常更喜欢社交活动，愿意主动参与各种社交场合，与他人互动更频繁。",
-                            "容易结交朋友：由于外向性较高，这些人通常更容易结交朋友，建立和维护社交网络。",
-                            "喜欢刺激：对新奇和刺激的需求较高，可能更愿意尝试新事物、参与冒险活动，寻求刺激。",
-                            "乐观开朗：较高外向性的人可能更倾向于乐观、开朗，能够积极面对生活的挑战。",
-                        ], 
-                        low: &[
-                            "较为内向：较低外向性得分的个体可能更倾向于内向，可能不太主动在社交场合中参与。",
-                            "独立性：有可能更喜欢独自工作或独自度过时间，不太依赖外部刺激来维持情绪。",
-                            "喜欢安静的环境：较低外向性得分的人可能更喜欢安静、不那么繁忙的环境，可能更容易感到疲倦或不适应过于刺激的环境。",
-                            "较少的社交活动：可能对社交活动的需求较少，不太喜欢大型社交活动，更倾向于小团体或独立活动。",
-                        ] 
-                    }, 
-                    typical: HighLow { 
-                        high: &[
-                            "极度社交活跃：非常高外向性得分的人可能表现出极度的社交活跃，几乎总是喜欢与他人在一起。",
-                            "喜欢领导角色：由于外向性较高，这些人可能更愿意担任领导角色，参与团队合作，与他人协作。",
-                            "寻求持续刺激：非常高外向性得分的人可能不仅喜欢新奇和刺激，还可能持续地寻求这些体验。",
-                            "与人为善：具有高外向性的人通常更容易与他人建立亲密关系，表现出友善和合作的态度。",
-                        ], 
-                        low: &[
-                            "高度内向：非常低外向性得分的个体可能表现出高度的内向，可能非常少参与社交活动，更喜欢独自一人。",
-                            "社交回避：可能对社交场合感到不适应或回避，可能避免参与需要大量社交互动的情境。",
-                            "独立性强烈：非常低外向性得分的个体可能强烈地追求独立，可能更愿意独立完成任务，避免过多的合作和协作。",
-                        ],
-                    },
-                },
-            },
-            n: DimensionInterpretation{
-                label: "神经质/情绪稳定性",
-                notice: Some("反映的是正常行为，与病症无关。"),
-                supplementary: Some(&[
-                    "需要注意的是，这些是一般性的趋势，而个体差异仍然存在。人格是复杂多面的，还受到其他因素的影响，如环境、个人经历和文化背景。因此，这只是一种大致的描述，具体的行为表现还需要考虑其他因素。",
-                ]),
-                dimension: DimensionScoreInterpretation { 
-                    osculant: &[
-                        "适应性较好： 在面对生活的起伏和压力时，情绪稳定性得分平均水平的人可能表现出相对较好的适应能力。他们可能能够更容易地处理压力源，并在面对挑战时保持相对冷静和理智。",
-                        "较少情绪波动： 这些人可能不太容易受到小事的影响，也可能在日常生活中经历的情绪波动相对较小。他们可能更容易保持积极的情绪状态。",
-                        "相对较少焦虑： 情绪稳定性得分平均水平的人可能相对较少表现出过度的焦虑和紧张感。他们可能更容易保持情绪平衡，不太容易陷入强烈的负面情绪状态。",
-                        "适度的风险承受能力： 这些人可能在适度的风险和不确定性下表现得较为从容。他们可能不太容易过于谨慎或过于冒险。",
-                    ], 
-                    inclined: HighLow { 
-                        high: &[
-                            "情感调控能力强： 高情绪稳定性的个体通常能更好地应对压力和挫折，情绪波动较小。",
-                            "较少体验焦虑和紧张： 这些人在面对压力时可能表现得更冷静，不容易被不良情绪所影响。",
-                            "自信和乐观： 高情绪稳定性的人可能更倾向于乐观和自信，能够更积极地看待生活中的各种情况。",
-                            "稳定的情感状态： 这类个体在情感上更加平稳，不太容易情绪波动大。",
-                        ], 
-                        low: &[
-                            "冷静沉着： 他们可能在面对压力和困难时能够保持冷静，不容易被激怒或受到情绪波动的影响。",
-                            "情绪调节能力： 具有较低情绪稳定性的人可能更擅长自我调节，能够更有效地处理负面情绪。",
-                            "较少的焦虑： 相对较低得分的人可能不太容易感到焦虑或紧张，对生活中的各种变化可能更加适应。",
-                        ],
-                    }, 
-                    typical: HighLow { 
-                        high: &[
-                            "冷静和沉着： 在极端情况下，非常高的情绪稳定性可能表现为极度的冷静和沉着，即使面临压力也能保持冷静。",
-                            "抗压能力强： 这类个体可能对生活中的挑战和压力具有较高的抵抗力，不容易受到外界因素的干扰。",
-                            "情感表达相对稳定： 非常高的情绪稳定性可能意味着情感表达相对一致，不容易受外界情绪因素的左右。",
-                        ], 
-                        low: &[
-                            "冷漠和淡漠： 在极端情况下，非常低的情绪稳定性得分可能表现为对他人情感的冷漠和淡漠，缺乏对他人需求的关切。",
-                            "易受伤： 可能对他人的批评或压力过度敏感，容易感到受伤并产生消极情绪反应。",
-                            "社交障碍： 非常低的情绪稳定性得分可能与社交问题相关，因为个体可能难以处理社交压力和冲突。",
-                        ],
-                    }, 
-                },
-            },
-            p: DimensionInterpretation{
-                label: "精神质",
-                notice: Some("反映的是正常行为，与病症无关。"),
-                supplementary: Some(&[
-                    "需要注意的是，这些是一般性的趋势，而个体差异仍然存在。人格是复杂多面的，还受到其他因素的影响，如环境、个人经历和文化背景。因此，这只是一种大致的描述，具体的行为表现还需要考虑其他因素。",
-                ]),
-                dimension: DimensionScoreInterpretation { 
-                    osculant: &[
-                        "平衡的情感表达：在情感稳定性上，可能表现出一定的平衡，对于压力和负面情绪的反应相对中等。",
-                        "社交灵活性：在与他人的互动中可能表现出一定的灵活性，既能够独立行动，又能够与他人合作和交往。",
-                        "决策的谨慎性：在决策和行为上可能相对谨慎，不会过于冲动，而且能够考虑到可能的后果。",
-                        "对他人感受的关注：在关心他人感受方面可能相对均衡，既能够表达关切，又不至于过于冷漠。",
-                        "适度的冷静度：在面对压力和挑战时，可能表现出一种适度的冷静和决断，而不是过于冷漠或过于激动。",
-                    ], 
-                    inclined: HighLow { 
-                        high: &[
-                            "冷漠和不关心：倾向于表现出对他人感受的冷漠和不关心，可能不太关注或理会他人的情感需求。",
-                            "冲动和不稳定：可能表现出较大的冲动性，缺乏计划性和稳定性，可能在决策和行为上表现出不可预测性。",
-                            "挑战性：可能具有较强的挑战性，对于权威和规则可能表现出不敬和抵触的态度，更倾向于追求刺激和冒险。",
-                            "不合作和独立：可能不太愿意合作，更喜欢独立思考和行动，可能对他人的期望和规定不太敏感。",
-                        ], 
-                        low: &[
-                            "温和和关心：较低的精神质得分可能意味着个体更为温和，更关心他人感受，可能更愿意与他人合作。",
-                            "稳定和可预测：较低的精神质得分可能表示个体在情感上相对稳定，决策和行为较为谨慎和可预测。",
-                            "遵从规则：较低的精神质得分可能意味着个体更愿意遵循社会规范和权威的指导，更容易与组织和团队协作。",
-                            "谨慎和深思熟虑：较低的精神质得分的个体可能更倾向于深思熟虑，对于决策和行为可能更为谨慎。",
-                        ],
-                    }, 
-                    typical: HighLow { 
-                        high: &[
-                            "极端冷漠和冷酷：可能表现出极端的冷漠和冷酷，对他人的需求和感受缺乏关切，可能对他人的痛苦不太敏感。",
-                            "极高冲动性：在决策和行为上可能表现出极端的冲动性，可能会冲动地采取行动而不考虑后果。",
-                            "极端挑战性：可能表现出极端的挑战性，对于规则和权威可能持有极端的抵触态度，可能寻求极端的刺激和冒险。",
-                            "完全不合作和孤立：可能对合作和社交完全不感兴趣，更倾向于独立行动，可能表现出完全不合作的态度。",
-                        ], 
-                        low: &[
-                            "极端关心他人：非常低的精神质得分可能表明个体对他人感受非常关切，可能表现出极端的关心和同理心。",
-                            "高度稳定：在情感上可能非常稳定，很少受到外部刺激的影响，决策和行为相对可预测。",
-                            "强烈的合作倾向：非常低的精神质得分可能表现出强烈的合作倾向，更愿意与他人共事，避免冲突。",
-                        ],
-                    }, 
-                },
-            },
-            l: DimensionInterpretation{
-                label: "效度或掩饰性",
-                notice: None,
-                supplementary: None,
-                dimension: DimensionScoreInterpretation { 
-                    osculant: &[
-                        "您可能诚实地回答了问卷中的问题，没有故意隐瞒或歪曲信息。",
-                        "您也有可能在测试中没有明显的试图产生社会上更为接受的回答，或者没有明显的欺骗行为。这可以被解释为测试的效度较高，您愿意以真实的方式回答问题。",
-                        "在某些情况下，平均水平的L得分可能表明您的反应风格较为均衡，既没有过分的坦率也没有过分的隐瞒。这可能取决于您的个性特征和对测试的态度。",
-                    ], 
-                    inclined: HighLow { 
-                        high: &[
-                            "您可能有一定的社会欲望或者试图呈现自己更为正面的形象。",
-                            "这可能是因为您在进行测试时感到一些社会压力，希望产生较为正面的印象。",
-                            "注意，这并不一定意味着您在所有情境下都会有不真实的回答，但在某些方面可能会有一些社交导向的倾向。",
-                        ], 
-                        low: &[
-                            "您在回答问题时倾向于诚实，但并没有强烈的倾向。",
-                        ],
-                    }, 
-                    typical: HighLow { 
-                        high: &[
-                            "您的得分可能表明您在测试过程中采取了过于防御性的态度，可能存在试图掩盖真实感受或情况的倾向。",
-                        ], 
-                        low: &[
-                            "您回答问题时较为坦诚，没有试图隐瞒或虚伪。",
-                        ],
-                    },
-                },
-            },
-        }
-    },
-    questions: &[        
+    tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
+    interpretation: INTERPRETATION,
+    questions: &[
         Question {
             title: "你的情绪是否时起时落?",
             dimension: Dimension::N,

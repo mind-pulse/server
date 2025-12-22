@@ -4,8 +4,6 @@ mod scale;
 mod statistics;
 
 #[macro_use]
-extern crate lazy_static;
-#[macro_use]
 extern crate tracing;
 
 use salvo::prelude::*;
@@ -17,12 +15,14 @@ use tracing_subscriber::fmt::time::OffsetTime;
 use crate::error::MindPulseResult;
 use crate::logger::Logger;
 use crate::scale::{
-    BECK_DEPRESSION_RATING_SCALE, ENNEAGRAM_PERSONALITY_TEST, EPQ_RSC, HAMILTON_DEPRESSION_SCALE,
-    PATHS, REVISED_NEOPERSONALITY_INVENTORY, SELF_DIRECTED_SEARCH, SELF_RATING_ANXIETY_SCALE,
-    SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE, SYMPTOM_CHECKLIST_90,
+    BECK_DEPRESSION_INVENTORY, ENNEAGRAM_PERSONALITY_TEST,
+    EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE, HAMILTON_DEPRESSION_SCALE,
+    HOLLAND_OCCUPATIONAL_INTEREST, HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN,
+    NEO_PERSONALITY_INVENTORY_REVISED, PATHS, SELF_RATING_ANXIETY_SCALE,
+    SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTORS, SYMPTOM_CHECKLIST_90,
     YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
 };
-use crate::statistics::{create_table, get_statistics, insert_statistics_ip};
+use crate::statistics::{create_statistics_table, handle_get_statistics, handle_insert_record};
 
 trait JsonRender {
     fn json<S>(&mut self, data: S)
@@ -41,17 +41,22 @@ impl JsonRender for Response {
 
 #[handler]
 async fn h_sds(res: &mut Response) {
-    res.json(SELF_DIRECTED_SEARCH);
+    res.json(HOLLAND_OCCUPATIONAL_INTEREST);
+}
+
+#[handler]
+async fn h_sds_hs(res: &mut Response) {
+    res.json(HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN);
 }
 
 #[handler]
 async fn neo_pi_r(res: &mut Response) {
-    res.json(REVISED_NEOPERSONALITY_INVENTORY);
+    res.json(NEO_PERSONALITY_INVENTORY_REVISED);
 }
 
 #[handler]
 async fn sixteen_pf(res: &mut Response) {
-    res.json(SIXTEEN_PERSONALITY_FACTOR_QUESTIONNAIRE);
+    res.json(SIXTEEN_PERSONALITY_FACTORS);
 }
 
 #[handler]
@@ -66,12 +71,12 @@ async fn y_bocs(res: &mut Response) {
 
 #[handler]
 async fn epq_rsc(res: &mut Response) {
-    res.json(EPQ_RSC);
+    res.json(EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE);
 }
 
 #[handler]
 async fn bdi(res: &mut Response) {
-    res.json(BECK_DEPRESSION_RATING_SCALE);
+    res.json(BECK_DEPRESSION_INVENTORY);
 }
 
 #[handler]
@@ -99,11 +104,12 @@ async fn list(res: &mut Response) {
     res.json(PATHS);
 }
 
-async fn serve() {
+async fn serve(port: u16) {
     let router = Router::new()
         .push(Router::with_path("list").get(list))
         .push(Router::with_path("scales").get(list))
         .push(Router::with_path("h_sds").get(h_sds))
+        .push(Router::with_path("h_sds_hs").get(h_sds_hs))
         .push(Router::with_path("neo_pi_r").get(neo_pi_r))
         .push(Router::with_path("16pf").get(sixteen_pf))
         .push(Router::with_path("epq_rsc").get(epq_rsc))
@@ -114,12 +120,15 @@ async fn serve() {
         .push(Router::with_path("sas").get(sas))
         .push(Router::with_path("y_bocs").get(y_bocs))
         .push(Router::with_path("sds").get(sds))
-        .push(Router::with_path("statistics").get(insert_statistics_ip))
-        .push(Router::with_path("get_statistics").get(get_statistics));
+        .push(Router::with_path("statistics").get(handle_insert_record))
+        .push(Router::with_path("get_statistics").get(handle_get_statistics));
 
     let service = Service::new(router).hoop(Logger);
 
-    let listener = TcpListener::new("127.0.0.1:9999").bind().await;
+    let address = format!("127.0.0.1:{}", port);
+    info!("Server running on {}", address);
+
+    let listener = TcpListener::new(&address).bind().await;
     Server::new(listener).serve(service).await;
 }
 
@@ -169,9 +178,15 @@ async fn main() -> MindPulseResult<()> {
     #[cfg(not(debug_assertions))]
     builder.json().init();
 
-    create_table().await?;
+    create_statistics_table().await?;
 
-    serve().await;
+    // 解析命令行参数获取端口号，默认为 4819
+    let port = std::env::args()
+        .nth(1)
+        .and_then(|arg| arg.parse::<u16>().ok())
+        .unwrap_or(4819);
+
+    serve(port).await;
 
     Ok(())
 }
