@@ -2,7 +2,7 @@ mod sqlite;
 
 use salvo::{handler, http::StatusCode, writing::Json, Request, Response};
 
-use crate::{error::MindPulseResult, scale::get_scale_index_by_path};
+use crate::{error::MindPulseResult, scale::get_scale_id_by_path};
 
 use self::sqlite::{insert_completed_test, query_all_statistics, query_scale_statistics};
 
@@ -70,12 +70,12 @@ pub(super) async fn handle_insert_record(req: &Request, res: &mut Response) -> M
         Some(ty) => ty,
     };
 
-    // 解析量表索引
-    let scale_index = get_scale_index_by_path(&scale_path)?;
+    // 解析量表 ID
+    let id = get_scale_id_by_path(&scale_path)?;
     debug!(
         message = "Successfully resolved scale index",
         scale = scale_path,
-        index = scale_index
+        id = id
     );
 
     // 获取客户端 IP 地址
@@ -83,7 +83,7 @@ pub(super) async fn handle_insert_record(req: &Request, res: &mut Response) -> M
     debug!(message = "Retrieved client IP address", ip = client_ip);
 
     // 插入测试记录
-    insert_completed_test(scale_index, client_type, client_ip).await?;
+    insert_completed_test(id, client_type, client_ip).await?;
 
     Ok(())
 }

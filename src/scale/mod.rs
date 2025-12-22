@@ -519,12 +519,12 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
     },
 ];
 
-pub(super) fn get_scale_index_by_path(path: &str) -> MindPulseResult<usize> {
-    match PATHS.iter().position(|sp| sp.path == path) {
+pub(super) fn get_scale_id_by_path(path: &str) -> MindPulseResult<u16> {
+    match PATHS.iter().find(|sp| sp.path == path) {
         None => {
             error!(message = "scale 无效", scale = path);
             Err(MindPulseError::Response("无效的 scale".to_owned()))
         }
-        Some(idx) => Ok(idx),
+        Some(item) => Ok(item.id),
     }
 }

@@ -7,7 +7,7 @@ use tokio::sync::OnceCell;
 
 use crate::{
     error::{MindPulseError, MindPulseResult},
-    scale::{get_scale_index_by_path, PATHS},
+    scale::{get_scale_id_by_path, PATHS},
 };
 
 type SqlitePool = Pool<Sqlite>;
@@ -100,7 +100,7 @@ pub(super) async fn query_scale_statistics(
 
     let pool = get_database_pool().await;
 
-    let scale_index = get_scale_index_by_path(scale_path)?;
+    let scale_index = get_scale_id_by_path(scale_path)?;
     debug!(
         message = "Resolved scale index",
         index = scale_index,
@@ -178,7 +178,7 @@ pub(super) async fn query_all_statistics<'a>() -> MindPulseResult<HashMap<u16, S
 
 /// 插入完成的测试记录
 pub(super) async fn insert_completed_test(
-    scale_index: usize,
+    id: u16,
     client_type: u8,
     ip_address: &str,
 ) -> MindPulseResult<u64> {
@@ -200,15 +200,16 @@ pub(super) async fn insert_completed_test(
 
     trace!(
         message = "Inserting test record",
-        scale_index = scale_index,
+        scale_index = id,
         ip_address = ip_address,
         client_type = ?client_type
     );
 
+    // 为了兼容旧表，id 列名暂时仍使用 scale_index
     let result = sqlx::query(
         "INSERT INTO statistics_ip (scale_index, ip, finished_time, client_type) VALUES ($1, $2, $3, $4)",
     )
-    .bind(scale_index as i32)
+    .bind(id)
     .bind(ip_address)
     .bind(timestamp)
     .bind(client_type)
@@ -218,7 +219,7 @@ pub(super) async fn insert_completed_test(
         error!(
             message = "Failed to insert test record",
             error = ?e,
-            scale_index = scale_index,
+            scale_index = id,
             client_type = ?client_type
         );
         e
@@ -226,7 +227,7 @@ pub(super) async fn insert_completed_test(
 
     info!(
         message = "Test record inserted successfully",
-        scale_index = scale_index,
+        scale_index = id,
         ip_address = ip_address,
         client_type = ?client_type
     );
