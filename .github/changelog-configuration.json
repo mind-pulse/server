@@ -1,26 +1,34 @@
 {
-	"categories": [
-		{
-			"title": "## 🎉 Features",
-			"labels": ["feature"]
-		},
-		{
-			"title": "## 🚀 Enhancements",
-			"labels": ["enhancement"]
-		},
-		{
-			"title": "## 🐛 Fixes",
-			"labels": ["fix", "bug"]
-		},
-		{
-			"title": "## 📦 Dependencies",
-			"labels": ["dependencies"]
-		},
-		{
-			"title": "## 🛠 Breaking Changes",
-			"labels": ["semver-major", "breaking-change"]
-		}
-	],
-	"pr_template": "- #{{TITLE}}(##{{NUMBER}})",
-	"base_branches": ["main"]
+  "categories": [
+    {
+      "title": "## 🎉 Features",
+      "labels": ["feature"]
+    },
+    {
+      "title": "## ⚙️ Refactors",
+      "labels": ["refactor"]
+    },
+    {
+      "title": "## 🚀 Performances",
+      "labels": ["performance"]
+    },
+    {
+      "title": "## 🐛 Fixes",
+      "labels": ["fix", "bug"]
+    },
+    {
+      "title": "## 📦 Dependencies",
+      "labels": ["dependencies"]
+    },
+    {
+      "title": "## 🎨 Styles",
+      "labels": ["style"]
+    },
+    {
+      "title": "## 🛠 Breaking Changes",
+      "labels": ["semver-major", "breaking-change"]
+    }
+  ],
+  "pr_template": "- #{{TITLE}}",
+  "base_branches": ["main"]
 }
