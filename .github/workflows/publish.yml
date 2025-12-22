@@ -72,11 +72,10 @@ jobs:
           cargo build -r
           cd target/release
           upx -9 server
-          asset_name=mind-pulse-server-$VERSION.tar.gz
-          tar zcvf mind-pulse-server-linux-x64-$VERSION.tar.gz server
+          asset_name=mind-pulse-server-linux-x64-$VERSION.tar.gz
+          tar zcvf $asset_name server
           echo "ASSET_PATH=$(pwd)/$asset_name" >> $GITHUB_ENV
           echo "ASSET_NAME=$asset_name" >> $GITHUB_ENV
-
       - name: upload release asset
         uses: actions/github-script@v7
         env:
