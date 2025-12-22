@@ -27,8 +27,7 @@ const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
     CapacityCategoryInterpretation {
         capacity_category: CapacityCategory::A,
         name: "艺术型",
-        personality_trait: "这个类型的人充满创造力与想象力，喜欢通过自我表达、创作来展现个人想法和价值观
-，厌恶重复、僵化的工作，追求美感与独特性，对色彩、声音、文字形式等有敏锐的感受力，注重作品的审美价值和原创性，情感丰富与直觉性强，倾向于依赖情感、直觉和想象来处理问题，渴望自由与独立。",
+        personality_trait: "这个类型的人充满创造力与想象力，喜欢通过自我表达、创作来展现个人想法和价值观，厌恶重复、僵化的工作，追求美感与独特性，对色彩、声音、文字形式等有敏锐的感受力，注重作品的审美价值和原创性，情感丰富与直觉性强，倾向于依赖情感、直觉和想象来处理问题，渴望自由与独立。",
         occupational_stigma: "适合这类人的专业有艺术学门类专业（音乐与舞蹈学类、戏剧与影视学类、美术学类等）、文学门类专业（中国语言文学类、外国语言文学类、新闻传播学类）、工学门类专业（建筑类、设计学类）",
     },
     CapacityCategoryInterpretation {
