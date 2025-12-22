@@ -410,7 +410,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         introduction: ENNEAGRAM_PERSONALITY_TEST.introduction,
         warning: ENNEAGRAM_PERSONALITY_TEST.warning,
         tags: ENNEAGRAM_PERSONALITY_TEST.tags,
-        disabled: false,
+        disabled: cfg!(not(debug_assertions)), // 生产环境暂时禁用，前端尚未完成此测试结果的设计
     },
     ScaleListItem {
         id: 4,
