@@ -332,10 +332,10 @@ impl ScaleListItem<'_> {
 
 /// 计算预计测试时长（分钟）
 ///
-/// 每个问题耗时 20 秒为标准计算
+/// 每个问题耗时 10-15秒 秒为标准计算
 const fn estimated_duration(total_questions: u32) -> [u32; 2] {
     let min = total_questions * 10 / 60;
-    let max = total_questions * 30 / 60;
+    let max = total_questions * 15 / 60;
     [min, max]
 }
 
