@@ -1,6 +1,8 @@
+use crate::scale::ScaleCategory;
+
 use super::{
-    HTMLElement, InterpretationItem, Question, QuestionOption, Scale, SentenceItem, Status, Tag,
-    Texts,
+    ComfortingWord, CriticalWarning, HTMLElement, InterpretationItem, Question, QuestionOption,
+    Scale, SentenceItem, Status, Tag, Texts,
 };
 
 const INTRODUCTION: Texts = &[&[
@@ -21,83 +23,106 @@ const INSTRUCTION: Texts = &[&[
     ),
 ]];
 
-pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Question> = Scale {
-    name: "贝克抑郁自评量表",
+pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> = Scale {
+    name: "贝克抑郁自评量表",    
+    primary_category: ScaleCategory::Emotion,
+    related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Somatic]),
     abbreviation: "BDI",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000"]),
+    references: None,
     warning: None,
     formula_mode: None,
-    tags: Tag{ info: Some(&["抑郁"]), normal: Some(&["自评"]), warning: None, error: None },
+    tags: Tag{ info: Some(&["抑郁"]), normal: None, warning: None, error: None },
     interpretation: &[
         InterpretationItem{
             range: [0, 5],
-            description: "正常",
-            advice: Some(&["请继续保持积极阳光的生活态度，面对人生，相信你会遇到很多惊喜，同时也能给他人带来快乐！"]),
+            description: "正常范围",
+            critical_warning: None,
+            comforting_word: ComfortingWord {
+                text: "您的得分在正常范围内，这表明您当前的心理状态比较健康。",
+                caution: None,
+            },
+            advice: Some(&["请继续保持积极的生活态度，关注生活中的小美好，您的阳光心态也能为他人带来温暖。"]),
             symptom: None,
             status: Status::Normal,
         },
         InterpretationItem{
             range: [5, 8],
             description: "轻度抑郁",
+            critical_warning: None,
+            comforting_word: ComfortingWord {
+                text: "如果您的得分在这个范围，请别太担心，很多人都会经历类似的情绪波动。",
+                caution: None,
+            },
             advice: Some(&[
-                "与他人交流： 与亲朋好友分享感受，寻求支持和理解，有时候倾诉可以减轻心理负担。",
-                "建立规律的生活： 确保有充足的睡眠，合理的饮食，以及规律的锻炼。这有助于维持身体和心理的平衡。",
-                "寻求专业帮助： 如果感觉自己无法应对或情况持续时间较长，考虑咨询心理医生、心理治疗师或其他专业人士的帮助。",
-                "设定小目标： 将大目标分解为小目标，逐步实现，有助于提高自信心和成就感。",
-                "学习放松技巧： 学习深呼吸、渐进性肌肉松弛等放松技巧，有助于缓解焦虑和紧张感。",
-                "保持社交活动： 虽然抑郁可能让人不愿意参与社交活动，但与他人保持联系可以减轻孤独感。",
-                "寻找喜好和爱好： 发掘并培养一些喜欢的活动，这有助于提高生活质量并增加乐趣。",
-                "避免过度负担： 合理安排工作和生活，避免过度压力，学会拒绝过多的任务。",
-                "需要强调的是，这些建议可能对某些人有效，但并不是适用于所有情况。如果情况严重或持续，请寻求专业帮助。专业的心理医生可以根据具体情况提供更为个体化和有效的建议。",
+                "与他人倾诉：和信任的亲友分享您的感受，寻求理解和支持，倾诉本身就能减轻心理负担。",
+                "规律生活作息：尽量保证充足睡眠、均衡饮食和适度运动，这有助于稳定身心状态。",
+                "寻求专业支持：如果这些情绪持续较长时间或影响生活，考虑咨询心理医生或心理咨询师，他们能提供更个性化的帮助。",
+                "设定小目标：将大任务分解成小步骤，每完成一点就给自己肯定，慢慢积累信心和成就感。",
+                "学习放松方法：尝试深呼吸、冥想或轻度伸展，帮助缓解紧张和焦虑。",
+                "保持社交连接：即使情绪低落，也尽量与朋友家人保持联系，减少孤独感。",
+                "培养兴趣爱好：花时间做自己喜欢的事，哪怕只是听音乐、散步，让生活多一些乐趣。",
+                "减轻压力负担：合理规划工作生活，学会拒绝过度任务，给自己留出休息时间。",
             ]),
             symptom: Some(&[
-                "早晨心情沉重、体重减轻、头脑不清楚、感到自己无用。",
-                "您有时：饭量下降、感到做事困难、觉得未来没有希望、觉得难以下决定、生活没有意义、不喜爱自己平时喜爱的东西。",
-                "您偶尔：感到情绪沮丧、郁闷、要哭或想哭、便秘、感到疲劳。",
+                "常见症状：早晨心情沉重、体重轻微下降、头脑昏沉、偶尔觉得自己没用。",
+                "有时会出现：食欲下降、做事感到吃力、对未来感到迷茫、难以做决定、觉得生活乏味、对以往喜欢的事物兴趣减少。",
+                "偶尔发生：情绪低落、想哭、便秘、感到疲劳。",
             ]),
             status: Status::Mild,
         },
         InterpretationItem{
             range: [8, 16],
             description: "中度抑郁",
+            critical_warning: None,
+            comforting_word: ComfortingWord {
+                text: "您的得分显示有中度抑郁倾向，这可能需要更多关注和支持。",
+                caution: Some("中度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+            },
             advice: Some(&[
-                "首先建议您寻求心理医生、心理治疗师或精神医生的帮助，同时可以通过以下办法缓解症状：",
-                "建立支持系统：与亲友分享感受，寻找理解和支持。",
-                "保持健康的生活方式：注意饮食、运动和睡眠，这对心理健康有积极影响。",
-                "制定目标：设立小目标，逐步实现，有助于增加成就感。",
-                "学习应对技巧：学会处理负面思维，采用正面的应对方式。",
-                "参与社交活动：虽然可能感到困难，但尽量参与社交活动，避免孤立。",
+                "建立支持网络：主动与亲友沟通，让他们了解您的状态，获得陪伴和理解。",
+                "维持健康习惯：注意规律饮食、适度运动和睡眠，这些小习惯对心理有积极影响。",
+                "设定可行目标：从微小、具体的任务开始，比如每天散步10分钟，逐步恢复掌控感。",
+                "学习应对技巧：练习识别负面思维，用更平衡的想法替代，比如告诉自己“这只是暂时的困难”。",
+                "参与社交活动：即使感觉困难，也尝试参加一些轻松的小聚会或线上交流，避免孤立自己。",
             ]),
             symptom: Some(&[
-                "您可能存在以下症状：",
-                "情绪低落：持续的沮丧、悲伤、无望感。",
-                "失去兴趣：对平常喜欢的活动失去兴趣，缺乏动力参与社交活动或爱好。",
-                "睡眠问题：可能是失眠、早醒或过度睡眠。",
-                "食欲改变：可能是食欲减退或过度进食。",
-                "能量下降：感觉疲劳、无力，即使做小事也感觉很吃力。",
-                "注意力难以集中：难以集中注意力，工作或学业表现可能下降。",
-                "负面思维：常常有负面的自我评价、自责，对未来持悲观态度。",
-                "体重变化：可能伴随体重的明显增加或减少。",
-                "身体症状：如头痛、胃痛等生理不适，没有明显的生理原因。",
-                "社交隔离：感觉与他人疏远，不愿与人交往。",
+                "情绪持续低落：经常感到沮丧、悲伤或无助。",
+                "兴趣减退：对以前喜欢的活动失去热情，做事缺乏动力。",
+                "睡眠变化：失眠、早醒或睡眠过多。",
+                "食欲改变：食欲明显下降或暴饮暴食。",
+                "精力不足：总是疲劳，即使简单事务也感觉费力。",
+                "注意力下降：难以集中精神，工作或学习效率降低。",
+                "负面思维：容易自责、自我批评，对未来悲观。",
+                "体重波动：体重可能明显增加或减少。",
+                "身体不适：可能出现头痛、胃痛等，但没有明确生理原因。",
+                "社交回避：不想与人交往，感觉与他人疏远。",
             ]),
             status: Status::Moderate,
         },
         InterpretationItem{
             range: [16, 40],
             description: "重度抑郁",
+            critical_warning: Some(CriticalWarning {
+                title:"需要立即寻求帮助",
+                content:"重度抑郁需要专业医疗干预，请立即联系精神科医生或前往医院。"
+            }),
+            comforting_word: ComfortingWord {
+                text: "您的得分表明可能有重度抑郁倾向，这需要立即的专业干预。",
+                caution: Some("重度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+            },
             advice: Some(&[
-                "对于重度抑郁症，专业治疗是至关重要的，强烈建议您去精神专科医院门诊寻求专业帮助，住院治疗。",
+                "立即行动：尽快前往精神专科医院或综合医院精神科就诊，让专业医生进行评估。",
+                "考虑全面治疗：医生可能会建议药物治疗、心理治疗或住院治疗，请信任专业方案。",
+                "不要独自承受：告诉家人或朋友您的情况，寻求他们的陪伴和支持。",
             ]),
             symptom: Some(&[
-                "您可能有一系列身体、情绪和认知方面的症状，以下是一些可能的表现：",
-                "情绪方面：持续的沮丧和悲伤感；失去兴趣或乐趣对任何活动的兴趣；情绪波动，容易激动或烦躁；自责感和无望感；失眠或过度睡眠；疲劳和能量不足。",
-                "身体方面：头痛、胃痛、肌肉疼痛等不适感；食欲变化，可能导致体重减轻或增加；注意力和集中力下降；性欲减退。",
-                "认知方面：负面的自我评价和自卑感；集中力和决策能力下降；记忆力减退；无法享受正常的活动。",
-                "社交方面：社交退缩，避免与他人交往；对他人的兴趣减少；对待他人的态度变得更加消极。",
+                "情绪方面：持续深切的悲伤、绝望感；对所有活动失去兴趣；情绪易怒或麻木；严重自责；失眠或整天嗜睡；极度疲劳。",
+                "身体方面：频繁头痛、胃痛或肌肉疼痛；食欲剧变导致体重明显增减；注意力难以集中；性欲减退。",
+                "认知方面：强烈的无用感或负罪感；决策困难；记忆力变差；无法感受快乐。",
+                "社交方面：完全回避社交；对他人冷漠；言语和行动变得迟缓。",
             ]),
             status: Status::Major,
         },
@@ -105,6 +130,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
     questions: &[
         Question {
             title: "以下情况最符合你的是",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我不感到忧郁",
@@ -126,6 +152,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你对未来抱有什么态度？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我对未来并不感到悲观失望",
@@ -147,6 +174,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你是如何看待失败的感觉？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我并无失败的感觉",
@@ -168,6 +196,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你对生活的满意度如何？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我并不觉得我有什么不满意",
@@ -189,6 +218,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你的内疚感有多深？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没有特殊的内疚感",
@@ -210,6 +240,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你是否会对自己感到失望？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没有对自己感到失望",
@@ -231,6 +262,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你会有想要伤害自己的想法吗？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没有要伤害自己的想法",
@@ -252,6 +284,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你是否失去与他人交往的兴趣？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我没失去和他人交往的兴趣",
@@ -273,6 +306,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "做决定对你来说，是否感到困难？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我能像平时一样做出决断",
@@ -294,6 +328,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "与过去相比，你是否对你的形象不自信？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我觉得我的形象一点也不比过去糟",
@@ -315,6 +350,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "你对工作抱有何种态度？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我能像平时那样工作",
@@ -336,6 +372,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "和以往相比，你是否会很容易就感到疲倦？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "和以往相比，我并不容易疲倦",
@@ -357,6 +394,7 @@ pub const BECK_DEPRESSION_RATING_SCALE: Scale<&[InterpretationItem<i8>], Questio
         },
         Question {
             title: "与过去相比，你的胃口如何？",
+            is_multiple: false,
             options: &[
                 QuestionOption {
                     text: "我的胃口不比过去差",

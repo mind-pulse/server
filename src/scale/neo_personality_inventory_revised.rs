@@ -2,21 +2,23 @@ use std::ops::RangeInclusive;
 
 use serde::Serialize;
 
+use crate::scale::ScaleCategory;
+
 use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 #[derive(Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 /// 维度
 enum Dimension {
-    /// 神经质，Negative Emotionality
+    /// 神经质/情绪稳定性，Neuroticism (Negative Emotionality)
     N,
     /// 外向性，Extraversion
     E,
-    /// 开放性，Open-Mindedness
+    /// 开放性，Openness to Experience (Intellect/Imagination)
     O,
     /// 宜人性，Agreeableness
     A,
-    /// 尽责性/责任心，Conscientiousness
+    /// 尽责性，Conscientiousness
     C,
 }
 
@@ -701,9 +703,9 @@ const REVERSE: &[QuestionOption; 5] = &[
 struct DimensionInterpretation {
     dimension: Dimension,
     name: PlainText,
+    terminology: PlainText,
     description: PlainText,
-    low: PlainText,
-    high: PlainText,
+    analysis: &'static [PlainText; 10],
     subdimension_interpretations: &'static [SubdimensionInterpretation; 6],
 }
 
@@ -712,8 +714,7 @@ struct SubdimensionInterpretation {
     dimension: Subdimension,
     name: PlainText,
     description: PlainText,
-    low: PlainText,
-    high: PlainText,
+    analysis: &'static [PlainText; 10],
 }
 
 #[derive(Serialize)]
@@ -723,266 +724,674 @@ pub struct Interpretation {
     dimensions: &'static [DimensionInterpretation; 5],
 }
 
+// ===================== 神经质（N）子维度解释 =====================
+const N_SUBDIMENSIONS: [SubdimensionInterpretation; 6] = [
+    // N1 焦虑
+    SubdimensionInterpretation {
+        dimension: Subdimension::N(NegativeEmotionalitySubdimension::N1),
+        name: "焦虑",
+        description: "对未来、未知或负面事件的担忧程度",
+        analysis: &[
+            "几乎从不焦虑，即使面临重大事件也异常镇定",
+            "很少感到焦虑，能够平静应对大多数压力情境",
+            "偶尔会焦虑，但能很快平复，不常胡思乱想",
+            "适度焦虑，在重要事情前会担心但能控制",
+            "中等焦虑水平，对未知有一定担忧但通常合理",
+            "比常人更易焦虑，会为各种可能性做准备",
+            "经常感到焦虑，对小事也容易担心紧张",
+            "高焦虑，常预想最坏情况，影响生活决策",
+            "极高频度焦虑，时刻担忧各种可能风险",
+            "持续极端焦虑，难以放松，常被恐惧支配",
+        ],
+    },
+    // N2 愤怒、敌意
+    SubdimensionInterpretation {
+        dimension: Subdimension::N(NegativeEmotionalitySubdimension::N2),
+        name: "愤怒与敌意",
+        description: "容易生气、产生敌意或对他人不满的程度",
+        analysis: &[
+            "几乎从不生气，极其宽容平和",
+            "很少发脾气，对人极为宽容耐心",
+            "偶有不满但不轻易发怒，能理性表达",
+            "会生气但能控制，不常表现出敌意",
+            "正常愤怒水平，受挑衅时会合理反击",
+            "比常人更易恼怒，对不公平更敏感",
+            "经常生气，容易对他人产生不满",
+            "高愤怒倾向，常有敌意情绪，难宽容",
+            "极易暴怒，常怀敌意，易与人冲突",
+            "极端易怒，敌意极强，几乎无法控制愤怒",
+        ],
+    },
+    // N3 抑郁
+    SubdimensionInterpretation {
+        dimension: Subdimension::N(NegativeEmotionalitySubdimension::N3),
+        name: "抑郁",
+        description: "感到情绪低落、悲观或失去兴趣的程度",
+        analysis: &[
+            "极其乐观，几乎从不情绪低落",
+            "非常积极，很少感到悲伤或失去兴趣",
+            "偶尔情绪低落但很快恢复，整体乐观",
+            "适度悲观情绪，遇到挫折会低落但能走出",
+            "正常抑郁倾向，有高低起伏但总体平衡",
+            "比常人更易抑郁，常反思负面可能性",
+            "经常情绪低落，对许多事提不起兴趣",
+            "高频度抑郁，常感悲伤无望，恢复缓慢",
+            "深度抑郁倾向，长期情绪低落影响生活",
+            "极端抑郁，持续强烈悲伤，完全丧失兴趣",
+        ],
+    },
+    // N4 自我意识/人际关系敏感
+    SubdimensionInterpretation {
+        dimension: Subdimension::N(NegativeEmotionalitySubdimension::N4),
+        name: "自我意识/人际敏感",
+        description: "在意他人看法、容易感到尴尬或被评价的程度",
+        analysis: &[
+            "完全不在意他人评价，社交中极度自在",
+            "极少在意别人看法，社交轻松自然",
+            "偶会在意评价但不困扰，社交基本自在",
+            "适度关注他人看法，会因此调整行为",
+            "正常敏感度，希望被认可但不过度在意",
+            "比常人更在意评价，社交中略显拘谨",
+            "非常在意他人眼光，常担心被负面评价",
+            "高度敏感，易感尴尬，社交压力很大",
+            "极度在意他人看法，几乎无法放松社交",
+            "完全被他人评价支配，社交中极度焦虑",
+        ],
+    },
+    // N5 冲动性
+    SubdimensionInterpretation {
+        dimension: Subdimension::N(NegativeEmotionalitySubdimension::N5),
+        name: "冲动性",
+        description: "做事是否容易冲动、缺乏思考的程度",
+        analysis: &[
+            "极其谨慎，凡事深思熟虑后才行动",
+            "非常谨慎，很少做出冲动决定",
+            "通常谨慎，偶有冲动但影响不大",
+            "适度冲动，有时会凭直觉做决定",
+            "正常冲动水平，平衡思考与直觉",
+            "比常人更易冲动，常凭感觉决策",
+            "经常冲动行事，事后常反思决策",
+            "高度冲动，很少考虑后果就行动",
+            "极度冲动，几乎不思考就做决定",
+            "完全冲动主导，行为完全缺乏规划",
+        ],
+    },
+    // N6 脆弱性
+    SubdimensionInterpretation {
+        dimension: Subdimension::N(NegativeEmotionalitySubdimension::N6),
+        name: "脆弱性",
+        description: "面对压力或挫折时的抗压能力",
+        analysis: &[
+            "极其坚韧，面对巨大压力也从容应对",
+            "非常抗压，困难面前保持冷静高效",
+            "抗压能力较强，能处理大多数挫折",
+            "适度抗压，遇到困难需要一些时间恢复",
+            "正常脆弱性，有压力反应但能应对",
+            "比常人更易被压力影响，需要支持",
+            "抗压能力较弱，压力下效率明显下降",
+            "高度脆弱，遇到挫折容易情绪崩溃",
+            "极其脆弱，微小压力就可能导致崩溃",
+            "完全无法承受压力，需要持续外部支持",
+        ],
+    },
+];
+
+// ===================== 外向性（E）子维度解释 =====================
+const E_SUBDIMENSIONS: [SubdimensionInterpretation; 6] = [
+    // E1 热情
+    SubdimensionInterpretation {
+        dimension: Subdimension::E(ExtraversionSubdimension::E1),
+        name: "热情",
+        description: "对待他人友好、温暖和亲近的程度",
+        analysis: &[
+            "极其冷淡疏远，几乎不表达情感",
+            "非常冷淡，很少表现出热情或友好",
+            "略显冷淡，但基本礼貌",
+            "适度热情，对熟人友好但不过度",
+            "正常热情水平，能友好待人",
+            "比常人更热情，容易表达友好",
+            "非常热情，经常表现出温暖和亲近",
+            "高度热情，对大多数人非常友好温暖",
+            "极其热情，几乎对所有人表达强烈友好",
+            "极端热情，时刻充满情感表达和亲近感",
+        ],
+    },
+    // E2 乐群性
+    SubdimensionInterpretation {
+        dimension: Subdimension::E(ExtraversionSubdimension::E2),
+        name: "乐群性",
+        description: "喜欢与他人相处和参与社交活动的程度",
+        analysis: &[
+            "极度孤僻，强烈避免社交活动",
+            "非常孤僻，更喜欢独处",
+            "略显孤僻，社交有限但能参与",
+            "适度合群，有选择地参与社交",
+            "正常合群水平，享受适度社交",
+            "比常人更合群，喜欢社交活动",
+            "非常合群，经常参与各种社交",
+            "高度合群，几乎所有时间都想与人相处",
+            "极其合群，无法忍受孤独",
+            "极端合群，完全依赖社交活动获得能量",
+        ],
+    },
+    // E3 自信
+    SubdimensionInterpretation {
+        dimension: Subdimension::E(ExtraversionSubdimension::E3),
+        name: "自信",
+        description: "在社交场合中自信和主导的程度",
+        analysis: &[
+            "极其不自信，社交中完全被动",
+            "非常不自信，避免成为关注焦点",
+            "略显不自信，但能在熟悉环境表达",
+            "适度自信，能在舒适区主导",
+            "正常自信水平，平衡主动与倾听",
+            "比常人更自信，常主动发言",
+            "非常自信，在社交中表现主导",
+            "高度自信，几乎总是掌控社交场合",
+            "极其自信，强烈的存在感和影响力",
+            "极端自信，在任何场合都完全主导",
+        ],
+    },
+    // E4 活跃性
+    SubdimensionInterpretation {
+        dimension: Subdimension::E(ExtraversionSubdimension::E4),
+        name: "活跃性",
+        description: "日常生活中的精力和活动水平",
+        analysis: &[
+            "极其低活力，总是感到疲惫无力",
+            "非常低活力，活动量很小",
+            "活力较低，需要大量休息",
+            "适度活力，能完成日常活动",
+            "正常活力水平，保持日常节奏",
+            "比常人更有活力，喜欢保持忙碌",
+            "非常活跃，精力充沛",
+            "高度活跃，几乎总是充满能量",
+            "极其活跃，难以静下来休息",
+            "极端活跃，时刻精力旺盛不停歇",
+        ],
+    },
+    // E5 寻求刺激
+    SubdimensionInterpretation {
+        dimension: Subdimension::E(ExtraversionSubdimension::E5),
+        name: "寻求刺激",
+        description: "追求兴奋、刺激和新奇体验的程度",
+        analysis: &[
+            "极其规避刺激，强烈偏好稳定常规",
+            "非常规避刺激，喜欢可预测环境",
+            "略显规避刺激，偶尔尝试新事物",
+            "适度寻求刺激，平衡常规与新奇",
+            "正常刺激寻求水平，适度尝试新体验",
+            "比常人更爱刺激，常寻求新鲜感",
+            "非常爱刺激，经常尝试冒险活动",
+            "高度寻求刺激，生活充满新奇体验",
+            "极其爱刺激，几乎无法忍受常规",
+            "极端寻求刺激，持续追求高风险体验",
+        ],
+    },
+    // E6 积极情绪
+    SubdimensionInterpretation {
+        dimension: Subdimension::E(ExtraversionSubdimension::E6),
+        name: "积极情绪",
+        description: "体验到快乐、乐观和愉快情绪的频率",
+        analysis: &[
+            "极其少积极情绪，几乎从不感到快乐",
+            "非常少积极情绪，很少表现快乐",
+            "略显低落，但偶尔感到愉快",
+            "适度积极情绪，有正常的快乐体验",
+            "正常积极情绪水平，经常感到愉快",
+            "比常人更积极，经常快乐乐观",
+            "非常积极，几乎总是心情愉快",
+            "高度积极，持续体验到强烈快乐",
+            "极其积极，时刻充满愉悦感",
+            "极端积极，几乎无法抑制的快乐情绪",
+        ],
+    },
+];
+
+// ===================== 开放性（O）子维度解释 =====================
+const O_SUBDIMENSIONS: [SubdimensionInterpretation; 6] = [
+    // O1 想象力
+    SubdimensionInterpretation {
+        dimension: Subdimension::O(OpenMindednessSubdimension::O1),
+        name: "想象力",
+        description: "拥有丰富想象力和内心世界的程度",
+        analysis: &[
+            "极其缺乏想象，完全现实导向",
+            "非常缺乏想象，很少幻想",
+            "想象力有限，主要关注现实",
+            "适度想象力，偶尔幻想但不沉迷",
+            "正常想象水平，平衡现实与想象",
+            "比常人更有想象力，常沉浸幻想",
+            "非常富有想象力，拥有丰富内心世界",
+            "高度想象力，经常创造复杂幻想",
+            "极其富有想象力，几乎活在幻想中",
+            "极端想象力，完全被内心世界主导",
+        ],
+    },
+    // O2 审美/艺术美感
+    SubdimensionInterpretation {
+        dimension: Subdimension::O(OpenMindednessSubdimension::O2),
+        name: "审美",
+        description: "对艺术、美感和审美体验的欣赏程度",
+        analysis: &[
+            "完全无视艺术和美，无审美兴趣",
+            "非常不关注审美，很少欣赏艺术",
+            "审美兴趣有限，只关注实用",
+            "适度审美欣赏，偶尔关注艺术",
+            "正常审美水平，能欣赏常见美",
+            "比常人更爱美，常欣赏艺术",
+            "非常注重审美，经常参与艺术活动",
+            "高度审美敏感，强烈艺术鉴赏力",
+            "极其注重审美，生活围绕美展开",
+            "极端审美追求，完全被美感支配",
+        ],
+    },
+    // O3 感受丰富度
+    SubdimensionInterpretation {
+        dimension: Subdimension::O(OpenMindednessSubdimension::O3),
+        name: "感受丰富度",
+        description: "对自身和他人情感的觉察与体验深度",
+        analysis: &[
+            "极其情感淡漠，几乎不关注感受",
+            "非常情感淡漠，很少体验深刻情感",
+            "情感体验有限，主要关注表面",
+            "适度感受丰富，能体验基本情感",
+            "正常情感深度，能理解复杂感受",
+            "比常人感受更丰富，情感体验深",
+            "非常感受丰富，经常深入体验情感",
+            "高度情感敏感，强烈共情能力",
+            "极其感受丰富，时刻体验深刻情感",
+            "极端情感深度，完全被感受淹没",
+        ],
+    },
+    // O4 尝鲜
+    SubdimensionInterpretation {
+        dimension: Subdimension::O(OpenMindednessSubdimension::O4),
+        name: "尝鲜",
+        description: "愿意尝试新事物、新体验的程度",
+        analysis: &[
+            "极其抗拒新事物，强烈偏好熟悉",
+            "非常抗拒新事物，很少尝试新体验",
+            "略显保守，但偶尔尝试小变化",
+            "适度开放，平衡熟悉与新鲜",
+            "正常尝新水平，适度尝试新事物",
+            "比常人更爱尝新，常寻求新体验",
+            "非常爱尝新，经常尝试不同事物",
+            "高度开放，生活充满新体验",
+            "极其爱尝新，几乎无法忍受常规",
+            "极端尝新追求，持续寻找全新体验",
+        ],
+    },
+    // O5 思辨/求知
+    SubdimensionInterpretation {
+        dimension: Subdimension::O(OpenMindednessSubdimension::O5),
+        name: "思辨",
+        description: "对抽象概念、哲学问题的兴趣程度",
+        analysis: &[
+            "完全无思辨兴趣，只关注具体事实",
+            "非常缺乏思辨，很少思考抽象问题",
+            "思辨有限，主要在实用层面思考",
+            "适度思辨，偶尔思考抽象问题",
+            "正常思辨水平，能进行抽象思考",
+            "比常人更爱思辨，常思考深层问题",
+            "非常爱思辨，经常探讨哲学概念",
+            "高度思辨，深度探索抽象理论",
+            "极其爱思辨，几乎只思考抽象问题",
+            "极端思辨追求，完全沉浸抽象世界",
+        ],
+    },
+    // O6 价值观
+    SubdimensionInterpretation {
+        dimension: Subdimension::O(OpenMindednessSubdimension::O6),
+        name: "价值观",
+        description: "对社会规范和传统价值观的挑战程度",
+        analysis: &[
+            "极其传统保守，严格遵守社会规范",
+            "非常传统，很少质疑现有价值观",
+            "略显保守，但能接受小变化",
+            "适度开放，平衡传统与创新",
+            "正常开放水平，有选择地接受新观念",
+            "比常人更开放，常质疑传统观念",
+            "非常开放，经常挑战社会规范",
+            "高度开放，强烈反传统倾向",
+            "极其开放，几乎完全拒绝传统",
+            "极端开放，彻底颠覆所有传统价值观",
+        ],
+    },
+];
+
+// ===================== 宜人性（A）子维度解释 =====================
+const A_SUBDIMENSIONS: [SubdimensionInterpretation; 6] = [
+    // A1 信任
+    SubdimensionInterpretation {
+        dimension: Subdimension::A(AgreeablenessSubdimension::A1),
+        name: "信任",
+        description: "对他人的信任程度，是否容易怀疑他人",
+        analysis: &[
+            "极其多疑，几乎不相信任何人",
+            "非常多疑，总是怀疑他人动机",
+            "略显多疑，需要时间建立信任",
+            "适度信任，平衡信任与谨慎",
+            "正常信任水平，通常相信他人善意",
+            "比常人更信任，容易相信别人",
+            "非常信任，通常认为他人诚实",
+            "高度信任，几乎总是相信他人",
+            "极其信任，很难怀疑任何人",
+            "极端信任，完全天真轻信他人",
+        ],
+    },
+    // A2 坦诚
+    SubdimensionInterpretation {
+        dimension: Subdimension::A(AgreeablenessSubdimension::A2),
+        name: "坦诚",
+        description: "待人是否真诚、坦率，是否愿意表露真实想法",
+        analysis: &[
+            "极其不坦诚，总是隐藏真实想法",
+            "非常不坦诚，很少表达真实感受",
+            "略显保留，选择性表达想法",
+            "适度坦诚，在舒适区表达真实",
+            "正常坦诚水平，通常诚实但考虑他人感受",
+            "比常人更坦诚，经常直言不讳",
+            "非常坦诚，几乎总是表达真实想法",
+            "高度坦诚，完全诚实不考虑后果",
+            "极其坦诚，毫无保留表达一切",
+            "极端坦诚，完全不顾及他人感受的直率",
+        ],
+    },
+    // A3 利他
+    SubdimensionInterpretation {
+        dimension: Subdimension::A(AgreeablenessSubdimension::A3),
+        name: "利他",
+        description: "愿意为他人付出、帮助他人的程度",
+        analysis: &[
+            "极其自私，几乎从不帮助他人",
+            "非常自私，很少考虑他人需要",
+            "略显自私，但会帮助亲近的人",
+            "适度利他，平衡自我与他人需要",
+            "正常利他水平，愿意帮助他人",
+            "比常人更利他，经常主动帮助",
+            "非常利他，总是考虑他人福祉",
+            "高度利他，几乎总把他人放第一位",
+            "极其利他，完全忽视自己需要",
+            "极端利他，完全自我牺牲倾向",
+        ],
+    },
+    // A4 顺从
+    SubdimensionInterpretation {
+        dimension: Subdimension::A(AgreeablenessSubdimension::A4),
+        name: "顺从",
+        description: "是否愿意妥协、配合他人，避免冲突的程度",
+        analysis: &[
+            "极其不顺从，总是坚持自己观点",
+            "非常不顺从，很少妥协",
+            "略显固执，但能在重要事情妥协",
+            "适度顺从，平衡坚持与妥协",
+            "正常顺从水平，合理让步避免冲突",
+            "比常人更顺从，经常让步妥协",
+            "非常顺从，几乎总是避免冲突",
+            "高度顺从，总是顺从他人意愿",
+            "极其顺从，完全不敢表达反对",
+            "极端顺从，完全丧失自我意愿",
+        ],
+    },
+    // A5 谦逊
+    SubdimensionInterpretation {
+        dimension: Subdimension::A(AgreeablenessSubdimension::A5),
+        name: "谦逊",
+        description: "是否低调、不自夸，看待自己成就的态度",
+        analysis: &[
+            "极其自负，总是夸耀自己成就",
+            "非常自负，很少承认他人优点",
+            "略显自负，但能适当谦逊",
+            "适度谦逊，平衡自信与谦虚",
+            "正常谦逊水平，适当表现但不张扬",
+            "比常人更谦逊，经常贬低自己",
+            "非常谦逊，总是低调不张扬",
+            "高度谦逊，几乎从不接受表扬",
+            "极其谦逊，完全否定自己价值",
+            "极端谦逊，病态的自卑和贬低",
+        ],
+    },
+    // A6 同理心
+    SubdimensionInterpretation {
+        dimension: Subdimension::A(AgreeablenessSubdimension::A6),
+        name: "同理心",
+        description: "理解和感受他人情绪的能力",
+        analysis: &[
+            "完全缺乏同理心，无法理解他人感受",
+            "非常缺乏同理心，很少考虑他人情绪",
+            "同理心有限，主要理解表面情绪",
+            "适度同理心，能理解基本情感",
+            "正常同理心水平，能体会他人感受",
+            "比常人更有同理心，常感同身受",
+            "非常强的同理心，深刻理解他人情绪",
+            "高度同理心，几乎能感受他人一切",
+            "极其强的同理心，常被他人情绪淹没",
+            "极端同理心，完全失去自我情绪边界",
+        ],
+    },
+];
+
+// ===================== 尽责性（C）子维度解释 =====================
+const C_SUBDIMENSIONS: [SubdimensionInterpretation; 6] = [
+    // C1 能力
+    SubdimensionInterpretation {
+        dimension: Subdimension::C(ConscientiousnessSubdimension::C1),
+        name: "能力",
+        description: "对自己能力的信心和做事的胜任力",
+        analysis: &[
+            "完全无能感，认为自己什么都做不好",
+            "非常低能力感，缺乏完成任务信心",
+            "能力感有限，只对熟悉任务有信心",
+            "适度能力感，对多数任务有信心",
+            "正常能力感，合理评估自己能力",
+            "比常人更有能力感，常自信能胜任",
+            "非常强的能力感，相信自己能做好一切",
+            "高度能力感，几乎从不怀疑自己能力",
+            "极其强的能力感，过度自信倾向",
+            "极端能力感，完全不现实的自我高估",
+        ],
+    },
+    // C2 条理性
+    SubdimensionInterpretation {
+        dimension: Subdimension::C(ConscientiousnessSubdimension::C2),
+        name: "条理性",
+        description: "做事是否有计划、有条理，生活和工作是否整洁",
+        analysis: &[
+            "完全无序，生活工作极度混乱",
+            "非常无序，很少有计划安排",
+            "略显无序，但能维持基本秩序",
+            "适度条理，重要事情会计划",
+            "正常条理水平，保持基本组织性",
+            "比常人更有条理，喜欢计划一切",
+            "非常条理，生活工作高度组织化",
+            "高度条理，严格遵循计划安排",
+            "极其条理，无法忍受任何无序",
+            "极端条理，病态的秩序和控制需求",
+        ],
+    },
+    // C3 责任感
+    SubdimensionInterpretation {
+        dimension: Subdimension::C(ConscientiousnessSubdimension::C3),
+        name: "责任感",
+        description: "对自己的承诺和任务负责的程度",
+        analysis: &[
+            "完全无责任感，从不履行承诺",
+            "非常缺乏责任感，经常逃避责任",
+            "责任感有限，只对重要承诺负责",
+            "适度责任感，通常会履行承诺",
+            "正常责任感水平，认真对待责任",
+            "比常人更有责任感，总是尽力负责",
+            "非常强的责任感，视承诺为必须",
+            "高度责任感，承担过多责任",
+            "极其强的责任感，无法拒绝任何责任",
+            "极端责任感，病态的责任负担",
+        ],
+    },
+    // C4 成就追求
+    SubdimensionInterpretation {
+        dimension: Subdimension::C(ConscientiousnessSubdimension::C4),
+        name: "成就追求",
+        description: "对成就的渴望和努力程度",
+        analysis: &[
+            "完全无成就动机，满足于最低标准",
+            "非常低成就动机，很少追求卓越",
+            "成就动机有限，只在意重要目标",
+            "适度成就追求，在关键领域努力",
+            "正常成就动机，合理追求成功",
+            "比常人更追求成就，常设高目标",
+            "非常强的成就动机，总是追求卓越",
+            "高度成就追求，几乎所有事都追求最好",
+            "极其强的成就动机，无法接受不完美",
+            "极端成就追求，病态的完美主义",
+        ],
+    },
+    // C5 自律
+    SubdimensionInterpretation {
+        dimension: Subdimension::C(ConscientiousnessSubdimension::C5),
+        name: "自律",
+        description: "坚持完成任务、克服困难的能力",
+        analysis: &[
+            "完全无自律，几乎从不坚持完成任务",
+            "非常缺乏自律，经常半途而废",
+            "自律有限，只对感兴趣事坚持",
+            "适度自律，能在监督下完成任务",
+            "正常自律水平，通常能坚持到底",
+            "比常人更自律，有很强意志力",
+            "非常强的自律，总能克服困难完成",
+            "高度自律，严格自我要求和控制",
+            "极其强的自律，近乎苛刻的自我控制",
+            "极端自律，完全压抑本能的自我控制",
+        ],
+    },
+    // C6 审慎
+    SubdimensionInterpretation {
+        dimension: Subdimension::C(ConscientiousnessSubdimension::C6),
+        name: "审慎",
+        description: "做事是否谨慎、考虑周全的程度",
+        analysis: &[
+            "完全冲动，从不思考后果",
+            "非常冲动，很少仔细考虑",
+            "略显冲动，但重大决定会思考",
+            "适度审慎，平衡思考与行动",
+            "正常审慎水平，通常会思考后果",
+            "比常人更审慎，总是深思熟虑",
+            "非常审慎，行动前仔细分析一切",
+            "高度审慎，过度分析导致犹豫",
+            "极其审慎，几乎无法做出决定",
+            "极端审慎，完全的分析瘫痪",
+        ],
+    },
+];
+
+// ===================== 核心维度解释 =====================
+const DIMENSIONS: &[DimensionInterpretation; 5] = &[
+    // 神经质（N）
+    DimensionInterpretation {
+        dimension: Dimension::N,
+        name: "神经质/情绪稳定性",
+        terminology: "Neuroticism",
+        description: "衡量一个人情绪的稳定性和抗压能力",
+        analysis: &[
+            "情绪极其稳定，几乎不会感到焦虑、愤怒或抑郁，抗压能力超强，面对任何挫折都能保持冷静",
+            "情绪很稳定，很少有负面情绪，只有极端情况才会感到不安，能快速调整心态",
+            "情绪较稳定，偶尔有负面情绪，但持续时间短，能自我调节，不影响正常生活",
+            "情绪稳定性中等，遇到压力会有负面情绪，但大部分时候能控制，需要一定时间恢复",
+            "情绪稳定性一般，负面情绪出现频率适中，需要他人或自我调节才能恢复",
+            "情绪稍不稳定，经常有负面情绪，容易焦虑或生气，恢复时间较长",
+            "情绪较不稳定，负面情绪频繁，容易陷入焦虑、抑郁，影响日常生活",
+            "情绪很不稳定，大部分时间被负面情绪困扰，抗压能力差，容易情绪崩溃",
+            "情绪极不稳定，长期处于负面情绪中，焦虑、愤怒、抑郁交替出现，需要外界帮助",
+            "情绪完全失控，时刻被强烈的负面情绪支配，无法自我调节，严重影响生活",
+        ],
+        subdimension_interpretations: &N_SUBDIMENSIONS,
+    },
+    // 外向性（E）
+    DimensionInterpretation {
+        dimension: Dimension::E,
+        name: "外向性",
+        terminology: "Extraversion",
+        description: "衡量一个人是否喜欢社交、内向或者外向的程度",
+        analysis: &[
+            "极度内向，完全从独处中获取能量，社交会感到极度疲惫，几乎不参加社交活动",
+            "非常内向，喜欢独处，只有必要时才社交，社交后需要大量时间恢复",
+            "比较内向，偏好独处，但能应付必要的社交，不主动发起社交",
+            "轻微内向，独处和社交都能接受，独处时更放松，社交后需要短暂休息",
+            "内外向平衡，既能享受独处，也能享受社交，能量来源均衡",
+            "轻微外向，喜欢社交，独处时间过长会感到无聊，社交后精力充沛",
+            "比较外向，主动发起社交，喜欢和人相处，独处时间不宜过长",
+            "非常外向，极度喜欢社交，从社交中获得大量能量，独处会感到孤独",
+            "极度外向，几乎离不开社交，独处时会感到不适，需要不断和人互动",
+            "完全外向，社交是主要的生活方式，一刻也不想独处，永远需要有人陪伴",
+        ],
+        subdimension_interpretations: &E_SUBDIMENSIONS,
+    },
+    // 开放性（O）
+    DimensionInterpretation {
+        dimension: Dimension::O,
+        name: "开放性",
+        terminology: "Openness to Experience",
+        description: "衡量一个人对新事物、新想法的接受程度和思维的开放程度",
+        analysis: &[
+            "极度保守，只喜欢熟悉的事物，拒绝任何新想法和新体验，思维固定不变",
+            "非常保守，偏好传统和熟悉的事物，对新事物有强烈的抵触情绪",
+            "比较保守，接受少量主流的新事物，大部分时候喜欢按部就班",
+            "轻微保守，基本接受现状，偶尔尝试小的改变，不喜欢大的变化",
+            "开放性中等，既接受传统也接受新事物，不极端，能平衡保守和创新",
+            "轻微开放，愿意尝试新事物，对新想法有好奇心，偶尔突破常规",
+            "比较开放，喜欢新想法和新体验，主动尝试不同的生活方式",
+            "非常开放，极度好奇，乐于接受各种新奇的想法和体验，思维活跃",
+            "极度开放，完全拥抱新鲜事物，不断追求创新，思维不受任何限制",
+            "完全开放，视变化为常态，主动创造新体验，思维没有边界",
+        ],
+        subdimension_interpretations: &O_SUBDIMENSIONS,
+    },
+    // 宜人性（A）
+    DimensionInterpretation {
+        dimension: Dimension::A,
+        name: "宜人性",
+        terminology: "Agreeableness",
+        description: "衡量一个人是否友善、合作、愿意为他人考虑",
+        analysis: &[
+            "极度自我，完全以自我为中心，不考虑他人感受，容易和人产生冲突",
+            "非常自我，优先考虑自己的利益，很少关心他人，合作意愿极低",
+            "比较自我，大部分时候考虑自己，偶尔会关心他人，合作需要条件",
+            "轻微自我，以自我为主，必要时会为他人考虑，合作意愿一般",
+            "宜人性中等，既考虑自己也考虑他人，能平衡自我和他人的需求",
+            "轻微宜人，愿意为他人考虑，合作意愿较强，偶尔会坚持自我",
+            "比较宜人，非常愿意合作，经常为他人着想，很少和人冲突",
+            "非常宜人，极度友善，总是优先考虑他人，愿意妥协和付出",
+            "极度宜人，完全以他人为中心，无底线迁就他人，避免任何冲突",
+            "完全宜人，利他主义者，愿意牺牲自己的利益满足他人，从不计较得失",
+        ],
+        subdimension_interpretations: &A_SUBDIMENSIONS,
+    },
+    // 尽责性（C）
+    DimensionInterpretation {
+        dimension: Dimension::C,
+        name: "尽责性/责任心",
+        terminology: "Conscientiousness",
+        description: "衡量一个人是否有组织、有计划、负责任",
+        analysis: &[
+            "极度随意，完全没有计划，缺乏责任感，做事随心所欲，经常违约",
+            "非常随意，很少做计划，责任感差，经常拖延，难以完成承诺",
+            "比较随意，偶尔做计划，责任感一般，容易拖延和放弃",
+            "轻微随意，有基本的计划，能完成主要任务，偶尔会拖延",
+            "尽责性中等，有计划且能执行，责任感适中，偶尔会有疏漏",
+            "轻微尽责，做事有计划，责任感较强，能按时完成任务",
+            "比较尽责，高度自律，有详细的计划，责任感强，很少出错",
+            "非常尽责，极度自律，凡事都有规划，责任感极强，追求完美",
+            "极度尽责，完美主义者，计划详尽，绝不拖延，对自己要求极高",
+            "完全尽责，把责任视为生命，任何事都做到极致，从不允许失误",
+        ],
+        subdimension_interpretations: &C_SUBDIMENSIONS,
+    },
+];
+
 const INTERPRETATION: Interpretation = Interpretation {
     norm: NORM,
     scoring_rule: SCORING_RULE,
-    dimensions: &[
-        DimensionInterpretation {
-            name: "神经质",
-            dimension: Dimension::N,
-            description: "神经质反映个体情感调节过程，反映个体体验消极情绪的倾向和情绪不稳定性。",
-            low: "较少烦恼，较少情绪化，比较平静。",
-            high:"倾向于有心理压力，不现实的想法、过多的要求和冲动，更容易体验到诸如愤怒、焦虑、抑郁等消极的情绪。对外界刺激反应比一般人强烈，对情绪的调节、应对能力比较差，经常处于一种不良的情绪状态下。并且思维、决策、以及有效应对外部压力的能力比较差。",
-            subdimension_interpretations: &[
-                SubdimensionInterpretation {
-                    name: "焦虑",
-                    dimension: Subdimension::N(NegativeEmotionalitySubdimension::N1),
-                    description: "忧虑、恐惧、容易担忧、紧张、神经过敏。",
-                    low: "心态平静，放松，不容易感到害怕，不会总是担心事情可能会出问题，情绪平静、放松、稳定。",
-                    high: "焦虑，容易感觉到危险和威胁，容易紧张、恐惧、担忧、不安。",
-                },
-                SubdimensionInterpretation {
-                    name: "愤怒和敌意",
-                    dimension: Subdimension::N(NegativeEmotionalitySubdimension::N2),
-                    description: "反映的是体验愤怒以及有关状态（如挫折、痛苦）的倾向，测量个体体验愤怒的容易程度。",
-                    low: "不容易生气、发火，友好的、脾气随和，不易动怒。",
-                    high: "容易发火，在感到自己受到不公正的待遇后会充满怨恨，暴躁的、愤怒的和受挫的。",
-                },
-                SubdimensionInterpretation {
-                    name: "抑郁",
-                    dimension: Subdimension::N(NegativeEmotionalitySubdimension::N3),
-                    description: "测量正常个体在体验抑郁情感时的不同倾向。",
-                    low: "不容易感到悲伤、很少被遗弃感。",
-                    high: "绝望的、内疚的、郁闷的、沮丧的。容易感到悲伤、被遗弃、灰心丧气。容易感到内疚、悲伤、失望和孤独。他们容易受打击，经常情绪低落。",
-                },
-                SubdimensionInterpretation {
-                    name: "自我意识",
-                    dimension: Subdimension::N(NegativeEmotionalitySubdimension::N4),
-                    description: " 核心部分是害羞和尴尬情绪体验",
-                    low: "在社交场合镇定、自信，不容易感到紧张、害羞。",
-                    high: "太关心别人如何看待自己，害怕别人嘲笑自己，在社交场合容易感到害羞、焦虑、自卑、易尴尬。",
-                },
-                SubdimensionInterpretation {
-                    name: "冲动性",
-                    dimension: Subdimension::N(NegativeEmotionalitySubdimension::N5),
-                    description: "指个体对冲动和渴望的控制。",
-                    low: "自我控制的、能抵挡诱惑的。",
-                    high: "在感受到强烈的诱惑时，不容易抑制，容易追求短时的满足而不考虑长期的后果。不能抵抗渴望的、草率的、爱挖苦人的、自我中心的。",
-                },
-                SubdimensionInterpretation {
-                    name: "脆弱性",
-                    dimension: Subdimension::N(NegativeEmotionalitySubdimension::N6),
-                    description: "指在遭受压力时的脆弱性。",
-                    low: "压力下，感到平静、自信。适应力强的、头脑清醒的、勇敢的。",
-                    high: "压力下，容易感到惊慌、混乱、无助，不能应付压力。",
-                },
-            ],
-        },
-        DimensionInterpretation {
-            name: "外向性",
-            dimension: Dimension::E,
-            description: "外向性来表示人际互动的数量和密度、对刺激的需要以及获得愉悦的能力。这个维度将社会性的、主动的、个人定向的个体和沉默的、严肃的、腼腆的、安静的人作对比。这个方面可由两个品质加以衡量：人际的卷入水平和活力水平。前者评估个体喜欢他人陪伴的程度，而后者反映了个体个人的节奏和活力水平。",
-            low: "比较安静，谨慎，不喜欢与外界过多接触。他们不喜欢与人接触不能被解释为害羞或者抑郁，这仅仅是因为比起外向的人，他们不需要那么多的刺激，因此喜欢一个人独处。内向人的这种特点有时会被人误认为是傲慢或者不友好，其实一旦和他接触你经常会发现他是一个非常和善的人。",
-            high: "喜欢与人接触，充满活力，经常感受到积极的情绪。他们热情，喜欢运动，喜欢刺激冒险。在一个群体当中，他们非常健谈，自信，喜欢引起别人的注意。",
-            subdimension_interpretations: &[
-                SubdimensionInterpretation {
-                    name: "热情",
-                    dimension: Subdimension::E(ExtraversionSubdimension::E1),
-                    description: "它和人际亲密问题最相关。",
-                    low: "虽然并不意味着冷淡、不友好，但通常会被认为是对人疏远的。",
-                    high: "热情的人喜欢周围的人，经常会向他们表达积极友好的情绪。他们善于交朋友，容易和别人形成亲密的关系。好交际的、健谈的、富有情感的。",
-                },
-                SubdimensionInterpretation {
-                    name: "乐群性",
-                    dimension: Subdimension::E(ExtraversionSubdimension::E2),
-                    description: "指偏爱有他人的陪伴。",
-                    low: "避免人群，感觉太闹。希望有更多的时间独处，有自己的个人空间。避开人群的、喜欢独处的。",
-                    high: "喜欢与人相处，喜欢人多热闹的场合。开朗的、有许多朋友的、寻求社会联系的。",
-                },
-                SubdimensionInterpretation {
-                    name: "独断性",
-                    dimension: Subdimension::E(ExtraversionSubdimension::E3),
-                    description: "指一个人在社交场合表现得自信、有主见和有影响力。",
-                    low: "在人群中话很少，让别人处于主导支配地位。谦逊的、腼腆的、沉默寡言的。",
-                    high: "喜欢在人群中处于支配地位，指挥别人，影响别人的行为。支配的、有说服力的自信的、果断的。",
-                },
-                SubdimensionInterpretation {
-                    name: "活跃性",
-                    dimension: Subdimension::E(ExtraversionSubdimension::E4),
-                    description: "指一个人在社交和非社交环境中的活跃程度。",
-                    low: "在生活工作中慢节奏，悠闲的，不着急的、缓慢的、从容不迫的。",
-                    high: "在生活工作中快节奏，忙碌，显得充满精力，喜欢参与很多事情，精力充沛的、快节奏的、充满活力的。",
-                },
-                SubdimensionInterpretation {
-                    name: "寻求刺激",
-                    dimension: Subdimension::E(ExtraversionSubdimension::E5),
-                    description: "指一个人对刺激事物的追求。",
-                    low: "避免喧嚣和吵闹，讨厌冒险，谨慎的、沉静的，对刺激不感兴趣的。",
-                    high: "在缺乏刺激的情况下容易感到厌烦，喜欢喧嚣吵闹，喜欢冒险，寻求刺激、浮华、寻求强烈刺激，喜欢冒险。",
-                },
-                SubdimensionInterpretation {
-                    name: "积极情绪",
-                    dimension: Subdimension::E(ExtraversionSubdimension::E6),
-                    description: "表示体验积极情绪（如喜悦、快乐、爱和兴奋）的倾向。",
-                    low: "不容易感受到各种积极的情绪，但并不意味着一定会感受到各种负面情绪。低分者只是不那么容易兴奋起来。不热情的、平静的、严肃的。",
-                    high: "容易感受到各种积极的情绪，如快乐、乐观、兴奋等。快乐的情绪高涨的、愉悦的、乐观的。",
-                },
-            ],
-        },
-            DimensionInterpretation {
-            name: "开放性",
-            dimension: Dimension::O,
-            description: "开放性描述一个人的认知风格。对经验的开放性被定义为：为了自身的缘故对经验的前摄（proactive）寻求理解，以及对陌生情境的容忍和探索。这个维度将那些好奇的、新颖的、非传统的以及有创造性的个体与那些传统的、无艺术兴趣的、无分析能力的个体做比较。",
-            low: "封闭性的人讲求实际，偏爱常规，比较传统和保守。",
-            high: "开放性的人偏爱抽象思维，兴趣广泛。",
-            subdimension_interpretations: &[
-                SubdimensionInterpretation {
-                    name: "想象力",
-                    dimension: Subdimension::O(OpenMindednessSubdimension::O1),
-                    description: "对想象开放的人有生动的想象和活跃的幻想生活。",
-                    low: "理性的、现实的，实干的，更喜欢现实思考的。",
-                    high: "对于他们来说，现实世界太平淡了。喜欢充满幻想，创造一个更有趣、丰富的世界。想象力丰富的、爱做白日梦的。",
-                },
-                SubdimensionInterpretation {
-                    name: "审美",
-                    dimension: Subdimension::O(OpenMindednessSubdimension::O2),
-                    description: "指一个人对美感的敏感度和欣赏力。",
-                    low: "对美缺乏敏感性，对艺术不感兴趣。对艺术不敏感的、不理解的。",
-                    high: "欣赏自然和艺术中的美。重视审美经历的、能为艺术和美所感动的。",
-                },
-                SubdimensionInterpretation {
-                    name: "情感丰富性",
-                    dimension: Subdimension::O(OpenMindednessSubdimension::O3),
-                    description: "指一个人的情感体验丰富程度。",
-                    low: "较少感知到自己的情感和内心世界，也不愿意坦率地表达出来。情绪范围窄、对环境不敏感。",
-                    high: "容易感知自己的情绪和内心世界。敏感的、移情的、重视自己感受的。",
-                },
-                SubdimensionInterpretation {
-                    name: "尝新",
-                    dimension: Subdimension::O(OpenMindednessSubdimension::O4),
-                    description: "对新鲜事物的追求。",
-                    low: "对不熟悉的事物感到有些不舒服，喜欢熟悉的环境和人。生活方式固定、喜欢熟悉的事物。",
-                    high: "喜欢接触新的事物，去外面旅行、体验不同的经验。感觉千篇一律令人乏味，愿意去尝试新的事物。寻求新异和多样性、尝试新的活动。",
-                },
-                SubdimensionInterpretation {
-                    name: "思辨",
-                    dimension: Subdimension::O(OpenMindednessSubdimension::O5),
-                    description: "为了他们自身的缘故而积极追求理智上的兴趣，思路开阔、愿意思考新的、非常规的观点。",
-                    low: "事务的、事实定向的、不欣赏思想挑战的。",
-                    high: "有求知欲的、善于分析的、理论定向的。",
-                },
-                SubdimensionInterpretation {
-                    name: "价值观",
-                    dimension: Subdimension::O(OpenMindednessSubdimension::O6),
-                    description: "对权威和常规的接受度",
-                    low: "喜欢遵循权威和常规带来的稳定和安全感，不会去挑战现有秩序和权威。教条的、保守的、顺从的。",
-                    high: "喜欢挑战权威、常规和传统观念。在极端状态下，他们会表现出对现存规则的敌意，同情那些打破现存法律的人，喜欢混乱、冲突和无序的状态。能容忍的、宽宏大量的、不顺从的。",
-                },
-            ],
-        },
-            DimensionInterpretation {
-            name: "宜人性",
-            dimension: Dimension::A,
-            description: "个体对其他人所持的态度，这些态度一方面包括亲近人的、有同情心的、信任他人的、宽大的、心软的，另一方面包括敌对的、愤世嫉俗的、爱摆布人的、复仇心重的、无情的。这里所说的广义的人际定向范围。宜人性代表了“爱”，对合作和人际和谐是否看重。",
-            low: "把自己的利益放在别人的利益之上。本质上，他们不关心别人的利益，因此也不乐意去帮助别人。有时候，他们对别人是非常多疑的，怀疑别人的动机。",
-            high: "善解人意的、友好的、慷慨大方的、乐于助人的，愿意为了别人放弃自己的利益。",
-            subdimension_interpretations: &[
-                SubdimensionInterpretation {
-                    name: "信任",
-                    dimension: Subdimension::A(AgreeablenessSubdimension::A1),
-                    description: "一个人对他人的信任度。",
-                    low: "认为别人是自私、危险、想占自己便宜。谨慎的、悲观的、猜忌的、铁石心肠的。",
-                    high: "相信别人是诚实、可信和有良好动机的。宽恕的、信任他人的、平和的。",
-                },
-                SubdimensionInterpretation {
-                    name: "坦诚",
-                    dimension: Subdimension::A(AgreeablenessSubdimension::A2),
-                    description: "指一个人坦诚、真诚和直接的程度。",
-                    low: "在与人交往时往往会掩饰自己，防卫心理较重，不愿意向别人露出自己的底牌。精明的、机敏的（clever）、献媚的。",
-                    high: "认为在与人交往时没有必要去掩饰，显得坦率、真诚。直接的、坦率的、坦白的、老实的。",
-                },
-                SubdimensionInterpretation {
-                    name: "利他",
-                    dimension: Subdimension::A(AgreeablenessSubdimension::A3),
-                    description: "指一个人愿意帮助他人的程度。",
-                    low: "不愿意帮助别人，感觉帮助别人是一种负担。自私的、愤世嫉俗的、冷酷的、势利的。",
-                    high: "愿意帮助别人，感觉帮助别人是一种乐趣。热心的、心软的、温和的、慷慨的、好心的。",
-                },
-                SubdimensionInterpretation {
-                    name: "顺从",
-                    dimension: Subdimension::A(AgreeablenessSubdimension::A4),
-                    description: "指一个人乐于服从他人和遵守规则。",
-                    low: "不介意与人发生冲突，会为了达到自己的目的去威胁别人。倔强的、有过分要求的、刚愎自用的、铁石心肠的。",
-                    high: "不喜欢与人发生冲突，为了与人相处，愿意放弃自己的立场或者否定自己的需要。恭顺的、有求必应的、好心的。",
-                },
-                SubdimensionInterpretation {
-                    name: "谦逊",
-                    dimension: Subdimension::A(AgreeablenessSubdimension::A5),
-                    description: "指一个人不夸耀自己、不张扬的程度。",
-                    low: "攻击的、傲慢的、爱炫耀的、粗暴的。",
-                    high: "谦逊的、不摆架子的。",
-                },
-                SubdimensionInterpretation {
-                    name: "同理心",
-                    dimension: Subdimension::A(AgreeablenessSubdimension::A6),
-                    description: "对他人的同情心和关心的态度。",
-                    low: "对别人的痛苦没有强烈的感受，为自己的客观而感到自豪，更关心真实、公平而不是仁慈。心胸狭窄的、冷酷的、固执己见的、势利的。",
-                    high: "富有同情心，容易感受到别人的悲伤，表示同情。友好的、热心的、温和的、心软的。",
-                },
-            ],
-        },
-            DimensionInterpretation {
-            name: "尽责性/责任心",
-            dimension: Dimension::C,
-            description: "指我们控制、管理和调节自身冲动的方式，评估个体在目标导向行为上的组织、坚持和动机。它把可信赖的、讲究的个体和懒散的、马虎的个体作比较。同时反映个体自我控制的程度以及推迟需求满足的能力。",
-            low: "通常比较随意、懒散、不守时。",
-            high:"通常有条理、有组织、有责任心。",
-            subdimension_interpretations: &[
-                SubdimensionInterpretation {
-                    name: "能力",
-                    dimension: Subdimension::C(ConscientiousnessSubdimension::C1),
-                    description: "表示对某人有能力的、明智的、深谋远虑的、高效的感觉。",
-                    low: "对自己的能力不自信，不相信自己可以控制自己的工作和生活。困惑的、健忘的、愚蠢的。",
-                    high: "对自己的能力自信的。高效的、一丝不苟的自信的聪明的。",
-                },
-                SubdimensionInterpretation {
-                    name: "条理性",
-                    dimension: Subdimension::C(ConscientiousnessSubdimension::C2),
-                    description: "指一个人有条理、有组织和有计划的能力。",
-                    low: "没有计划性和条理性，显得杂乱无章。无序的、易冲动的、粗心的。",
-                    high: "具有良好的条理性，喜欢制定计划，并按规则办事。精确的、高效的、有条不紊的。",
-                },
-                SubdimensionInterpretation {
-                    name: "责任感",
-                    dimension: Subdimension::C(ConscientiousnessSubdimension::C3),
-                    description: "从某方面来说，责任心意味着受良心的支配，而那是由尽责这一子维度来评估的。",
-                    low: "感觉规矩、条例是一种约束。经常被别人看作是不可靠、不负责任的。懒散的、漫不经心的、不专心的。",
-                    high: "有责任感，按规矩办事。可信赖的、有礼貌的、有组织的、一丝不苟的。",
-                },
-                SubdimensionInterpretation {
-                    name: "追求成就",
-                    dimension: Subdimension::C(ConscientiousnessSubdimension::C4),
-                    description: "指一个人对成功的渴望和追求。",
-                    low: "满足于完成基本的工作，被别人看作是懒惰的。悠闲的、爱空想的、无组织的。",
-                    high: "追求成功和卓越，通常有目标感的，甚至会被别人当作工作狂。有抱负的、勤奋的、富有进取心的、坚忍不拔的。",
-                },
-                SubdimensionInterpretation {
-                    name: "自律",
-                    dimension: Subdimension::C(ConscientiousnessSubdimension::C5),
-                    description: "指即使枯燥乏味或有其它干扰，也能执行任务并将其完成。",
-                    low: "做事拖延，经常半途而废，遇到困难容易退缩。没有抱负的、健忘的、心不在焉的。",
-                    high: "尽力完成工作和任务，克服困难，专著于自己的任务。有组织的、一丝不苟的、精力充沛的、能干的、高效的。",
-                },
-                SubdimensionInterpretation {
-                    name: "审慎",
-                    dimension: Subdimension::C(ConscientiousnessSubdimension::C6),
-                    description: "行动前是否仔细考虑的倾向。",
-                    low: "没有考虑后果，冲动，想到什么做什么。不成熟的、草率的、冲动的、粗心的。",
-                    high: "三思而后行，不冲动。谨慎的、有逻辑性的、成熟的。",
-                },
-            ],
-        },
-    ],
+    dimensions: DIMENSIONS,
 };
 
 const QUESTIONS: &[Question] = &[
@@ -2467,9 +2876,17 @@ const INSTRUCTION: Texts = &[
     ],
 ];
 
-pub const REVISED_NEOPERSONALITY_INVENTORY: Scale<Interpretation, Question> = Scale {
+pub const NEO_PERSONALITY_INVENTORY_REVISED: Scale<Interpretation, Question> = Scale {
     name: "大五人格测试",
     abbreviation: "NEO-PI-R",
+    primary_category: ScaleCategory::Personality,
+    related_categories: Some(&[
+        ScaleCategory::Emotion,
+        ScaleCategory::MentalHealth,
+        ScaleCategory::Interpersonal,
+        ScaleCategory::CareerAndAcademics,
+        ScaleCategory::Wellbeing,
+    ]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: Some(&[
@@ -2479,7 +2896,7 @@ pub const REVISED_NEOPERSONALITY_INVENTORY: Scale<Interpretation, Question> = Sc
     references: None,
     warning: Some("适用于初中三年级以上文化水平的人群。"),
     formula_mode: None,
-    tags: Tag{ info: Some(&["人格"]), normal: Some(&["自评"]), warning: Some(&["初三+"]), error: None },
+    tags: Tag{ info: Some(&["人格"]), normal: None, warning: Some(&["初三+"]), error: None },
     interpretation: INTERPRETATION,
     questions: QUESTIONS,
 };

@@ -4,20 +4,25 @@ version = "0.2.6"
 edition = "2021"
 
 [dependencies]
-salvo = "0"
-tokio = { version = "1", features = ["macros"] }
-time = { version = "0", features = ['macros'] }
-tracing = { version = "0", features = ["log", "release_max_level_info"] }
-tracing-subscriber = { version = "0", features = [
+salvo = { version = "0", default-features = false, features = [
+  "server",
+  "http1",
+] }
+tokio = { version = "1", default-features = false, features = ["macros"] }
+time = { version = "0", default-features = false, features = ['macros'] }
+tracing = { version = "0", default-features = false, features = [
+  "log",
+  "release_max_level_info",
+] }
+tracing-subscriber = { version = "0", default-features = false, features = [
   'time',
   'env-filter',
   'json',
 ] }
-tracing-appender = '0'
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-lazy_static = '1'
-thiserror = "2"
+tracing-appender = { version = "0", default-features = false, features = [] }
+serde = { version = "1", default-features = false, features = ["derive"] }
+serde_json = { version = "1", default-features = false }
+thiserror = { version = "2", default-features = false }
 sqlx = { version = "0", default-features = false, features = [
   "macros",
   "runtime-tokio",
