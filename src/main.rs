@@ -4,8 +4,6 @@ mod scale;
 mod statistics;
 
 #[macro_use]
-extern crate lazy_static;
-#[macro_use]
 extern crate tracing;
 
 use salvo::prelude::*;
@@ -24,7 +22,7 @@ use crate::scale::{
     SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTORS, SYMPTOM_CHECKLIST_90,
     YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
 };
-use crate::statistics::{create_table, get_statistics, insert_statistics_ip};
+use crate::statistics::{create_statistics_table, get_statistics, insert_statistics_ip};
 
 trait JsonRender {
     fn json<S>(&mut self, data: S)
@@ -180,7 +178,7 @@ async fn main() -> MindPulseResult<()> {
     #[cfg(not(debug_assertions))]
     builder.json().init();
 
-    create_table().await?;
+    create_statistics_table().await?;
 
     // 解析命令行参数获取端口号，默认为 4819
     let port = std::env::args()

@@ -294,6 +294,7 @@ pub(super) type Texts = &'static [Sentence];
 
 #[derive(Debug, Serialize)]
 pub(super) struct ScaleListItem<'r> {
+    id: u16,
     /// 名称
     name: PlainText,
     /// 前端路径
@@ -323,6 +324,10 @@ impl ScaleListItem<'_> {
     pub(crate) fn name(&self) -> &str {
         self.name
     }
+
+    pub(crate) fn id(&self) -> u16 {
+        self.id
+    }
 }
 
 /// 计算预计测试时长（分钟）
@@ -336,6 +341,7 @@ const fn estimated_duration(total_questions: u32) -> [u32; 2] {
 
 pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
     ScaleListItem {
+        id: 0,
         name: HOLLAND_OCCUPATIONAL_INTEREST.name,
         path: "h_sds",
         duration: estimated_duration(HOLLAND_OCCUPATIONAL_INTEREST.questions.len() as u32),
@@ -349,6 +355,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: true,
     },
     ScaleListItem {
+        id: 11,
         name: HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN.name,
         path: "h_sds_hs",
         duration: estimated_duration(
@@ -364,6 +371,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 1,
         name: NEO_PERSONALITY_INVENTORY_REVISED.name,
         duration: estimated_duration(NEO_PERSONALITY_INVENTORY_REVISED.questions.len() as u32),
         path: "neo_pi_r",
@@ -377,6 +385,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 2,
         name: SIXTEEN_PERSONALITY_FACTORS.name,
         path: "16pf",
         duration: estimated_duration(SIXTEEN_PERSONALITY_FACTORS.questions.len() as u32),
@@ -390,6 +399,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 3,
         name: ENNEAGRAM_PERSONALITY_TEST.name,
         path: "ept",
         duration: estimated_duration(ENNEAGRAM_PERSONALITY_TEST.questions.len() as u32),
@@ -403,6 +413,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 4,
         name: EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE.name,
         path: "epq_rsc",
         duration: estimated_duration(
@@ -423,6 +434,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 5,
         name: SYMPTOM_CHECKLIST_90.name,
         path: "scl90",
         duration: estimated_duration(SYMPTOM_CHECKLIST_90.questions.len() as u32),
@@ -436,6 +448,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 6,
         name: BECK_DEPRESSION_INVENTORY.name,
         path: "bdi",
         duration: estimated_duration(BECK_DEPRESSION_INVENTORY.questions.len() as u32),
@@ -449,6 +462,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 7,
         name: SELF_RATING_DEPRESSION_SCALE.name,
         path: "sds",
         duration: estimated_duration(SELF_RATING_DEPRESSION_SCALE.questions.len() as u32),
@@ -462,6 +476,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 8,
         name: SELF_RATING_ANXIETY_SCALE.name,
         path: "sas",
         duration: estimated_duration(SELF_RATING_ANXIETY_SCALE.questions.len() as u32),
@@ -475,6 +490,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 9,
         name: YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.name,
         path: "y_bocs",
         duration: estimated_duration(YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE.questions.len() as u32),
@@ -488,6 +504,7 @@ pub(super) const PATHS: [ScaleListItem<'static>; 12] = [
         disabled: false,
     },
     ScaleListItem {
+        id: 10,
         name: HAMILTON_DEPRESSION_SCALE.name,
         path: "hamd",
         duration: estimated_duration(HAMILTON_DEPRESSION_SCALE.questions.len() as u32),

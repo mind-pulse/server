@@ -2016,7 +2016,6 @@ dependencies = [
 name = "server"
 version = "0.2.6"
 dependencies = [
- "lazy_static",
  "salvo",
  "serde",
  "serde_json",
