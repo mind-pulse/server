@@ -1,13 +1,14 @@
 use serde::Serialize;
 
-use crate::scale::ScaleCategory;
-
-use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
+    HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts,
+};
 
 /// 问题类型
 #[derive(Serialize)]
 #[serde(rename_all(serialize = "SCREAMING_SNAKE_CASE"))]
-pub(super) enum QuestionType {
+pub enum QuestionType {
     /// 感兴趣的事
     InterestedEvent,
     /// 擅长的事
@@ -20,7 +21,7 @@ pub(super) enum QuestionType {
 
 /// 人格类型
 #[derive(Serialize)]
-pub(super) enum CapacityCategory {
+pub enum CapacityCategory {
     R,
     A,
     I,
@@ -31,21 +32,21 @@ pub(super) enum CapacityCategory {
 
 #[derive(Serialize)]
 pub struct Question {
-    pub(super) title: PlainText,
-    pub(super) question_type: QuestionType,
-    pub(super) capacity_category: CapacityCategory,
-    pub(super) options: &'static [QuestionOption],
-    pub(super) is_multiple: bool,
+    pub title: PlainText,
+    pub question_type: QuestionType,
+    pub capacity_category: CapacityCategory,
+    pub options: &'static [QuestionOption],
+    pub is_multiple: bool,
 }
 
 #[derive(Serialize)]
-pub(super) struct CapacityCategoryInterpretation {
-    pub(super) capacity_category: CapacityCategory,
-    pub(super) name: PlainText,
+pub struct CapacityCategoryInterpretation {
+    pub capacity_category: CapacityCategory,
+    pub name: PlainText,
     /// 人格特征
-    pub(super) personality_trait: PlainText,
+    pub personality_trait: PlainText,
     /// 职业特征
-    pub(super) occupational_stigma: PlainText,
+    pub occupational_stigma: PlainText,
 }
 
 const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
@@ -88,7 +89,7 @@ const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
 ];
 
 #[derive(Serialize)]
-pub(super) struct CareerInformation {
+pub struct CareerInformation {
     code: PlainText,
     information: PlainText,
 }
@@ -419,7 +420,9 @@ const INSTRUCTION: Texts = &[
 ];
 
 pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale {
+    id: 0,
     name: "霍兰德职业兴趣测评",
+    description: "发现你天生热爱的事，匹配最适合你的职业方向",
     primary_category: ScaleCategory::CareerAndAcademics,
     related_categories: Some(&[
         ScaleCategory::Personality,
@@ -436,7 +439,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
     references: None,
     warning: None,
     formula_mode: None,
-    tags: Tag{ info: Some(&["职业", "高考", "就业", "专业"]), normal: None, warning: None, error: None },
+    tags: &Tag{ info: Some(&["职业", "高考", "就业", "专业"]), normal: None, warning: None, error: None },
     interpretation: Interpretation { capacity_category_interpretations: &CAPACITY_CATEGORY_INTERPRETATIONS, career_information: &CAREER_INFORMATION },
     questions: &[
         Question {

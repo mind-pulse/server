@@ -6,6 +6,7 @@ mod statistics;
 #[macro_use]
 extern crate tracing;
 
+use salvo::oapi::extract::PathParam;
 use salvo::prelude::*;
 use salvo::writing::Json;
 use time::macros::{format_description, offset};
@@ -14,14 +15,7 @@ use tracing_subscriber::fmt::time::OffsetTime;
 
 use crate::error::MindPulseResult;
 use crate::logger::Logger;
-use crate::scale::{
-    BECK_DEPRESSION_INVENTORY, ENNEAGRAM_PERSONALITY_TEST,
-    EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE, HAMILTON_DEPRESSION_SCALE,
-    HOLLAND_OCCUPATIONAL_INTEREST, HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN,
-    NEO_PERSONALITY_INVENTORY_REVISED, PATHS, SELF_RATING_ANXIETY_SCALE,
-    SELF_RATING_DEPRESSION_SCALE, SIXTEEN_PERSONALITY_FACTORS, SYMPTOM_CHECKLIST_90,
-    YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE,
-};
+use crate::scale::{get_scale_json_by_id, LIST};
 use crate::statistics::{create_statistics_table, handle_get_statistics, handle_insert_record};
 
 trait JsonRender {
@@ -40,86 +34,26 @@ impl JsonRender for Response {
 }
 
 #[handler]
-async fn h_sds(res: &mut Response) {
-    res.json(HOLLAND_OCCUPATIONAL_INTEREST);
-}
-
-#[handler]
-async fn h_sds_hs(res: &mut Response) {
-    res.json(HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN);
-}
-
-#[handler]
-async fn neo_pi_r(res: &mut Response) {
-    res.json(NEO_PERSONALITY_INVENTORY_REVISED);
-}
-
-#[handler]
-async fn sixteen_pf(res: &mut Response) {
-    res.json(SIXTEEN_PERSONALITY_FACTORS);
-}
-
-#[handler]
-async fn ept(res: &mut Response) {
-    res.json(ENNEAGRAM_PERSONALITY_TEST);
-}
-
-#[handler]
-async fn y_bocs(res: &mut Response) {
-    res.json(YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE);
-}
-
-#[handler]
-async fn epq_rsc(res: &mut Response) {
-    res.json(EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE);
-}
-
-#[handler]
-async fn bdi(res: &mut Response) {
-    res.json(BECK_DEPRESSION_INVENTORY);
-}
-
-#[handler]
-async fn hamd(res: &mut Response) {
-    res.json(HAMILTON_DEPRESSION_SCALE);
-}
-
-#[handler]
-async fn scl_90(res: &mut Response) {
-    res.json(SYMPTOM_CHECKLIST_90);
-}
-
-#[handler]
-async fn sas(res: &mut Response) {
-    res.json(SELF_RATING_ANXIETY_SCALE);
-}
-
-#[handler]
-async fn sds(res: &mut Response) {
-    res.json(SELF_RATING_DEPRESSION_SCALE);
-}
-
-#[handler]
 async fn list(res: &mut Response) {
-    res.json(PATHS);
+    res.json(LIST);
+}
+
+#[handler]
+async fn item(id: PathParam<u16>, res: &mut Response) -> MindPulseResult<()> {
+    let value = get_scale_json_by_id(*id)?;
+    res.json(value);
+
+    Ok(())
 }
 
 async fn serve(port: u16) {
     let router = Router::new()
         .push(Router::with_path("list").get(list))
-        .push(Router::with_path("scales").get(list))
-        .push(Router::with_path("h_sds").get(h_sds))
-        .push(Router::with_path("h_sds_hs").get(h_sds_hs))
-        .push(Router::with_path("neo_pi_r").get(neo_pi_r))
-        .push(Router::with_path("16pf").get(sixteen_pf))
-        .push(Router::with_path("epq_rsc").get(epq_rsc))
-        .push(Router::with_path("ept").get(ept))
-        .push(Router::with_path("bdi").get(bdi))
-        .push(Router::with_path("scl90").get(scl_90))
-        .push(Router::with_path("hamd").get(hamd))
-        .push(Router::with_path("sas").get(sas))
-        .push(Router::with_path("y_bocs").get(y_bocs))
-        .push(Router::with_path("sds").get(sds))
+        .push(
+            Router::with_path("scales")
+                .get(list)
+                .push(Router::with_path("{id}").get(item)),
+        )
         .push(Router::with_path("statistics").get(handle_insert_record))
         .push(Router::with_path("get_statistics").get(handle_get_statistics));
 
@@ -128,7 +62,7 @@ async fn serve(port: u16) {
     let address = format!("127.0.0.1:{}", port);
     info!("Server running on {}", address);
 
-    let listener = TcpListener::new(&address).bind().await;
+    let listener = TcpListener::new(address).bind().await;
     Server::new(listener).serve(service).await;
 }
 

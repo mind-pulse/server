@@ -1,10 +1,9 @@
 use serde::Serialize;
 
-use crate::scale::{ComfortingWord, CriticalWarning, ScaleCategory};
-
-use super::{
-    HTMLElement, PlainText, PlainTexts, Question, QuestionOption, Scale, SentenceItem, Status, Tag,
-    Texts,
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
+    ComfortingWord, CriticalWarning, HTMLElement, PlainText, PlainTexts, Question, QuestionOption,
+    Scale, SentenceItem, Status, Tag, Texts,
 };
 
 #[derive(Debug, Serialize)]
@@ -142,7 +141,9 @@ const INTERPRETATION: &[InterpretationItem] = &[
 ];
 
 pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Question> = Scale {
+    id: 9,
     name: "耶鲁布朗强迫症量表",
+    description: "专为强迫症设计的科学自测工具，10题看清困扰程度",
     abbreviation: "Y-BOCS",
     primary_category: ScaleCategory::Emotion,
     related_categories: Some(&[
@@ -155,7 +156,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
     references: None,
     warning: None,
     formula_mode: None,
-    tags: Tag{ info: Some(&["强迫"]), normal: None, warning: None, error: None },
+    tags: &Tag{ info: Some(&["强迫"]), normal: None, warning: None, error: None },
     interpretation: INTERPRETATION,
     questions: &[
         Question {

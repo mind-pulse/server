@@ -1,8 +1,9 @@
 use serde::Serialize;
 
-use crate::scale::{PlainText, ScaleCategory};
-
-use super::{HTMLElement, QuestionOption, Scale, SentenceItem, Tag, Texts};
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
+    HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts,
+};
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
@@ -679,7 +680,9 @@ const INTERPRETATION: Interpretation = Interpretation {
 };
 
 pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpretation, Question> = Scale {
+    id: 4,
     name: "艾森克人格问卷简式量表中国版",
+    description: "源自国际经典、专为中国优化的性格探索工具",
     primary_category: ScaleCategory::Personality,
     related_categories: Some(&[ScaleCategory::Emotion, ScaleCategory::MentalHealth]),
     abbreviation: "EPQ-RSC",
@@ -694,7 +697,7 @@ pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpret
     references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000"]),
     formula_mode: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),
-    tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
+    tags: &Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
     interpretation: INTERPRETATION,
     questions: &[
         Question {
