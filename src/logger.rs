@@ -5,7 +5,7 @@ use salvo::http::{Request, Response, StatusCode};
 use salvo::{async_trait, Depot, FlowCtrl, Handler};
 use tracing::info;
 
-pub(super) struct Logger;
+pub struct Logger;
 
 #[async_trait]
 impl Handler for Logger {

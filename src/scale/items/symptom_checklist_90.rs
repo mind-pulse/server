@@ -1,10 +1,9 @@
 use serde::Serialize;
 
-use crate::scale::{PlainText, PlainTexts, ScaleCategory, SymptomGuidance};
-
-use super::{
-    FormulaMode, HTMLElement, Integer, OperationalRule, QuestionOption, Scale, SentenceItem, Tag,
-    Texts,
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
+    FormulaMode, HTMLElement, Integer, OperationalRule, PlainText, PlainTexts, QuestionOption,
+    Scale, SentenceItem, SymptomGuidance, Tag, Texts,
 };
 
 #[derive(Debug, Serialize, Hash, Eq, PartialEq)]
@@ -444,7 +443,9 @@ const INTERPRETATION: Interpretation = Interpretation {
 };
 
 pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
+    id: 5,
     name: "症状自评量表",
+    description: "像体检一样简单，为你的心理健康做一次全面快筛",
     abbreviation: "SCL-90",
     primary_category: ScaleCategory::MentalHealth,
     related_categories: Some(&[
@@ -462,7 +463,7 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
         operational_rule: OperationalRule::Multiply(1.25),
         integer: Some(Integer::Round),
     }),
-    tags: Tag {
+    tags: &Tag {
         info: Some(&["多症状"]),
         normal: None,
         warning: Some(&["16+"]),

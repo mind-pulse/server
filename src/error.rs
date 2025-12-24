@@ -2,10 +2,10 @@ use std::time::SystemTimeError;
 
 use salvo::{async_trait, http::StatusCode, writing::Text, Depot, Request, Response, Writer};
 
-pub(super) type MindPulseResult<T> = std::result::Result<T, MindPulseError>;
+pub type MindPulseResult<T> = std::result::Result<T, MindPulseError>;
 
 #[derive(Debug, thiserror::Error)]
-pub(super) enum MindPulseError {
+pub enum MindPulseError {
     #[error(transparent)]
     Sqlite(#[from] sqlx::Error),
     #[error(transparent)]
