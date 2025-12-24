@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, env};
 
 use serde::Serialize;
 use sqlx::{sqlite::SqlitePoolOptions, Pool, Sqlite};
@@ -16,11 +16,17 @@ static SQLITE_POOL: OnceCell<SqlitePool> = OnceCell::const_new();
 
 /// 获取全局 SQLite 数据库连接池
 async fn get_database_pool() -> &'static SqlitePool {
+    let mind_pulse_db_path =
+        env::var("MIND_PULSE_DB_PATH").unwrap_or("./mind_pulse.sqlite".to_string());
+    info!(message = "Using database path", path = mind_pulse_db_path);
+
+    let db_url = format!("{}?mode=rwc", mind_pulse_db_path);
+
     SQLITE_POOL
         .get_or_init(|| async {
             SqlitePoolOptions::new()
                 .max_connections(5)
-                .connect("./confidant.sqlite?mode=rwc")
+                .connect(&db_url)
                 .await
                 .map_err(|e| {
                     error!(message = "Failed to create database connection pool", error = ?e);
