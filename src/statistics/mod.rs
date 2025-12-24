@@ -17,7 +17,21 @@ use self::sqlite::{insert_completed_test, query_all_statistics, query_scale_stat
 
 pub use self::sqlite::create_statistics_table;
 
-/// 获取查询统计信息的处理器
+/// Render statistics as JSON for all scales or for a specific scale.
+///
+/// If `id` is `None`, responds with JSON containing all recorded statistics. If `id` is `Some(id)`, responds with JSON containing statistics for the specified scale `id`.
+///
+/// # Examples
+///
+/// ```
+/// # use salvo::oapi::extract::QueryParam;
+/// # use salvo::Response;
+/// # async fn _example() {
+/// let mut res = Response::new();
+/// let id: QueryParam<u16, false> = QueryParam::none();
+/// let _ = crate::statistics::handle_get_statistics(id, &mut res).await;
+/// # }
+/// ```
 #[handler]
 pub async fn handle_get_statistics(
     id: QueryParam<u16, false>,
@@ -39,7 +53,25 @@ pub async fn handle_get_statistics(
     Ok(())
 }
 
-/// 处理插入测试记录的请求
+/// Insert a completed test record for a scale after validating inputs and extracting the client's IP.
+///
+/// This handler resolves the scale name for `id`, converts `client_type` into the internal `ClientType`
+/// (returning a `MindPulseError::Response` with message `"无效的 clientType"` if conversion fails),
+/// derives the client IP from the first entry of the `X-Forwarded-For` header, and persists the record.
+/// Returns `Ok(())` on success or an error from validation or insertion operations.
+///
+/// # Examples
+///
+/// ```
+/// use salvo::oapi::extract::{QueryParam, HeaderParam};
+/// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
+/// // Example invocation — in real handlers these extractors are provided by the framework.
+/// let id = QueryParam::from(1u16);
+/// let client_type = QueryParam::from(0u8);
+/// let xff = HeaderParam::from(Some("203.0.113.5"));
+/// let _ = crate::statistics::handle_insert_record(id, client_type, xff).await;
+/// # Ok(()) }
+/// ```
 #[handler]
 pub async fn handle_insert_record(
     id: QueryParam<u16, true>,

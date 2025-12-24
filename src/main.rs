@@ -33,11 +33,33 @@ impl JsonRender for Response {
     }
 }
 
+/// Renders the public list of scales (`LIST`) as JSON into the given response.
+///
+/// # Examples
+///
+/// ```
+/// // inside an async handler
+/// list(res).await;
+/// ```
 #[handler]
 async fn list(res: &mut Response) {
     res.json(LIST);
 }
 
+/// Retrieves the scale identified by `id` and writes its JSON representation into the response.
+///
+/// The handler obtains the scale JSON for the given `id` and renders it into `res`.
+///
+/// # Returns
+///
+/// `Ok(())` on success; an error if the scale cannot be found or if retrieval/serialization fails.
+///
+/// # Examples
+///
+/// ```
+/// // Conceptual usage within a router: a request to GET /scales/3 results in calling:
+/// // item(PathParam::from(3u16), &mut response).await;
+/// ```
 #[handler]
 async fn item(id: PathParam<u16>, res: &mut Response) -> MindPulseResult<()> {
     let value = get_scale_json_by_id(*id)?;
@@ -46,6 +68,20 @@ async fn item(id: PathParam<u16>, res: &mut Response) -> MindPulseResult<()> {
     Ok(())
 }
 
+/// Starts the HTTP server bound to 127.0.0.1 at the specified TCP port.
+///
+/// This configures the router and service (including the request logger), binds a TCP
+/// listener to 127.0.0.1:<port>, and runs the Salvo server until the process exits.
+///
+/// # Examples
+///
+/// ```
+/// // Run the server in the background within a Tokio runtime.
+/// // Note: in real usage this call typically runs for the lifetime of the process.
+/// tokio::spawn(async {
+///     serve(4819).await;
+/// });
+/// ```
 async fn serve(port: u16) {
     let router = Router::new()
         .push(Router::with_path("list").get(list))

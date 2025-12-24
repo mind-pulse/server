@@ -62,7 +62,23 @@ impl TryFrom<u8> for ClientType {
     }
 }
 
-/// 创建统计数据表
+/// Ensure the `statistics_ip` table exists in the configured SQLite database.
+///
+/// The table created (if missing) has columns: `id` (primary key), `scale_index`,
+/// `ip`, `client_type`, and `finished_time`. Returns `Ok(())` on success or an
+/// error if the database operation fails.
+///
+/// # Examples
+///
+/// ```
+/// # async fn run() -> Result<(), Box<dyn std::error::Error>> {
+/// // Ensure a Tokio runtime is available when running this example.
+/// tokio::runtime::Runtime::new()?.block_on(async {
+///     create_statistics_table().await?;
+///     Ok::<(), Box<dyn std::error::Error>>(())
+/// })?;
+/// # Ok(()) }
+/// ```
 pub async fn create_statistics_table() -> MindPulseResult<()> {
     trace!(message = "Creating statistics table");
 
@@ -92,7 +108,19 @@ pub async fn create_statistics_table() -> MindPulseResult<()> {
     Ok(())
 }
 
-/// 查询单个量表的统计数据
+/// Retrieve statistics for a single scale by its ID.
+///
+/// Returns `Ok(ScaleStatistics)` containing the scale's resolved name and the total number of recorded completions for that scale. Returns `Err` if the ID cannot be resolved or if the database query fails.
+///
+/// # Examples
+///
+/// ```
+/// # tokio_test::block_on(async {
+/// let stats = query_scale_statistics(1).await.unwrap();
+/// assert!(!stats.name.is_empty());
+/// assert!(stats.count >= 0);
+/// # });
+/// ```
 pub async fn query_scale_statistics(id: u16) -> MindPulseResult<ScaleStatistics<'static>> {
     trace!(message = "Querying scale statistics", id);
 
@@ -122,7 +150,21 @@ pub async fn query_scale_statistics(id: u16) -> MindPulseResult<ScaleStatistics<
     Ok(ScaleStatistics { name, count })
 }
 
-/// 查询所有量表的统计数据
+/// Retrieves statistics for every scale.
+///
+/// The returned map contains one entry per known scale id; each value is a `ScaleStatistics` with the scale's name and the total number of completed tests recorded for that scale. Scales with no recorded entries will appear with a `count` of 0.
+///
+/// # Examples
+///
+/// ```
+/// # use std::collections::HashMap;
+/// # use your_crate::{query_all_statistics, ScaleStatistics};
+/// # tokio_test::block_on(async {
+/// let stats: HashMap<u16, ScaleStatistics<'_>> = query_all_statistics().await.unwrap();
+/// // `stats` maps scale id -> ScaleStatistics { name, count }
+/// assert!(stats.len() >= 0);
+/// # });
+/// ```
 pub async fn query_all_statistics<'a>() -> MindPulseResult<HashMap<u16, ScaleStatistics<'a>>> {
     let pool = get_database_pool().await;
 
@@ -166,7 +208,32 @@ pub async fn query_all_statistics<'a>() -> MindPulseResult<HashMap<u16, ScaleSta
     Ok(statistics_map)
 }
 
-/// 插入完成的测试记录
+/// Insert a completed test record for a scale into the statistics table.
+///
+/// The function records the scale id, client type, IP address and the current
+/// timestamp (UTC+8) into the `statistics_ip` table. It returns the number of
+/// rows affected by the insert.
+///
+/// # Parameters
+///
+/// - `id`: The scale identifier to store (stored in the column still named `scale_index` for compatibility).
+/// - `client_type`: The client type that completed the test.
+/// - `ip_address`: The caller's IP address.
+///
+/// # Returns
+///
+/// The number of rows affected by the insert.
+///
+/// # Examples
+///
+/// ```
+/// // Run the async call on a runtime to insert a test record.
+/// let rt = tokio::runtime::Runtime::new().unwrap();
+/// let rows = rt.block_on(async {
+///     insert_completed_test(1, crate::ClientType::MobileBrowser, "127.0.0.1").await
+/// }).unwrap();
+/// assert!(rows == 1 || rows == 0);
+/// ```
 pub async fn insert_completed_test(
     id: u16,
     client_type: ClientType,

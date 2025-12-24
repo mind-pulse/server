@@ -205,10 +205,24 @@ pub struct ScaleListItem<'r> {
 }
 
 impl ScaleListItem<'_> {
+    /// Gets the scale list item's name.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// // assuming `item` is a `ScaleListItem`
+    /// let s = item.name();
+    /// assert_eq!(s, item.name);
+    /// ```
     pub(crate) fn name(&self) -> &str {
         self.name
     }
 
+    /// Get the scale list item's identifier.
+    ///
+    /// # Returns
+    ///
+    /// The item's identifier as a `u16`.
     pub(crate) fn id(&self) -> u16 {
         self.id
     }

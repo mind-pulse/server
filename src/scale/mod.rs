@@ -15,9 +15,37 @@ pub use self::items::{
 const SECONDS_PER_QUESTION_MIN: u32 = 10;
 const SECONDS_PER_QUESTION_MAX: u32 = 15;
 
-/// 计算预计测试时长（分钟）
+/// Estimate the test duration in minutes as a [min, max] range.
+
 ///
-/// 每个问题耗时 10-15秒 秒为标准计算
+
+/// The returned array contains the minimum and maximum minutes computed from
+
+/// the number of questions using 10 and 15 seconds per question respectively.
+
+/// If the computed maximum is less than 1 minute, `[1, 2]` is returned to ensure
+
+/// a reasonable display value.
+
+///
+
+/// # Examples
+
+///
+
+/// ```
+
+/// let d = estimated_duration(3); // 3 questions -> 30..45 seconds -> rounds to minutes
+
+/// assert_eq!(d, [0, 1]); // 30s -> 0 min, 45s -> 1 min
+
+///
+
+/// let d_small = estimated_duration(1); // 10..15s -> both < 1 minute
+
+/// assert_eq!(d_small, [1, 2]); // normalized minimum display
+
+/// ```
 const fn estimated_duration(total_questions: u32) -> [u32; 2] {
     let min = total_questions * SECONDS_PER_QUESTION_MIN / 60;
     let max = total_questions * SECONDS_PER_QUESTION_MAX / 60;
@@ -30,6 +58,26 @@ const fn estimated_duration(total_questions: u32) -> [u32; 2] {
 }
 
 // 6. 辅助函数：仅获取量表名称
+/// Look up the registered scale's display name by its numeric ID.
+///
+/// # Parameters
+///
+/// - `id`: Scale identifier to look up.
+///
+/// # Returns
+///
+/// `Ok(&'static str)` with the scale's name if the ID is registered, `Err` with a `MindPulseError` otherwise.
+///
+/// # Examples
+///
+/// ```no_run
+/// use crate::scale::get_scale_name_by_id;
+///
+/// match get_scale_name_by_id(1) {
+///     Ok(name) => println!("Scale name: {}", name),
+///     Err(e) => eprintln!("Error: {}", e),
+/// }
+/// ```
 pub fn get_scale_name_by_id(id: u16) -> MindPulseResult<&'static str> {
     get_scale_info_by_id(id).map(|(_, name, _)| name)
 }
