@@ -85,6 +85,9 @@ struct Norm {
     q4: NormItem,
 }
 
+/// 16PF常模
+///
+/// 来源不权威，仅供参考：<http://old.lifeweek.com.cn//2013/0115/39671_6.shtml>
 const NORM: Norm = Norm {
     a: NormItem {
         ranges: &[
@@ -336,7 +339,7 @@ const NORM: Norm = Norm {
             Range::Array([12, 14]),
             Range::Array([15, 16]),
             Range::Array([17, 19]),
-            Range::Array([20, 31]),
+            Range::Array([20, 21]),
             Range::Array([22, 26]),
         ],
         mean: 11.46,
