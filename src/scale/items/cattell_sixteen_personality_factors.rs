@@ -1,8 +1,7 @@
 use serde::Serialize;
 
-use crate::scale::ScaleCategory;
-
-use super::{
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
     Characteristic, HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts,
 };
 
@@ -86,6 +85,9 @@ struct Norm {
     q4: NormItem,
 }
 
+/// 16PF常模
+///
+/// 来源不权威，仅供参考：<http://old.lifeweek.com.cn//2013/0115/39671_6.shtml>
 const NORM: Norm = Norm {
     a: NormItem {
         ranges: &[
@@ -337,7 +339,7 @@ const NORM: Norm = Norm {
             Range::Array([12, 14]),
             Range::Array([15, 16]),
             Range::Array([17, 19]),
-            Range::Array([20, 31]),
+            Range::Array([20, 21]),
             Range::Array([22, 26]),
         ],
         mean: 11.46,
@@ -689,7 +691,9 @@ const INTERPRETATION: Interpretation = Interpretation {
 };
 
 pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
+    id: 2,
     name: "卡特尔16种人格因素问卷",
+    description: "16个维度，一眼看懂你独一无二的人格特征",
     abbreviation: "16PF",
     primary_category: ScaleCategory::Personality,
     related_categories: Some(&[
@@ -709,7 +713,7 @@ pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
     references: None,
     formula_mode: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),
-    tags: Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
+    tags: &Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
     interpretation: INTERPRETATION,
     questions: &[
         Question {

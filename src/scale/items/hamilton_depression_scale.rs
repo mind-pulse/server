@@ -1,8 +1,9 @@
 use serde::Serialize;
 
-use crate::scale::{PlainText, ScaleCategory};
-
-use super::{Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts};
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
+    PlainText, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
+};
 
 const INTRODUCTION: Texts = &[
     &[SentenceItem::Plain("汉密尔顿抑郁量表（Hamilton Depression Scale，HAMD）是由 Hamilton 编制，是临床上评定抑郁状态时应用得最为普遍的量表。")], 
@@ -22,7 +23,9 @@ pub struct InterpretationItem {
 }
 
 pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Scale {
+    id: 10,
     name: "汉密尔顿抑郁量表",
+    description: "他评量表，用于评估抑郁状态",
     abbreviation: "HAMD",
     primary_category: ScaleCategory::Emotion,
     related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Somatic]),
@@ -32,7 +35,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     references: Some(&["张作记主编.《行为医学量表手册》（光盘版）[M].中华医学电子音像出版社.2005年"]),
     warning: Some("此为量表非自评，仅供心理科和精神科医生、实习生使用，如需自评抑郁状态，请使用抑郁自评量表（SDS）"),
     formula_mode: None,
-    tags: Tag{ info: None, normal: None, warning: None, error: Some(&["医用"]) },
+    tags: &Tag{ info: None, normal: None, warning: None, error: Some(&["医用"]) },
     interpretation: &[
         InterpretationItem {
             range: [0, 8],

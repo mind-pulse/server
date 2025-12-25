@@ -4,12 +4,14 @@
 
 use serde::Serialize;
 
-use crate::scale::{PlainTexts, ScaleCategory};
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
+    HTMLElement, PlainText, PlainTexts, QuestionOption, Scale, SentenceItem, Tag, Texts,
+};
 
 use super::holland_occupational_interest::{
     CapacityCategory, CapacityCategoryInterpretation, Question, QuestionType,
 };
-use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
 
 const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretation; 6] = [
     CapacityCategoryInterpretation {
@@ -673,7 +675,9 @@ const INSTRUCTION: Texts = &[
 ];
 
 pub const HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN: Scale<Interpretation, Question> = Scale {
+    id: 11,
     name: "霍兰德职业兴趣测评（高中版）",
+    description: "发现你天生热爱的事，匹配最适合你的大学专业方向",
     primary_category: ScaleCategory::CareerAndAcademics,
     related_categories: Some(&[
         ScaleCategory::Personality,
@@ -690,7 +694,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN: Scale<Interpretation, Qu
     references: None,
     warning: None,
     formula_mode: None,
-    tags: Tag{ info: Some(&["高考", "专业"]), normal: None, warning: None, error: None },
+    tags: &Tag{ info: Some(&["高考", "专业"]), normal: None, warning: None, error: None },
     interpretation: Interpretation { capacity_category_interpretations: &CAPACITY_CATEGORY_INTERPRETATIONS, majors_matches: &MAJORS_MATCHES },
     questions: &[
         Question {

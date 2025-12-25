@@ -2,9 +2,10 @@ use std::ops::RangeInclusive;
 
 use serde::Serialize;
 
-use crate::scale::ScaleCategory;
-
-use super::{HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts};
+use crate::scale::category::ScaleCategory;
+use crate::scale::common::{
+    HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts,
+};
 
 #[derive(Serialize)]
 #[serde(rename_all = "UPPERCASE")]
@@ -2877,8 +2878,10 @@ const INSTRUCTION: Texts = &[
 ];
 
 pub const NEO_PERSONALITY_INVENTORY_REVISED: Scale<Interpretation, Question> = Scale {
+    id: 1,
     name: "大五人格测试",
     abbreviation: "NEO-PI-R",
+    description: "五大维度，一眼看懂你独一无二的性格底色",
     primary_category: ScaleCategory::Personality,
     related_categories: Some(&[
         ScaleCategory::Emotion,
@@ -2896,7 +2899,7 @@ pub const NEO_PERSONALITY_INVENTORY_REVISED: Scale<Interpretation, Question> = S
     references: None,
     warning: Some("适用于初中三年级以上文化水平的人群。"),
     formula_mode: None,
-    tags: Tag{ info: Some(&["人格"]), normal: None, warning: Some(&["初三+"]), error: None },
+    tags: &Tag{ info: Some(&["人格"]), normal: None, warning: Some(&["初三+"]), error: None },
     interpretation: INTERPRETATION,
     questions: QUESTIONS,
 };

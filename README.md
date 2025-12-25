@@ -18,11 +18,24 @@ tar zxvf mind-pulse-server-linux-x64-*.tar.gz
 ./server
 ```
 
-根据此服务使用的 host 和 port 配置反向代理，即可在你自己的网站中使用。
+根据此服务使用的 host 和 port 配置反向代理，即可在你自己的网站中使用，默认端口为`4819`。
 
 ```
 host：127.0.0.1
-port：9999
+port：4819
+```
+
+你可以指定其他端口运行服务器，如：
+
+```bash
+./server 9999
+```
+
+你也可以通过设置`MIND_PULSE_DB_PATH`环境变量指定数据库路径，需确保目录存在，服务器程序不会自动创建目录：
+
+```bash
+export MIND_PULSE_DB_PATH="./data/mind_pulse.db"
+./server
 ```
 
 ## 编译

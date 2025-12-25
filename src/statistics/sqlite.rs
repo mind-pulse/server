@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, env};
 
 use serde::Serialize;
 use sqlx::{sqlite::SqlitePoolOptions, Pool, Sqlite};
@@ -7,7 +7,7 @@ use tokio::sync::OnceCell;
 
 use crate::{
     error::{MindPulseError, MindPulseResult},
-    scale::{get_scale_id_by_path, PATHS},
+    scale::{get_scale_name_by_id, LIST},
 };
 
 type SqlitePool = Pool<Sqlite>;
@@ -16,11 +16,17 @@ static SQLITE_POOL: OnceCell<SqlitePool> = OnceCell::const_new();
 
 /// 获取全局 SQLite 数据库连接池
 async fn get_database_pool() -> &'static SqlitePool {
+    let mind_pulse_db_path =
+        env::var("MIND_PULSE_DB_PATH").unwrap_or("./mind_pulse.sqlite".to_string());
+    info!(message = "Using database path", path = mind_pulse_db_path);
+
+    let db_url = format!("{}?mode=rwc", mind_pulse_db_path);
+
     SQLITE_POOL
         .get_or_init(|| async {
             SqlitePoolOptions::new()
                 .max_connections(5)
-                .connect("./confidant.sqlite?mode=rwc")
+                .connect(&db_url)
                 .await
                 .map_err(|e| {
                     error!(message = "Failed to create database connection pool", error = ?e);
@@ -33,7 +39,7 @@ async fn get_database_pool() -> &'static SqlitePool {
 
 /// 量表统计数据结构
 #[derive(Debug, Serialize)]
-pub(super) struct ScaleStatistics<'a> {
+pub struct ScaleStatistics<'a> {
     name: &'a str,
     count: u64,
 }
@@ -41,7 +47,7 @@ pub(super) struct ScaleStatistics<'a> {
 /// 客户端类型枚举
 #[derive(sqlx::Type, Default, Debug, Clone, Copy)]
 #[repr(u8)]
-enum ClientType {
+pub(crate) enum ClientType {
     Wechat = 1,
     #[default]
     MobileBrowser,
@@ -93,47 +99,37 @@ pub async fn create_statistics_table() -> MindPulseResult<()> {
 }
 
 /// 查询单个量表的统计数据
-pub(super) async fn query_scale_statistics(
-    scale_path: &str,
-) -> MindPulseResult<ScaleStatistics<'_>> {
-    trace!(message = "Querying scale statistics", scale = scale_path);
+pub async fn query_scale_statistics(id: u16) -> MindPulseResult<ScaleStatistics<'static>> {
+    trace!(message = "Querying scale statistics", id);
 
     let pool = get_database_pool().await;
 
-    let scale_index = get_scale_id_by_path(scale_path)?;
+    // 验证 ID
+    let name = get_scale_name_by_id(id)?;
     debug!(
-        message = "Resolved scale index",
-        index = scale_index,
-        scale = scale_path
+        message = "Successfully resolved scale index",
+        name = name,
+        id = id
     );
 
-    debug!(message = "Fetching test count", scale = scale_path);
-    let (count,): (u64,) = sqlx::query_as(
-        "SELECT COUNT(*) as times FROM statistics_ip WHERE scale_index = $1",
-    )
-    .bind(scale_index as i32)
-    .fetch_one(pool)
-    .await
-    .map_err(|e| {
-        error!(message = "Failed to query scale statistics", scale = scale_path, error = ?e);
-        e
-    })?;
+    debug!(message = "Fetching test count", id);
+    let (count,): (u64,) =
+        sqlx::query_as("SELECT COUNT(*) as times FROM statistics_ip WHERE scale_index = $1")
+            .bind(id)
+            .fetch_one(pool)
+            .await
+            .map_err(|e| {
+                error!(message = "Failed to query scale statistics", id, error = ?e);
+                e
+            })?;
 
-    info!(
-        message = "Scale statistics retrieved",
-        scale = scale_path,
-        count = count
-    );
+    info!(message = "Scale statistics retrieved", id, count);
 
-    Ok(ScaleStatistics {
-        name: scale_path,
-        count,
-    })
+    Ok(ScaleStatistics { name, count })
 }
 
 /// 查询所有量表的统计数据
-pub(super) async fn query_all_statistics<'a>() -> MindPulseResult<HashMap<u16, ScaleStatistics<'a>>>
-{
+pub async fn query_all_statistics<'a>() -> MindPulseResult<HashMap<u16, ScaleStatistics<'a>>> {
     let pool = get_database_pool().await;
 
     // scale_index 为旧版量表的索引，现在已改为 id
@@ -151,7 +147,7 @@ pub(super) async fn query_all_statistics<'a>() -> MindPulseResult<HashMap<u16, S
     })?;
 
     // 构建完整的统计映射，包含未有任何记录的量表：HashMap<id, ScaleStatistics<'_>>
-    let mut statistics_map: HashMap<u16, ScaleStatistics<'_>> = PATHS
+    let mut statistics_map: HashMap<u16, ScaleStatistics<'_>> = LIST
         .iter()
         .map(|p| {
             (
@@ -177,20 +173,15 @@ pub(super) async fn query_all_statistics<'a>() -> MindPulseResult<HashMap<u16, S
 }
 
 /// 插入完成的测试记录
-pub(super) async fn insert_completed_test(
+pub async fn insert_completed_test(
     id: u16,
-    client_type: u8,
+    client_type: ClientType,
     ip_address: &str,
 ) -> MindPulseResult<u64> {
     trace!(
         message = "Converting client type",
-        client_type = client_type
+        client_type = ?client_type
     );
-    let client_type: ClientType = client_type.try_into().map_err(|e| {
-        error!(message = "Failed to convert client type", error = ?e);
-        e
-    })?;
-    debug!(message = "Client type converted successfully", client_type = ?client_type);
 
     trace!(message = "Getting current timestamp");
     let timestamp = time::OffsetDateTime::now_utc().to_offset(offset!(+8));
