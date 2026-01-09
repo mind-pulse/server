@@ -1,51 +1,69 @@
 name: "publish"
+
 on:
   push:
     branches:
       - release
+
+# 防止多次提交触发重复的 release 流程
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   create-release:
     permissions:
       contents: write
     runs-on: ubuntu-22.04
+    # 将版本定义为 Job Output，方便下游 Job 使用
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
-      version: ${{ env.VERSION }}
+      version: ${{ steps.version.outputs.version }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # 必须获取完整的 Git 历史，否则 Changelog 生成器无法比对版本差异
+          fetch-depth: 0
 
-      - name: get version from Cargo.toml
+      - name: Get version from Cargo.toml
+        id: version
         run: |
-          version=$(grep -o '^version = "[^"]*"' Cargo.toml | awk -F'"' '{print $2}' | xargs)
-          echo "VERSION=$version" >> $GITHUB_ENV
+          # 使用 head -n 1 确保只取第一个 version 字段，防止 workspace 干扰
+          version=$(grep -o '^version = "[^"]*"' Cargo.toml | head -n 1 | awk -F'"' '{print $2}')
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "Detected version: $version"
 
-      - name: build changelog
+      - name: Build changelog
         id: github_release_changelog
-        uses: mikepenz/release-changelog-builder-action@v3
+        uses: mikepenz/release-changelog-builder-action@v4
         with:
           configuration: ".github/changelog-configuration.json"
-          toTag: "refs/heads/main"
+          # 默认行为会自动对比上一个 Tag 到当前 HEAD 的提交
           failOnError: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: create release
+      - name: Create Release
         id: create-release
         uses: actions/github-script@v7
         env:
           changelog: ${{ steps.github_release_changelog.outputs.changelog }}
+          version: ${{ steps.version.outputs.version }}
         with:
           script: |
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_name: `v${process.env.VERSION}`,
-              name: `v${process.env.VERSION}`,
+              tag_name: `v${process.env.version}`,
+              name: `v${process.env.version}`,
               body: process.env.changelog,
-              draft: true,
+              draft: true, # 先创建草稿，构建成功后再发布
+              generate_release_notes: false,
+              prerelease: false
             })
+            console.log(`Release created with ID: ${data.id}`)
             return data.id
 
   build:
@@ -57,52 +75,61 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: install Rust stable
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
-      - name: install upx
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/release/deps
+            target/release/build
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-
+
+      - name: Install UPX
         run: |
           sudo apt-get update
-          sudo apt-get install upx
+          sudo apt-get install -y upx
 
-      - name: build release
+      - name: Build Release
         env:
           VERSION: ${{ needs.create-release.outputs.version }}
         run: |
           cargo build -r
           cd target/release
-          upx -9 server
-          asset_name=mind-pulse-server-linux-x64-$VERSION.tar.gz
-          tar zcvf $asset_name server
+
+          upx -9 server || echo "UPX compression failed or skipped"
+          asset_name="mind-pulse-server-linux-x64-${VERSION}.tar.gz"
+          tar zcvf "$asset_name" server
+
           echo "ASSET_PATH=$(pwd)/$asset_name" >> $GITHUB_ENV
           echo "ASSET_NAME=$asset_name" >> $GITHUB_ENV
-      - name: upload release asset
-        uses: actions/github-script@v7
-        env:
-          VERSION: ${{ needs.create-release.outputs.version }}
-          release_id: ${{ needs.create-release.outputs.release_id }}
-        with:
-          script: |
-            const fs = require("fs")
-            const data = fs.readFileSync(process.env.ASSET_PATH)
-            github.rest.repos.uploadReleaseAsset({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: process.env.release_id,
-              data,
-              name: process.env.ASSET_NAME
-            })
 
-      - name: publish release
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.create-release.outputs.version }}
+          files: ${{ env.ASSET_PATH }}
+          # 如果 release 已经存在（在上一步 job 创建的），它会自动上传附件而不是创建新的 release
+
+      - name: Publish Release
         id: publish-release
         uses: actions/github-script@v7
         env:
           release_id: ${{ needs.create-release.outputs.release_id }}
         with:
           script: |
+            // 只有在所有上传成功后，才将 release 从草稿状态转为正式发布
             github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: process.env.release_id,
               draft: false,
             })
+            console.log("Release published successfully!")
