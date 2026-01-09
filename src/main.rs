@@ -46,8 +46,15 @@ async fn item(id: PathParam<u16>, res: &mut Response) -> MindPulseResult<()> {
     Ok(())
 }
 
+#[handler]
+async fn version(res: &mut Response) {
+    let v = env!("CARGO_PKG_VERSION");
+    res.render(v);
+}
+
 async fn serve(port: u16) {
     let router = Router::new()
+        .push(Router::with_path("version").get(version))
         .push(Router::with_path("list").get(list))
         .push(
             Router::with_path("scales")
