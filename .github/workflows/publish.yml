@@ -126,7 +126,7 @@ jobs:
         with:
           script: |
             // 只有在所有上传成功后，才将 release 从草稿状态转为正式发布
-            github.rest.repos.updateRelease({
+            await github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: process.env.release_id,
