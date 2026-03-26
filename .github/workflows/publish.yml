@@ -47,7 +47,7 @@ jobs:
 
       - name: Create Release
         id: create-release
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           changelog: ${{ steps.github_release_changelog.outputs.changelog }}
           version: ${{ steps.version.outputs.version }}
@@ -120,7 +120,7 @@ jobs:
 
       - name: Publish Release
         id: publish-release
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           release_id: ${{ needs.create-release.outputs.release_id }}
         with:
