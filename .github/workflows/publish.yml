@@ -14,7 +14,7 @@ jobs:
   create-release:
     permissions:
       contents: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     # 将版本定义为 Job Output，方便下游 Job 使用
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
@@ -70,7 +70,7 @@ jobs:
     needs: create-release
     permissions:
       contents: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v6
