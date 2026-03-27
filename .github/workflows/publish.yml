@@ -37,7 +37,7 @@ jobs:
 
       - name: Build changelog
         id: github_release_changelog
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v6
         with:
           configuration: ".github/changelog-configuration.json"
           # 默认行为会自动对比上一个 Tag 到当前 HEAD 的提交
