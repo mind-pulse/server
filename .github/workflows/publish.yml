@@ -112,7 +112,7 @@ jobs:
           echo "ASSET_NAME=$asset_name" >> $GITHUB_ENV
 
       - name: Upload Release Asset
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ needs.create-release.outputs.version }}
           files: ${{ env.ASSET_PATH }}
