@@ -4,7 +4,7 @@ version = "0.3.1"
 edition = "2021"
 
 [dependencies]
-salvo = { version = "0", default-features = false, features = [
+salvo = { version = "1", default-features = false, features = [
   "server",
   "http1",
   "oapi",
