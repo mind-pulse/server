@@ -14,7 +14,7 @@ jobs:
   create-release:
     permissions:
       contents: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     # 将版本定义为 Job Output，方便下游 Job 使用
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           # 必须获取完整的 Git 历史，否则 Changelog 生成器无法比对版本差异
           fetch-depth: 0
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build changelog
         id: github_release_changelog
-        uses: mikepenz/release-changelog-builder-action@v4
+        uses: mikepenz/release-changelog-builder-action@v6
         with:
           configuration: ".github/changelog-configuration.json"
           # 默认行为会自动对比上一个 Tag 到当前 HEAD 的提交
@@ -47,7 +47,7 @@ jobs:
 
       - name: Create Release
         id: create-release
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           changelog: ${{ steps.github_release_changelog.outputs.changelog }}
           version: ${{ steps.version.outputs.version }}
@@ -70,16 +70,16 @@ jobs:
     needs: create-release
     permissions:
       contents: write
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
       - name: Cache Rust dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.cargo/bin/
@@ -112,7 +112,7 @@ jobs:
           echo "ASSET_NAME=$asset_name" >> $GITHUB_ENV
 
       - name: Upload Release Asset
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ needs.create-release.outputs.version }}
           files: ${{ env.ASSET_PATH }}
@@ -120,7 +120,7 @@ jobs:
 
       - name: Publish Release
         id: publish-release
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           release_id: ${{ needs.create-release.outputs.release_id }}
         with:
