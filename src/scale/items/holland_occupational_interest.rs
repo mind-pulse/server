@@ -399,7 +399,9 @@ const INTRODUCTION: Texts = &[
         SentenceItem::HTMLElement(HTMLElement::Strong("高考填报志愿")),
         SentenceItem::Plain("时的专业选择。"),
     ],
-    &[SentenceItem::Plain("由美国职业指导专家霍兰德（John Holland）根据他本人大量的职业咨询经验及其职业类型理论编制的测评工具。霍兰德认为，个人职业兴趣特性与职业之间应有一种内在的对应关系。")],
+    &[SentenceItem::Plain(
+        "由美国职业指导专家霍兰德（John Holland）根据他本人大量的职业咨询经验及其职业类型理论编制的测评工具。霍兰德认为，个人职业兴趣特性与职业之间应有一种内在的对应关系。",
+    )],
 ];
 
 const INSTRUCTION: Texts = &[
@@ -424,10 +426,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
     name: "霍兰德职业兴趣测评",
     description: "发现你天生热爱的事，匹配最适合你的职业方向",
     primary_category: ScaleCategory::CareerAndAcademics,
-    related_categories: Some(&[
-        ScaleCategory::Personality,
-        ScaleCategory::AttitudeAndValues,
-    ]),
+    related_categories: Some(&[ScaleCategory::Personality, ScaleCategory::AttitudeAndValues]),
     abbreviation: "SDS", // 与抑郁自评量表缩写相同
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
@@ -439,8 +438,16 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
     references: None,
     warning: None,
     formula_mode: None,
-    tags: &Tag{ info: Some(&["职业", "高考", "就业", "专业"]), normal: None, warning: None, error: None },
-    interpretation: Interpretation { capacity_category_interpretations: &CAPACITY_CATEGORY_INTERPRETATIONS, career_information: &CAREER_INFORMATION },
+    tags: &Tag {
+        info: Some(&["职业", "高考", "就业", "专业"]),
+        normal: None,
+        warning: None,
+        error: None,
+    },
+    interpretation: Interpretation {
+        capacity_category_interpretations: &CAPACITY_CATEGORY_INTERPRETATIONS,
+        career_information: &CAREER_INFORMATION,
+    },
     questions: &[
         Question {
             title: "（可多选或不选）选择您所感兴趣的活动：",
@@ -488,7 +495,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "装配修理机器",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所感兴趣的活动：",
@@ -536,7 +543,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "练习书法",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所感兴趣的活动：",
@@ -584,7 +591,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "生物课",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所感兴趣的活动：",
@@ -632,7 +639,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "结交新朋友",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所感兴趣的活动：",
@@ -680,7 +687,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "参与政治活动",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所感兴趣的活动：",
@@ -728,7 +735,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "写商业贸易信",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所擅长的事：",
@@ -776,7 +783,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "能简单地修理水管",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所擅长的事：",
@@ -824,7 +831,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "能写一手好文章",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所擅长的事：",
@@ -872,7 +879,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "经常参加学术的会议",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所擅长的事：",
@@ -920,7 +927,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "安排社团组织的各种事务",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所擅长的事：",
@@ -968,7 +975,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "健谈善辩",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您所擅长的事：",
@@ -1016,7 +1023,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "善于为自己或集体做财务预算表",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您喜欢的职业：",
@@ -1064,7 +1071,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "火车司机",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您喜欢的职业：",
@@ -1112,7 +1119,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "电视节目主持人",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您喜欢的职业：",
@@ -1160,7 +1167,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "物理学者",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您喜欢的职业：",
@@ -1208,7 +1215,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "国家机关工作人员",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您喜欢的职业：",
@@ -1256,7 +1263,7 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
                     text: "企业管理咨询人员",
                     point: 1,
                 },
-            ]
+            ],
         },
         Question {
             title: "（可多选或不选）选择您喜欢的职业：",

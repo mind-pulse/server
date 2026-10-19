@@ -22,11 +22,7 @@ const fn estimated_duration(total_questions: u32) -> [u32; 2] {
     let min = total_questions * SECONDS_PER_QUESTION_MIN / 60;
     let max = total_questions * SECONDS_PER_QUESTION_MAX / 60;
     // 确保至少显示 1 分钟，避免出现 [0, 0]
-    if max < 1 {
-        [1, 2]
-    } else {
-        [min, max]
-    }
+    if max < 1 { [1, 2] } else { [min, max] }
 }
 
 // 6. 辅助函数：仅获取量表名称

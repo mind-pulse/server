@@ -2255,8 +2255,7 @@ const QUESTIONS: &[Question] = &[
         subdimension: Subdimension::O(OpenMindednessSubdimension::O6),
     },
     Question {
-        title:
-            "认为以严格的纪律使小孩形成遵守规矩的品质比让他们自己形成独立的判断和行事的能力更为重要",
+        title: "认为以严格的纪律使小孩形成遵守规矩的品质比让他们自己形成独立的判断和行事的能力更为重要",
         options: REVERSE,
         dimension: Dimension::O,
         subdimension: Subdimension::O(OpenMindednessSubdimension::O6),
@@ -2304,8 +2303,7 @@ const QUESTIONS: &[Question] = &[
         subdimension: Subdimension::A(AgreeablenessSubdimension::A1),
     },
     Question {
-        title:
-            "尽管人类社会存在着一些阴暗的东西（如战争、罪恶、欺骗），我仍然相信人性总的来说是善良的",
+        title: "尽管人类社会存在着一些阴暗的东西（如战争、罪恶、欺骗），我仍然相信人性总的来说是善良的",
         options: FORWARD,
         dimension: Dimension::A,
         subdimension: Subdimension::A(AgreeablenessSubdimension::A1),
@@ -2841,7 +2839,9 @@ const QUESTIONS: &[Question] = &[
 ];
 
 const INTRODUCTION: Texts = &[
-    &[SentenceItem::Plain("心理学者研究发现大约有五种特质可以涵盖人格描述的所有方面，即大五人格，也被称之为人格的海洋。")],
+    &[SentenceItem::Plain(
+        "心理学者研究发现大约有五种特质可以涵盖人格描述的所有方面，即大五人格，也被称之为人格的海洋。",
+    )],
     &[
         SentenceItem::Plain("大五人格问卷多用于正常人群，特别是应用于"),
         SentenceItem::HTMLElement(HTMLElement::Strong("工作绩效领域")),
@@ -2849,8 +2849,12 @@ const INTRODUCTION: Texts = &[
         SentenceItem::HTMLElement(HTMLElement::Strong("初中三年级以上")),
         SentenceItem::Plain("文化水平。"),
     ],
-    &[SentenceItem::Plain("大五人格是西方心理学界公认的一个人格特质模型，在多年的研究中被不断验证。")],
-    &[SentenceItem::Plain("大五人格测试有多个版本，本测试为句子式的 NEO-PI-R。")],
+    &[SentenceItem::Plain(
+        "大五人格是西方心理学界公认的一个人格特质模型，在多年的研究中被不断验证。",
+    )],
+    &[SentenceItem::Plain(
+        "大五人格测试有多个版本，本测试为句子式的 NEO-PI-R。",
+    )],
 ];
 
 const INSTRUCTION: Texts = &[
@@ -2899,7 +2903,12 @@ pub const NEO_PERSONALITY_INVENTORY_REVISED: Scale<Interpretation, Question> = S
     references: None,
     warning: Some("适用于初中三年级以上文化水平的人群。"),
     formula_mode: None,
-    tags: &Tag{ info: Some(&["人格"]), normal: None, warning: Some(&["初三+"]), error: None },
+    tags: &Tag {
+        info: Some(&["人格"]),
+        normal: None,
+        warning: Some(&["初三+"]),
+        error: None,
+    },
     interpretation: INTERPRETATION,
     questions: QUESTIONS,
 };

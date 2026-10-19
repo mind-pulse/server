@@ -38,9 +38,9 @@ pub struct InterpretationItem {
     status: Status,
 }
 
-const INTRODUCTION: Texts = &[
-    &[SentenceItem::Plain("耶鲁布朗强迫量表是美国 GOODMAN 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。")]
-];
+const INTRODUCTION: Texts = &[&[SentenceItem::Plain(
+    "耶鲁布朗强迫量表是美国 GOODMAN 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。",
+)]];
 
 const INSTRUCTION: Texts = &[&[
     SentenceItem::Plain("本量表包含 "),
@@ -116,7 +116,10 @@ const INTERPRETATION: &[InterpretationItem] = &[
         status: Status::Moderate,
     },
     InterpretationItem {
-        range: ScoreStandard { total: [26, 40], any: [15, 20] },
+        range: ScoreStandard {
+            total: [26, 40],
+            any: [15, 20],
+        },
         label: "重度",
         comforting_word: ComfortingWord {
             text: "您的得分显示有重度强迫倾向，这已经严重影响到生活。",
@@ -146,17 +149,19 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
     description: "专为强迫症设计的科学自测工具，10题看清困扰程度",
     abbreviation: "Y-BOCS",
     primary_category: ScaleCategory::Emotion,
-    related_categories: Some(&[
-        ScaleCategory::MentalHealth,
-        ScaleCategory::Behavior,
-    ]),
+    related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Behavior]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
     references: None,
     warning: None,
     formula_mode: None,
-    tags: &Tag{ info: Some(&["强迫"]), normal: None, warning: None, error: None },
+    tags: &Tag {
+        info: Some(&["强迫"]),
+        normal: None,
+        warning: None,
+        error: None,
+    },
     interpretation: INTERPRETATION,
     questions: &[
         Question {
@@ -289,7 +294,6 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
                 },
             ],
         },
-
         Question {
             title: "您每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？",
             is_multiple: false,
@@ -420,5 +424,5 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
                 },
             ],
         },
-    ]
+    ],
 };
