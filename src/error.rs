@@ -1,6 +1,6 @@
 use std::time::SystemTimeError;
 
-use salvo::{async_trait, http::StatusCode, writing::Text, Depot, Request, Response, Writer};
+use salvo::{Depot, Request, Response, Writer, async_trait, http::StatusCode, writing::Text};
 
 pub type MindPulseResult<T> = std::result::Result<T, MindPulseError>;
 

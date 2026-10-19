@@ -2,7 +2,7 @@ use std::time::Instant;
 
 use salvo::http::header::{CONTENT_LENGTH, CONTENT_TYPE};
 use salvo::http::{Request, Response, StatusCode};
-use salvo::{async_trait, Depot, FlowCtrl, Handler};
+use salvo::{Depot, FlowCtrl, Handler, async_trait};
 use tracing::info;
 
 pub struct Logger;

@@ -37,7 +37,12 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
     references: None,
     warning: None,
     formula_mode: None,
-    tags: &Tag{ info: Some(&["抑郁"]), normal: None, warning: None, error: None },
+    tags: &Tag {
+        info: Some(&["抑郁"]),
+        normal: None,
+        warning: None,
+        error: None,
+    },
     interpretation: &[
         InterpretationItem {
             range: [0, 5],
@@ -47,11 +52,13 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
                 text: "您的得分在正常范围内，这表明您当前的心理状态比较健康。",
                 caution: None,
             },
-            advice: Some(&["请继续保持积极的生活态度，关注生活中的小美好，您的阳光心态也能为他人带来温暖。"]),
+            advice: Some(&[
+                "请继续保持积极的生活态度，关注生活中的小美好，您的阳光心态也能为他人带来温暖。",
+            ]),
             symptom: None,
             status: Status::Normal,
         },
-        InterpretationItem{
+        InterpretationItem {
             range: [5, 8],
             description: "轻度抑郁",
             critical_warning: None,
@@ -76,13 +83,15 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             ]),
             status: Status::Mild,
         },
-        InterpretationItem{
+        InterpretationItem {
             range: [8, 16],
             description: "中度抑郁",
             critical_warning: None,
             comforting_word: ComfortingWord {
                 text: "您的得分显示有中度抑郁倾向，这可能需要更多关注和支持。",
-                caution: Some("中度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+                caution: Some(
+                    "中度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。",
+                ),
             },
             advice: Some(&[
                 "建立支持网络：主动与亲友沟通，让他们了解您的状态，获得陪伴和理解。",
@@ -105,16 +114,18 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             ]),
             status: Status::Moderate,
         },
-        InterpretationItem{
+        InterpretationItem {
             range: [16, 40],
             description: "重度抑郁",
             critical_warning: Some(CriticalWarning {
-                title:"需要立即寻求帮助",
-                content:"重度抑郁需要专业医疗干预，请立即联系精神科医生或前往医院。"
+                title: "需要立即寻求帮助",
+                content: "重度抑郁需要专业医疗干预，请立即联系精神科医生或前往医院。",
             }),
             comforting_word: ComfortingWord {
                 text: "您的得分表明可能有重度抑郁倾向，这需要立即的专业干预。",
-                caution: Some("重度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+                caution: Some(
+                    "重度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。",
+                ),
             },
             advice: Some(&[
                 "立即行动：尽快前往精神专科医院或综合医院精神科就诊，让专业医生进行评估。",
@@ -417,5 +428,5 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
                 },
             ],
         },
-    ]
+    ],
 };

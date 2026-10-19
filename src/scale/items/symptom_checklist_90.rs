@@ -127,10 +127,12 @@ const INSTRUCTION: Texts = &[
         SentenceItem::HTMLElement(HTMLElement::Strong("感觉、情感、思维、意识、行为")),
         SentenceItem::Plain("直至"),
         SentenceItem::HTMLElement(HTMLElement::Strong("生活习惯、人际关系、饮食睡眠")),
-        SentenceItem::Plain("等，均有涉及，并采用 10 个因子分别反映 10 个方面的心理症状情况。")
+        SentenceItem::Plain("等，均有涉及，并采用 10 个因子分别反映 10 个方面的心理症状情况。"),
     ],
     &[
-        SentenceItem::Plain("以下问题中列出了有些人可能有的症状或问题，请仔细阅读每一条，然后根据该句话与您自己的实际情况相符合的程度（"),
+        SentenceItem::Plain(
+            "以下问题中列出了有些人可能有的症状或问题，请仔细阅读每一条，然后根据该句话与您自己的实际情况相符合的程度（",
+        ),
         SentenceItem::HTMLElement(HTMLElement::Strong("最近一个星期或现在")),
         SentenceItem::Plain("）进行选择。"),
     ],
@@ -139,14 +141,17 @@ const INSTRUCTION: Texts = &[
 const INTERPRETATION: Interpretation = Interpretation {
     positive: Positive {
         total: Rule {
-            value: 160, comparison_operator: ">="
+            value: 160,
+            comparison_operator: ">=",
         },
         positive_amount: Rule {
-            value: 43, comparison_operator: ">"
+            value: 43,
+            comparison_operator: ">",
         },
         any_symptom_average: Rule {
-            value: 2, comparison_operator: ">"
-        }
+            value: 2,
+            comparison_operator: ">",
+        },
     },
     symptoms: Symptoms {
         somatization: SymptomInterpretation {
@@ -175,7 +180,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "身体症状持续数周以上，且明显影响生活质量。",
                     "身体不适伴随明显焦虑或情绪困扰，自己难以缓解。",
                 ],
-            }
+            },
         },
         obsessive_compulsive: SymptomInterpretation {
             name: "强迫症状",
@@ -204,7 +209,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "强迫想法或行为已严重干扰工作、学习或人际关系。",
                     "自己多次尝试调整但效果有限，焦虑感持续加重。",
                 ],
-            }
+            },
         },
         interpersonal_sensitivity: SymptomInterpretation {
             name: "人际关系敏感",
@@ -233,7 +238,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "社交焦虑已明显限制正常的人际交往或职业发展。",
                     "长期感到被否定、被排斥，且难以自行调整。",
                 ],
-            }
+            },
         },
         depression: SymptomInterpretation {
             name: "抑郁",
@@ -264,7 +269,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "持续感到绝望、无助，或生活功能明显下降。",
                     "出现反复想到死亡或自伤的念头（请尽快寻求专业帮助）。",
                 ],
-            }
+            },
         },
         anxiety: SymptomInterpretation {
             name: "焦虑",
@@ -293,7 +298,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "焦虑情绪长期存在，且明显干扰生活。",
                     "伴随频繁的惊恐感或强烈的身体不适。",
                 ],
-            }
+            },
         },
         hostility: SymptomInterpretation {
             name: "敌对",
@@ -322,7 +327,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "情绪爆发难以控制，或出现攻击冲动。",
                     "愤怒情绪长期积累，自己难以缓解。",
                 ],
-            }
+            },
         },
         phobic_anxiety: SymptomInterpretation {
             name: "恐怖",
@@ -348,7 +353,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "恐惧反应强烈且持续存在，难以自行面对。",
                     "回避行为已严重限制生活和出行。",
                 ],
-            }
+            },
         },
         paranoid_ideation: SymptomInterpretation {
             name: "偏执",
@@ -377,7 +382,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "长期处于高度警觉和不安状态。",
                     "怀疑想法明显影响社交或工作功能。",
                 ],
-            }
+            },
         },
         psychoticism: SymptomInterpretation {
             name: "精神病性",
@@ -406,7 +411,7 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "出现持续的幻觉、妄想或思维混乱。",
                     "这些体验已明显影响判断、行为或安全。",
                 ],
-            }
+            },
         },
         others: SymptomInterpretation {
             name: "其它（睡眠/食欲/自我价值）",
@@ -437,8 +442,8 @@ const INTERPRETATION: Interpretation = Interpretation {
                     "基本生活节奏被严重打乱。",
                     "长期感到孤独、无意义或情绪低落。",
                 ],
-            }
-        }
+            },
+        },
     },
 };
 

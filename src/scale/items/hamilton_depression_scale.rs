@@ -6,13 +6,21 @@ use crate::scale::common::{
 };
 
 const INTRODUCTION: Texts = &[
-    &[SentenceItem::Plain("汉密尔顿抑郁量表（Hamilton Depression Scale，HAMD）是由 Hamilton 编制，是临床上评定抑郁状态时应用得最为普遍的量表。")], 
-    &[SentenceItem::Plain( "量表是 24 项版本，方法简单，标准明确，便于掌握。适用于有抑郁症状的成人。总分能够较好的反映疾病严重程度，也能很好的衡量治疗效果，是经典和被公认的抑郁评定量表。")],
+    &[SentenceItem::Plain(
+        "汉密尔顿抑郁量表（Hamilton Depression Scale，HAMD）是由 Hamilton 编制，是临床上评定抑郁状态时应用得最为普遍的量表。",
+    )],
+    &[SentenceItem::Plain(
+        "量表是 24 项版本，方法简单，标准明确，便于掌握。适用于有抑郁症状的成人。总分能够较好的反映疾病严重程度，也能很好的衡量治疗效果，是经典和被公认的抑郁评定量表。",
+    )],
 ];
 
 const INSTRUCTION: Texts = &[
-    &[SentenceItem::Plain("HAMD大部分项目采用0~4分的5级评分法。各级的标准为：（0）无；（1）轻度；（2）中度；（3）重度；（4）极重度。少数项目采用 0~2 分的 3 级评分法，其分级的标准为：（0）无；（1）轻~中度；（2）重度。")],
-    &[SentenceItem::Plain("应由经过训练的两名评定员对被评定者进行汉密尔顿抑郁量表联合检查。一般采用交谈与观察方式，待检查结束后，两名评定员分别独立评分。若需比较治疗前后抑郁症状和病情的变化，则于入组时，评定当时或入组前一周的情况，治疗后 2-6 周，再次评定，以资比较。")],
+    &[SentenceItem::Plain(
+        "HAMD大部分项目采用0~4分的5级评分法。各级的标准为：（0）无；（1）轻度；（2）中度；（3）重度；（4）极重度。少数项目采用 0~2 分的 3 级评分法，其分级的标准为：（0）无；（1）轻~中度；（2）重度。",
+    )],
+    &[SentenceItem::Plain(
+        "应由经过训练的两名评定员对被评定者进行汉密尔顿抑郁量表联合检查。一般采用交谈与观察方式，待检查结束后，两名评定员分别独立评分。若需比较治疗前后抑郁症状和病情的变化，则于入组时，评定当时或入组前一周的情况，治疗后 2-6 周，再次评定，以资比较。",
+    )],
 ];
 
 #[derive(Debug, Serialize)]
@@ -32,10 +40,19 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     idea: None,
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
-    references: Some(&["张作记主编.《行为医学量表手册》（光盘版）[M].中华医学电子音像出版社.2005年"]),
-    warning: Some("此为量表非自评，仅供心理科和精神科医生、实习生使用，如需自评抑郁状态，请使用抑郁自评量表（SDS）"),
+    references: Some(&[
+        "张作记主编.《行为医学量表手册》（光盘版）[M].中华医学电子音像出版社.2005年",
+    ]),
+    warning: Some(
+        "此为量表非自评，仅供心理科和精神科医生、实习生使用，如需自评抑郁状态，请使用抑郁自评量表（SDS）",
+    ),
     formula_mode: None,
-    tags: &Tag{ info: None, normal: None, warning: None, error: Some(&["医用"]) },
+    tags: &Tag {
+        info: None,
+        normal: None,
+        warning: None,
+        error: Some(&["医用"]),
+    },
     interpretation: &[
         InterpretationItem {
             range: [0, 8],

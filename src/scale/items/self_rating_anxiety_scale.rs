@@ -4,11 +4,9 @@ use crate::scale::common::{
     OperationalRule, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
 };
 
-const INTRODUCTION: Texts = &[
-    &[
-        SentenceItem::Plain("本量表是根据Zung于1971年编制的“焦虑自评量表（Self—Rating Anxiety Scale，SAS）改编而成，可为临床心理咨询、诊断、治疗以及病理心理机制的研究提供科学依据。本测验应用范围颇广，适用于各种职业、文化阶层及年龄段的正常人或各类精神病人。"),
-    ],
-];
+const INTRODUCTION: Texts = &[&[SentenceItem::Plain(
+    "本量表是根据Zung于1971年编制的“焦虑自评量表（Self—Rating Anxiety Scale，SAS）改编而成，可为临床心理咨询、诊断、治疗以及病理心理机制的研究提供科学依据。本测验应用范围颇广，适用于各种职业、文化阶层及年龄段的正常人或各类精神病人。",
+)]];
 
 const INSTRUCTION: Texts = &[&[
     SentenceItem::Plain("本量表包含 "),
@@ -34,13 +32,18 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
     idea: None,
     references: None,
     warning: None,
-    formula_mode: Some(FormulaMode{
+    formula_mode: Some(FormulaMode {
         operational_rule: OperationalRule::Multiply(1.25),
         integer: Some(Integer::Round),
     }),
-    tags: &Tag{ info: Some(&["焦虑", "压力", "失眠"]), normal: None, warning: None, error: None },
+    tags: &Tag {
+        info: Some(&["焦虑", "压力", "失眠"]),
+        normal: None,
+        warning: None,
+        error: None,
+    },
     interpretation: &[
-        InterpretationItem{
+        InterpretationItem {
             range: [0, 50],
             description: "正常",
             critical_warning: None,
@@ -48,13 +51,15 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
                 text: "很高兴看到你拥有比较平稳的心态！这说明你最近在情绪调节和生活平衡上做得不错。就像定期体检一样，偶尔关注自己的心理状态，是爱自己的重要方式。",
                 caution: None,
             },
-            advice: Some(&["请继续保持这份内心的平和，你积极的生活态度不仅能滋养自己，也能像阳光一样温暖身边的人。"]),
+            advice: Some(&[
+                "请继续保持这份内心的平和，你积极的生活态度不仅能滋养自己，也能像阳光一样温暖身边的人。",
+            ]),
             symptom: None,
             status: Status::Normal,
         },
-        InterpretationItem{
+        InterpretationItem {
             range: [50, 60],
-            description: "轻度焦虑",            
+            description: "轻度焦虑",
             critical_warning: None,
             comforting_word: ComfortingWord {
                 text: "你可能正感受到一些焦虑情绪的波动，这是生活中常见的反应，很多人都会经历。",
@@ -72,13 +77,15 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
             ]),
             status: Status::Mild,
         },
-        InterpretationItem{
+        InterpretationItem {
             range: [60, 70],
-            description: "中度焦虑",            
+            description: "中度焦虑",
             critical_warning: None,
             comforting_word: ComfortingWord {
                 text: "焦虑情绪对你目前的影响已经比较明显，这段时间你可能感觉比较辛苦，情绪上的困扰已经带来了一些实实在在的影响。",
-                caution: Some("请记住，感到焦虑不是你的错，也不是软弱的表现。这恰恰说明你正在努力应对一些压力，而寻求改变本身就是一种勇气。"),
+                caution: Some(
+                    "请记住，感到焦虑不是你的错，也不是软弱的表现。这恰恰说明你正在努力应对一些压力，而寻求改变本身就是一种勇气。",
+                ),
             },
             advice: Some(&[
                 "即时舒缓技巧：尝试“478呼吸法”（吸气4秒，屏息7秒，呼气8秒），快速平复生理上的紧张感。",
@@ -93,21 +100,23 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
             ]),
             status: Status::Moderate,
         },
-        InterpretationItem{
+        InterpretationItem {
             range: [70, 100],
             description: "重度焦虑",
             critical_warning: Some(CriticalWarning {
-                title:"需要立即寻求帮助",
-                content:"重度焦虑需要专业医疗干预，请立即联系精神科医生或前往医院，进行全面的评估。"
+                title: "需要立即寻求帮助",
+                content: "重度焦虑需要专业医疗干预，请立即联系精神科医生或前往医院，进行全面的评估。",
             }),
             comforting_word: ComfortingWord {
                 text: "看到这个结果，你或许会感到害怕或无助。请首先知道：你并不孤单，这种情况是可以被有效治疗的。",
-                caution: Some("强烈的焦虑感就像心灵的重感冒，它需要专业医生的“诊断”和“处方”。主动寻求帮助，是此刻你能为自己做的最强大、最正确的事情。"),
+                caution: Some(
+                    "强烈的焦虑感就像心灵的重感冒，它需要专业医生的“诊断”和“处方”。主动寻求帮助，是此刻你能为自己做的最强大、最正确的事情。",
+                ),
             },
             advice: Some(&[
                 "立即联系专业人士：建议优先考虑前往医院的精神科或心理科，进行全面的评估。也可以寻求有资质的心理咨询师/治疗师的帮助。",
                 "你不是负担：将你的感受告诉你信任的家人或朋友，获得他们的支持。你的痛苦是真实的，值得被认真对待。",
-                "安全第一：如果脑海中出现伤害自己或他人的念头，请立即拨打心理援助热线（24小时全国生命危机干预热线：400-161-9995），或前往最近的医院急诊室。保护你的生命安全永远是第一位。"
+                "安全第一：如果脑海中出现伤害自己或他人的念头，请立即拨打心理援助热线（24小时全国生命危机干预热线：400-161-9995），或前往最近的医院急诊室。保护你的生命安全永远是第一位。",
             ]),
             // 重度焦虑尽量减少症状描述，避免增加用户的焦虑
             symptom: Some(&[
@@ -559,5 +568,5 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
                 },
             ],
         },
-    ]
+    ],
 };
