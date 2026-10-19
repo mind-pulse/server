@@ -40,6 +40,7 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     references: Some(&[
+        "Hamilton, M. (1960). A rating scale for depression. Journal of Neurology, Neurosurgery & Psychiatry, 23(1), 56-62.",
         "张作记主编.《行为医学量表手册》（光盘版）[M].中华医学电子音像出版社.2005年",
     ]),
     warning: Some(

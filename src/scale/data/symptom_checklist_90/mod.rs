@@ -1,8 +1,8 @@
 use serde::Serialize;
 
 use crate::scale::{
-    FormulaMode, HTMLElement, Integer, OperationalRule, PlainText, PlainTexts, QuestionOption,
-    Scale, ScaleCategory, SentenceItem, SymptomGuidance, Tag, Texts,
+    HTMLElement, PlainText, PlainTexts, QuestionOption, Scale, ScaleCategory, SentenceItem,
+    SymptomGuidance, Tag, Texts,
 };
 
 mod questions;
@@ -134,12 +134,12 @@ pub const SYMPTOM_CHECKLIST_90: Scale<Interpretation, Question> = Scale {
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
+    references: Some(&[
+        "Derogatis, L. R. (1977). SCL-90-R: Administration, scoring and procedures manual. Clinical Psychometric Research.",
+        "金华, 吴文源, 张明园. 中国正常人 SCL-90 评定结果的初步分析. 中国神经精神疾病杂志, 1986, 12(5): 260-263.",
+    ]),
     warning: Some("本量表仅适用 16 岁以上的人群。"),
-    formula_mode: Some(FormulaMode {
-        operational_rule: OperationalRule::Multiply(1.25),
-        integer: Some(Integer::Round),
-    }),
+    formula_mode: None,
     tags: &Tag {
         info: Some(&["多症状"]),
         normal: None,

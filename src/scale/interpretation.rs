@@ -36,7 +36,7 @@ pub struct InterpretationItem<I>
 where
     I: PartialOrd + Serialize + Copy,
 {
-    /// 范围，左开右闭
+    /// 分数区间 [start, end)，左闭右开（与前端 Common.tsx 的匹配逻辑一致）
     pub range: [I; 2],
     /// 描述
     pub description: PlainText,

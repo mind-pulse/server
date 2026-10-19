@@ -12,7 +12,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         any_symptom_average: Rule {
             value: 2,
-            comparison_operator: ">",
+            comparison_operator: ">=",
         },
     },
     symptoms: Symptoms {

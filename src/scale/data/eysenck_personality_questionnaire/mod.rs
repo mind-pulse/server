@@ -101,7 +101,7 @@ enum Dimension {
     E,
     /// Neuroticism/Stability，情绪性量表
     N,
-    /// Psychoticism/Socialisation，心理变态量表，又称精神质
+    /// Psychoticism（精神质/倔强性）
     P,
     /// Lie/Social Desirability，效度量表
     L,
@@ -156,7 +156,7 @@ pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpret
             "你可以将测试结果视为一份实用的“性格参考地图”，它不能定义你，但能帮助你更清晰、更系统地观察自己，为自我了解与提升提供一个科学的起点。",
         ]),
         references: Some(&[
-            "钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000",
+            "钱铭怡, 武国城, 朱荣春, 张莘. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报, 2000, 32(3): 317-323.",
         ]),
         formula_mode: None,
         warning: Some("本量表仅适用 16 岁以上的人群。"),

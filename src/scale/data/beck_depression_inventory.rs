@@ -37,7 +37,9 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
+    references: Some(&[
+        "Beck, A. T., Ward, C. H., Mendelson, M., Mock, J., & Erbaugh, J. (1961). An inventory for measuring depression. Archives of General Psychiatry, 4(6), 561-571.",
+    ]),
     warning: None,
     formula_mode: None,
     tags: &Tag {

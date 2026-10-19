@@ -30,7 +30,9 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
+    references: Some(&[
+        "Zung, W. W. K. (1971). A rating instrument for anxiety disorders. Psychosomatics, 12(6), 371-379.",
+    ]),
     warning: None,
     formula_mode: Some(FormulaMode {
         operational_rule: OperationalRule::Multiply(1.25),

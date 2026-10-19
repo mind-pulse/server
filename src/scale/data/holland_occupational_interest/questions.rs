@@ -840,7 +840,7 @@ pub(super) const QUESTIONS: &[Question] = &[
                 point: 1,
             },
             QuestionOption {
-                text: "薄记人员",
+                text: "簿记人员",
                 point: 1,
             },
             QuestionOption {

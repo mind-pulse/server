@@ -17,13 +17,13 @@ pub(super) const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretat
         capacity_category: CapacityCategory::A,
         name: "艺术型",
         personality_trait: "这个类型的人充满创造力与想象力，喜欢通过自我表达、创作来展现个人想法和价值观，厌恶重复、僵化的工作，追求美感与独特性，对色彩、声音、文字形式等有敏锐的感受力，注重作品的审美价值和原创性，情感丰富与直觉性强，倾向于依赖情感、直觉和想象来处理问题，渴望自由与独立。",
-        occupational_stigma: "适合这类人的专业有艺术学门类专业（音乐与舞蹈学类、戏剧与影视学类、美术学类等）、文学门类专业（中国语言文学类、外国语言文学类、新闻传播学类）、工学门类专业（建筑类、设计学类）",
+        occupational_stigma: "适合这类人的专业有艺术学门类专业（音乐与舞蹈学类、戏剧与影视学类、美术学类、设计学类等）、文学门类专业（中国语言文学类、外国语言文学类、新闻传播学类）、工学门类专业（建筑类）",
     },
     CapacityCategoryInterpretation {
         capacity_category: CapacityCategory::S,
         name: "社会型",
         personality_trait: "这个类型的人天生喜欢帮助、教导、服务他人，并能从中获得巨大的满足感和价值感，善于倾听、理解、沟通和协调，能够敏锐地察觉他人的情绪和需求，心肠软、有爱心，愿意为他人或社会福祉付出努力，更喜欢团队合作、人际互动，而不是独自面对机器、数据和工具。",
-        occupational_stigma: "适合这类人的专业有教育学门类专业（教育学类、体育学类）、医学门类专业（临床医学类、口腔医学类、中医学类等）、法学门类专业（法学类、社会学类、马克思主义理论类等）、管理学门类专业（工商管理类、公共管理类、社会学类）。",
+        occupational_stigma: "适合这类人的专业有教育学门类专业（教育学类、体育学类）、医学门类专业（临床医学类、口腔医学类、中医学类等）、法学门类专业（法学类、社会学类、马克思主义理论类等）、管理学门类专业（工商管理类、公共管理类）。",
     },
     CapacityCategoryInterpretation {
         capacity_category: CapacityCategory::E,

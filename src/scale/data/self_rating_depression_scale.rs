@@ -41,7 +41,9 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
+    references: Some(&[
+        "Zung, W. W. K. (1965). A self-rating depression scale. Archives of General Psychiatry, 12(1), 63-70.",
+    ]),
     warning: None,
     formula_mode: Some(FormulaMode {
         operational_rule: OperationalRule::Multiply(1.25),

@@ -257,7 +257,9 @@ pub const NEO_PERSONALITY_INVENTORY_REVISED: Scale<Interpretation, Question> = S
         "人格理论有几种，大五人格特质理论是近年来最受重用和欢迎的一个，也是最简单实用的一个，它将人格归为5种特质，这5种特质一般翻译为：外倾性、宜人性、严谨性、神经质和开放性。",
         "有学者称大五人格特质理论为“人格心理学领域的一场静悄悄的革命”，并认为大五特质理论是适合全人类的，它在过去的半个多世纪里被心理学研究者证明具有跨语言、跨文化、跨情景、跨评定者的一致性和稳定性。",
     ]),
-    references: None,
+    references: Some(&[
+        "Costa, P. T., & McCrae, R. R. (1992). Revised NEO Personality Inventory (NEO-PI-R) and NEO Five-Factor Inventory (NEO-FFI) professional manual. Psychological Assessment Resources.",
+    ]),
     warning: Some("适用于初中三年级以上文化水平的人群。"),
     formula_mode: None,
     tags: &Tag {

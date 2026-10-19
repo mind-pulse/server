@@ -52,7 +52,7 @@ const INSTRUCTION: Texts = &[&[
 const INTERPRETATION: &[InterpretationItem] = &[
     InterpretationItem {
         range: ScoreStandard {
-            total: [0, 5],
+            total: [0, 7],
             any: [0, 5],
         },
         label: "正常",
@@ -70,7 +70,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
     },
     InterpretationItem {
         range: ScoreStandard {
-            total: [6, 15],
+            total: [8, 15],
             any: [6, 9],
         },
         label: "轻度",
@@ -93,7 +93,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
     },
     InterpretationItem {
         range: ScoreStandard {
-            total: [16, 25],
+            total: [16, 23],
             any: [10, 14],
         },
         label: "中度",
@@ -116,7 +116,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
     },
     InterpretationItem {
         range: ScoreStandard {
-            total: [26, 40],
+            total: [24, 40],
             any: [15, 20],
         },
         label: "重度",
@@ -144,16 +144,20 @@ const INTERPRETATION: &[InterpretationItem] = &[
 
 pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Question> = Scale {
     id: 9,
-    name: "耶鲁布朗强迫症量表",
-    description: "专为强迫症设计的科学自测工具，10题看清困扰程度",
+    name: "耶鲁-布朗强迫量表",
+    description: "国际通用的强迫症状严重程度评估量表（自评改编版），10题评估困扰程度",
     abbreviation: "Y-BOCS",
     primary_category: ScaleCategory::Emotion,
     related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Behavior]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
-    warning: None,
+    references: Some(&[
+        "Goodman, W. K., Price, L. H., Rasmussen, S. A., Mazure, C., Fleischmann, R. L., Hill, C. L., Heninger, G. R., & Charney, D. S. (1989). The Yale-Brown Obsessive Compulsive Scale: I. Development, use, and reliability. Archives of General Psychiatry, 46(11), 1006-1011.",
+    ]),
+    warning: Some(
+        "本量表原为临床医生他评工具，此处为自评改编版，结果仅供自我了解与就医参考，不能作为诊断依据。",
+    ),
     formula_mode: None,
     tags: &Tag {
         info: Some(&["强迫"]),
@@ -314,7 +318,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
                     point: 3,
                 },
                 QuestionOption {
-                    text: "极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫思维）",
+                    text: "极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫行为）",
                     point: 4,
                 },
             ],

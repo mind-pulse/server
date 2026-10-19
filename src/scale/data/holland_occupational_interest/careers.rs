@@ -39,7 +39,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "RES",
-        information: "旅馆服务员、家畜饲养员、渔民、渔网修补工、水手长、收割机操作工、搬运行李工人、公园服务员、救  生员、登山导游、火车工程技术员、建筑工作、铺轨工人。",
+        information: "旅馆服务员、家畜饲养员、渔民、渔网修补工、水手长、收割机操作工、搬运行李工人、公园服务员、救生员、登山导游、火车工程技术员、建筑工作、铺轨工人。",
     },
     CareerInformation {
         code: "RCI",
@@ -67,7 +67,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "ISC",
-        information: "侦察员、播音室/电视修理服务员、验尸室人员、编目录者、医学实验定技师、调查研究者。",
+        information: "侦察员、播音室/电视修理服务员、验尸室人员、编目录者、医学实验技师、调查研究者。",
     },
     CareerInformation {
         code: "ISR",
@@ -127,7 +127,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "CIR",
-        information: "校对员、工程职员、海底电报员、检修计划员、发扳员。",
+        information: "校对员、工程职员、海底电报员、检修计划员、发报员。",
     },
     CareerInformation {
         code: "CSE",
@@ -135,7 +135,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "CSR",
-        information: "运货代理商、铁路职员、交通检查员、办公室通信员、薄记员、出纳员、银行财务职员。",
+        information: "运货代理商、铁路职员、交通检查员、办公室通信员、簿记员、出纳员、银行财务职员。",
     },
     CareerInformation {
         code: "CSA",

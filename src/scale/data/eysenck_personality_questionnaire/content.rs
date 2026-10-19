@@ -10,7 +10,9 @@ pub(super) const INTRODUCTION: Texts = &[
         SentenceItem::HTMLElement(HTMLElement::Strong("神经质")),
         SentenceItem::Plain("(又称情绪性)(N)和"),
         SentenceItem::HTMLElement(HTMLElement::Strong("精神质")),
-        SentenceItem::Plain("(又称倔强、讲求实际)(P)。"),
+        SentenceItem::Plain("(又称倔强、讲求实际)(P)，以及"),
+        SentenceItem::HTMLElement(HTMLElement::Strong("效度量表")),
+        SentenceItem::Plain("(L，用于检测作答的真实程度)。"),
     ],
     &[SentenceItem::Plain(
         "三个人格度不但经过许多数学统计上的和行为观察方面的分析，而且也得到实验室内多种心理实验的考察，被广泛应用于医学、司法、教育和心理咨询等领域，适合各种人群测试。",

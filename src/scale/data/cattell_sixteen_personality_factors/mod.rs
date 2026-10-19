@@ -140,7 +140,9 @@ pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
         "3. 十六维地图：通过科学分析，卡特尔将这些根源特质归纳为16个核心因素，涵盖了你为人处世的风格（如乐群性、世故性）、情绪模式（如稳定性、紧张性）、以及动力与自律（如有恒性、自律性）等主要方面。",
         "接下来，你将通过回答一系列问题，在这张16维人格地图上找到自己的坐标。",
     ]),
-    references: None,
+    references: Some(&[
+        "Cattell, R. B., Eber, H. W., & Tatsuoka, M. M. (1970). Handbook for the Sixteen Personality Factor Questionnaire (16PF). Institute for Personality and Ability Testing.",
+    ]),
     formula_mode: None,
     warning: Some("本量表仅适用 16 岁以上的人群。"),
     tags: &Tag {

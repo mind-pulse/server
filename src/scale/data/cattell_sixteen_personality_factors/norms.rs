@@ -1,8 +1,9 @@
 use super::{Norm, NormItem, Range};
 
-/// 16PF常模
+/// 16PF 标准十分转换区间
 ///
-/// 来源不权威，仅供参考：<http://old.lifeweek.com.cn//2013/0115/39671_6.shtml>
+/// 数值转写自公开的中文修订版常模资料，仅用于本项目的粗略换算；
+/// 如需用于研究或临床，请以官方手册常模为准。
 pub(super) const NORM: Norm = Norm {
     a: NormItem {
         ranges: &[

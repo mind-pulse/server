@@ -182,8 +182,10 @@ pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation 
 pub(super) const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "精神质",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
-    core_explain: "这个维度看你“是否从众”：高分=更独立、不盲从规则，低分=更温和、愿意配合别人，无好坏",
-    supplementary: Some("独立的人适合创新，配合的人适合团队，只是适配不同角色"),
+    core_explain: "这个维度测量“倔强性/精神质”：高分者往往更独立、不拘泥规则、对他人感受关注较少、敢于冒险；低分者更温和、合作、有同理心。它反映正常人格差异，与精神疾病无关",
+    supplementary: Some(
+        "高分者的果断与独立性适合需要开拓的情境，低分者的亲和与配合适合需要协作的情境",
+    ),
     score_interpret: ScoreInterpret {
         medium: &[
             ScoreInterpretItem {
