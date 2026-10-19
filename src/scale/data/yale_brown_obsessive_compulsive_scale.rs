@@ -38,7 +38,7 @@ pub struct InterpretationItem {
 }
 
 const INTRODUCTION: Texts = &[&[SentenceItem::Plain(
-    "耶鲁布朗强迫量表是美国 GOODMAN 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。",
+    "耶鲁布朗强迫量表是美国 Goodman 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。",
 )]];
 
 const INSTRUCTION: Texts = &[&[
@@ -75,7 +75,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
         },
         label: "轻度",
         comforting_word: ComfortingWord {
-            text: "您的得分显示有轻度强迫倾向，这在很多人身上都会出现。",
+            text: "您的得分提示有一些轻度的强迫倾向，这并不少见。",
             caution: Some("这些感觉在压力大时更常见，并不代表你有严重问题，但值得关注。"),
         },
         symptoms: Some(&[
@@ -99,7 +99,9 @@ const INTERPRETATION: &[InterpretationItem] = &[
         label: "中度",
         comforting_word: ComfortingWord {
             text: "您的得分显示有中度强迫倾向，这可能需要更多关注和支持。",
-            caution: Some("中度强迫并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+            caution: Some(
+                "这类困扰并不代表你已经确诊，它很常见、也可以改善。寻求帮助是勇敢的表现。",
+            ),
         },
         symptoms: Some(&[
             "重复的想法或行为已经明显影响日常效率",
@@ -121,7 +123,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
         },
         label: "重度",
         comforting_word: ComfortingWord {
-            text: "您的得分显示有重度强迫倾向，这已经严重影响到生活。",
+            text: "您的得分处在偏高的区间，说明这些想法或行为可能已占用不少时间和精力，值得尽快找专业人士评估。",
             caution: Some("重度强迫是可以治疗的医疗状况。寻求专业帮助是改善的第一步。"),
         },
         symptoms: Some(&[

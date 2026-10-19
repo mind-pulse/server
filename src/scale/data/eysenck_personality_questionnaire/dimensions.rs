@@ -92,7 +92,7 @@ pub(super) const E_DIMENSION: DimensionInterpretation = DimensionInterpretation 
 
 /// 人格维度 - 神经质/情绪稳定性（N）
 pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
-    label: "神经质",
+    label: "情绪性（神经质）",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
     core_explain: "这个维度看你“情绪波动程度”：高分=情绪容易波动（敏感），低分=情绪稳定（冷静），无好坏",
     supplementary: Some("情绪波动大的人更能感知细节，情绪稳定的人更能抗压，只是适配不同场景"),
@@ -180,7 +180,7 @@ pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation 
 
 /// 人格维度 - 精神质（P）
 pub(super) const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
-    label: "精神质",
+    label: "倔强性（精神质）",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
     core_explain: "这个维度测量“倔强性/精神质”：高分者往往更独立、不拘泥规则、对他人感受关注较少、敢于冒险；低分者更温和、合作、有同理心。它反映正常人格差异，与精神疾病无关",
     supplementary: Some(

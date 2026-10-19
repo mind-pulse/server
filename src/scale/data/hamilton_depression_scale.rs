@@ -56,22 +56,22 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     interpretation: &[
         InterpretationItem {
             range: [0, 8],
-            description: "正常",
+            description: "无明显抑郁症状",
             status: Status::Normal,
         },
         InterpretationItem {
             range: [8, 20],
-            description: "可能有抑郁症",
+            description: "轻度抑郁症状",
             status: Status::Mild,
         },
         InterpretationItem {
             range: [20, 35],
-            description: "肯定有抑郁症",
+            description: "中度抑郁症状",
             status: Status::Moderate,
         },
         InterpretationItem {
             range: [35, 76],
-            description: "严重抑郁症",
+            description: "重度抑郁症状",
             status: Status::Major,
         },
     ],

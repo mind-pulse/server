@@ -12,7 +12,7 @@ pub(super) const INSTRUCTION: Texts = &[
     &[
         SentenceItem::Plain("该量表共有 "),
         SentenceItem::HTMLElement(HTMLElement::Strong("90")),
-        SentenceItem::Plain(" 个项目，包含有较广泛的精神病症状学内容，从"),
+        SentenceItem::Plain(" 个项目，包含较广泛的心理与精神症状，从"),
         SentenceItem::HTMLElement(HTMLElement::Strong("感觉、情感、思维、意识、行为")),
         SentenceItem::Plain("直至"),
         SentenceItem::HTMLElement(HTMLElement::Strong("生活习惯、人际关系、饮食睡眠")),
