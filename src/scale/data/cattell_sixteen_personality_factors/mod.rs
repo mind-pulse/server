@@ -71,13 +71,14 @@ type Ranges = &'static [Range; 10];
 #[derive(Serialize)]
 struct NormItem {
     ranges: Ranges,
-    mean: f32,
-    standard_deviation: f32,
+    mean: f64,
+    standard_deviation: f64,
 }
 
+/// 单个性别的 16 个因素常模
 #[derive(Serialize)]
 #[serde(rename_all = "UPPERCASE")]
-struct Norm {
+struct FactorNorms {
     a: NormItem,
     b: NormItem,
     c: NormItem,
@@ -94,6 +95,13 @@ struct Norm {
     q2: NormItem,
     q3: NormItem,
     q4: NormItem,
+}
+
+/// 成人常模按性别分组（男 / 女）
+#[derive(Serialize)]
+struct Norm {
+    male: FactorNorms,
+    female: FactorNorms,
 }
 
 #[derive(Serialize)]
@@ -142,6 +150,7 @@ pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
     ]),
     references: Some(&[
         "Cattell, R. B., Eber, H. W., & Tatsuoka, M. M. (1970). Handbook for the Sixteen Personality Factor Questionnaire (16PF). Institute for Personality and Ability Testing.",
+        "16PF 成人常模（男 n=470 / 女 n=508），转写自常模附表 3-5、3-6。",
     ]),
     formula_mode: None,
     warning: Some(
