@@ -20,7 +20,7 @@ const INSTRUCTION: Texts = &[&[
     SentenceItem::HTMLElement(HTMLElement::Strong("13")),
     SentenceItem::Plain(" 个项目，分为 "),
     SentenceItem::HTMLElement(HTMLElement::Strong("4")),
-    SentenceItem::Plain(" 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您"),
+    SentenceItem::Plain(" 级评分，为保证调查结果的准确性，务必请你仔细阅读以下内容，然后根据你"),
     SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
     SentenceItem::Plain(
         "的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。",

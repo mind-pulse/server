@@ -43,7 +43,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "RCI",
-        information: "测量员、勘测员、仪表操作者、农业工程技术、化学工程技师、民用工程技师、石油工程技师、资料室管理员、探矿工、煅烧工、烧窖工、矿工、保养工、磨床工、取样工、样品检验员、纺纱工、炮手、漂洗工、电焊工、锯木工、刨床工、制帽工、手工缝纫工、油漆工、染色工、按摩工、木匠、农民建筑工作、电影放映员、勘测员助手。",
+        information: "测量员、勘测员、仪表操作者、农业工程技术、化学工程技师、民用工程技师、石油工程技师、资料室管理员、探矿工、煅烧工、烧窑工、矿工、保养工、磨床工、取样工、样品检验员、纺纱工、炮手、漂洗工、电焊工、锯木工、刨床工、制帽工、手工缝纫工、油漆工、染色工、按摩工、木匠、农民建筑工作、电影放映员、勘测员助手。",
     },
     CareerInformation {
         code: "RCS",
@@ -191,11 +191,11 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "EAR",
-        information: "展览室管理员、舞台管理员、播音员、训兽员。",
+        information: "展览室管理员、舞台管理员、播音员、驯兽员。",
     },
     CareerInformation {
         code: "ESC",
-        information: "理发师、裁判员、政府行政管理员、财政管理员、I程管理员、职业病防治、售货员、商业经理、办公室主任、人事负责人、调度员。",
+        information: "理发师、裁判员、政府行政管理员、财政管理员、工程管理员、职业病防治、售货员、商业经理、办公室主任、人事负责人、调度员。",
     },
     CareerInformation {
         code: "ESR",

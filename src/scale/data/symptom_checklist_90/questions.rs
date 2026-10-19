@@ -107,7 +107,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         symptom: Symptom::InterpersonalSensitivity,
     },
     Question {
-        title: "感到受骗，中了圈套或有人想抓住您",
+        title: "感到受骗，中了圈套或有人想抓住你",
         options: &OPTIONS,
         symptom: Symptom::Depression,
     },
@@ -167,7 +167,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         symptom: Symptom::Anxiety,
     },
     Question {
-        title: "您的感情容易受到伤害",
+        title: "你的感情容易受到伤害",
         options: &OPTIONS,
         symptom: Symptom::InterpersonalSensitivity,
     },
@@ -177,12 +177,12 @@ pub(super) const QUESTIONS: &[Question] = &[
         symptom: Symptom::Psychoticism,
     },
     Question {
-        title: "感到别人不理解您、不同情您",
+        title: "感到别人不理解你、不同情你",
         options: &OPTIONS,
         symptom: Symptom::InterpersonalSensitivity,
     },
     Question {
-        title: "感到人们对您不友好，不喜欢您",
+        title: "感到人们对你不友好，不喜欢你",
         options: &OPTIONS,
         symptom: Symptom::InterpersonalSensitivity,
     },
@@ -212,7 +212,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         symptom: Symptom::Somatization,
     },
     Question {
-        title: "感到有人在监视您、谈论您",
+        title: "感到有人在监视你、谈论你",
         options: &OPTIONS,
         symptom: Symptom::ParanoidIdeation,
     },
@@ -307,7 +307,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         symptom: Symptom::InterpersonalSensitivity,
     },
     Question {
-        title: "有一些不属于您自己的想法",
+        title: "有一些不属于你自己的想法",
         options: &OPTIONS,
         symptom: Symptom::Psychoticism,
     },
@@ -377,7 +377,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         symptom: Symptom::PhobicAnxiety,
     },
     Question {
-        title: "别人对您的成绩没有做出恰当的评价",
+        title: "别人对你的成绩没有做出恰当的评价",
         options: &OPTIONS,
         symptom: Symptom::ParanoidIdeation,
     },
@@ -422,7 +422,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         symptom: Symptom::Psychoticism,
     },
     Question {
-        title: "您认为应该因为自己的过错而受到惩罚",
+        title: "你认为应该因为自己的过错而受到惩罚",
         options: &OPTIONS,
         symptom: Symptom::Psychoticism,
     },

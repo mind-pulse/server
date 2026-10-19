@@ -16,7 +16,7 @@ pub(super) const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretat
     CapacityCategoryInterpretation {
         capacity_category: CapacityCategory::A,
         name: "艺术型",
-        personality_trait: "艺术型的人有很强的自我表现欲，对自己十分自信，喜欢通过新颖的设计引起别人情感上的共呜。他们的想象力很丰富，创造力很强，喜欢凭直觉做出判断，感情丰富，容易冲动，甚至可以为追求心中的理想抛弃一切。但他们的生活也许是杂乱无章、缺少秩序的。艺术型的人可以描述为“独立不倚、创新求异、热衷表现、激情洋溢、感情丰富和理想主义”。",
+        personality_trait: "艺术型的人有很强的自我表现欲，对自己十分自信，喜欢通过新颖的设计引起别人情感上的共鸣。他们的想象力很丰富，创造力很强，喜欢凭直觉做出判断，感情丰富，容易冲动，甚至可以为追求心中的理想抛弃一切。但他们的生活也许是杂乱无章、缺少秩序的。艺术型的人可以描述为“独立不倚、创新求异、热衷表现、激情洋溢、感情丰富和理想主义”。",
         occupational_stigma: "善于通过非系统化的、自由的活动进行艺术表现，但精细的操作能力较差。相应职业有演员、影视工作人员、画家、歌唱家、音乐演奏家、诗人、作家，工艺美术设计人员等。（室内装饰专家、图书管理专家、摄影师、音乐教师、作家、演员、记者、诗人、作曲家、编剧、雕刻家、漫画家）",
     },
     CapacityCategoryInterpretation {

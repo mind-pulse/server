@@ -23,7 +23,7 @@ const INSTRUCTION: Texts = &[&[
     SentenceItem::Plain("本量表包含 "),
     SentenceItem::HTMLElement(HTMLElement::Strong("20")),
     SentenceItem::Plain(
-        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您",
+        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请你仔细阅读以下内容，然后根据你",
     ),
     SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
     SentenceItem::Plain(

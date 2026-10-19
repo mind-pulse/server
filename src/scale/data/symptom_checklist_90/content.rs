@@ -3,9 +3,9 @@ use super::{HTMLElement, SentenceItem, Texts};
 pub(super) const INTRODUCTION: Texts = &[&[
     SentenceItem::Plain("《SCL-90症状自评量表》是全球使用"),
     SentenceItem::HTMLElement(HTMLElement::Strong("最广泛")),
-    SentenceItem::Plain("的心理健康评估工具之一，帮助您从"),
+    SentenceItem::Plain("的心理健康评估工具之一，帮助你从"),
     SentenceItem::HTMLElement(HTMLElement::Strong("情绪、压力、人际关系等9个症状维度")),
-    SentenceItem::Plain("全面了解自己的心理状态。它常用于专业初筛，也能为您提供自我觉察的参考。"),
+    SentenceItem::Plain("全面了解自己的心理状态。它常用于专业初筛，也能为你提供自我觉察的参考。"),
 ]];
 
 pub(super) const INSTRUCTION: Texts = &[
@@ -22,7 +22,7 @@ pub(super) const INSTRUCTION: Texts = &[
     ],
     &[
         SentenceItem::Plain(
-            "以下问题中列出了有些人可能有的症状或问题，请仔细阅读每一条，然后根据该句话与您自己的实际情况相符合的程度（",
+            "以下问题中列出了有些人可能有的症状或问题，请仔细阅读每一条，然后根据该句话与你自己的实际情况相符合的程度（",
         ),
         SentenceItem::HTMLElement(HTMLElement::Strong("最近一个星期或现在")),
         SentenceItem::Plain("）进行选择。"),
