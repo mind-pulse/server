@@ -1,0 +1,106 @@
+use super::{Norm, NormDimension, NormRange};
+
+pub(super) const NORM: Norm = Norm {
+    male: [
+        NormRange {
+            range: [Some(16), Some(19)],
+            p: NormDimension { m: 3.15, sd: 1.82 },
+            e: NormDimension { m: 7.74, sd: 2.77 },
+            n: NormDimension { m: 4.70, sd: 2.96 },
+            l: NormDimension { m: 4.43, sd: 2.55 },
+        },
+        NormRange {
+            range: [Some(20), Some(29)],
+            p: NormDimension { m: 3.00, sd: 2.00 },
+            e: NormDimension { m: 8.05, sd: 2.67 },
+            n: NormDimension { m: 4.57, sd: 3.06 },
+            l: NormDimension { m: 4.90, sd: 2.66 },
+        },
+        NormRange {
+            range: [Some(30), Some(39)],
+            p: NormDimension { m: 2.88, sd: 2.04 },
+            e: NormDimension { m: 7.82, sd: 2.68 },
+            n: NormDimension { m: 4.01, sd: 2.78 },
+            l: NormDimension { m: 5.61, sd: 2.66 },
+        },
+        NormRange {
+            range: [Some(40), Some(49)],
+            p: NormDimension { m: 2.91, sd: 2.34 },
+            e: NormDimension { m: 7.34, sd: 2.88 },
+            n: NormDimension { m: 4.34, sd: 2.95 },
+            l: NormDimension { m: 6.55, sd: 2.78 },
+        },
+        NormRange {
+            range: [Some(50), Some(59)],
+            p: NormDimension { m: 2.67, sd: 2.21 },
+            e: NormDimension { m: 6.95, sd: 2.98 },
+            n: NormDimension { m: 3.90, sd: 2.89 },
+            l: NormDimension { m: 7.19, sd: 2.66 },
+        },
+        NormRange {
+            range: [Some(60), Some(69)],
+            p: NormDimension { m: 2.68, sd: 2.31 },
+            e: NormDimension { m: 7.08, sd: 3.01 },
+            n: NormDimension { m: 3.70, sd: 3.00 },
+            l: NormDimension { m: 7.73, sd: 3.08 },
+        },
+        NormRange {
+            range: [Some(70), None],
+            p: NormDimension { m: 2.92, sd: 2.79 },
+            e: NormDimension { m: 6.89, sd: 3.08 },
+            n: NormDimension { m: 4.38, sd: 3.39 },
+            l: NormDimension { m: 8.00, sd: 3.13 },
+        },
+    ],
+    female: [
+        NormRange {
+            range: [Some(16), Some(19)],
+            p: NormDimension { m: 2.63, sd: 1.81 },
+            e: NormDimension { m: 8.13, sd: 2.58 },
+            n: NormDimension { m: 4.93, sd: 2.75 },
+            l: NormDimension { m: 4.86, sd: 2.43 },
+        },
+        NormRange {
+            range: [Some(20), Some(29)],
+            p: NormDimension { m: 2.68, sd: 1.82 },
+            e: NormDimension { m: 7.44, sd: 2.79 },
+            n: NormDimension { m: 4.81, sd: 2.95 },
+            l: NormDimension { m: 5.32, sd: 2.70 },
+        },
+        NormRange {
+            range: [Some(30), Some(39)],
+            p: NormDimension { m: 2.44, sd: 1.82 },
+            e: NormDimension { m: 7.50, sd: 2.87 },
+            n: NormDimension { m: 4.49, sd: 2.89 },
+            l: NormDimension { m: 6.64, sd: 2.76 },
+        },
+        NormRange {
+            range: [Some(40), Some(49)],
+            p: NormDimension { m: 2.55, sd: 2.30 },
+            e: NormDimension { m: 7.15, sd: 2.86 },
+            n: NormDimension { m: 4.44, sd: 2.95 },
+            l: NormDimension { m: 7.45, sd: 2.98 },
+        },
+        NormRange {
+            range: [Some(50), Some(59)],
+            p: NormDimension { m: 2.36, sd: 1.82 },
+            e: NormDimension { m: 6.92, sd: 2.90 },
+            n: NormDimension { m: 4.48, sd: 2.88 },
+            l: NormDimension { m: 7.73, sd: 2.68 },
+        },
+        NormRange {
+            range: [Some(60), Some(69)],
+            p: NormDimension { m: 2.51, sd: 1.98 },
+            e: NormDimension { m: 7.28, sd: 2.95 },
+            n: NormDimension { m: 4.44, sd: 3.12 },
+            l: NormDimension { m: 7.72, sd: 2.96 },
+        },
+        NormRange {
+            range: [Some(70), None],
+            p: NormDimension { m: 2.32, sd: 1.89 },
+            e: NormDimension { m: 7.28, sd: 3.48 },
+            n: NormDimension { m: 4.88, sd: 3.25 },
+            l: NormDimension { m: 8.84, sd: 2.58 },
+        },
+    ],
+};

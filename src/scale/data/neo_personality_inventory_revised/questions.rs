@@ -1,7 +1,7 @@
+use super::scoring::{FORWARD, REVERSE};
 use super::{
     AgreeablenessSubdimension, ConscientiousnessSubdimension, Dimension, ExtraversionSubdimension,
-    FORWARD, NegativeEmotionalitySubdimension, OpenMindednessSubdimension, Question, REVERSE,
-    Subdimension,
+    NegativeEmotionalitySubdimension, OpenMindednessSubdimension, Question, Subdimension,
 };
 
 pub(super) const QUESTIONS: &[Question] = &[
