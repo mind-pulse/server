@@ -36,7 +36,8 @@ pub struct InterpretationItem<I>
 where
     I: PartialOrd + Serialize + Copy,
 {
-    /// 分数区间 [start, end)，左闭右开（与前端 Common.tsx 的匹配逻辑一致）
+    /// 分数区间 [start, end)，左闭右开（与前端 pickInterpretation 的匹配逻辑一致）。
+    /// 最高一档的 end 即量表满分，匹配时按闭区间处理，避免满分被判为未匹配。
     pub range: [I; 2],
     /// 描述
     pub description: PlainText,
