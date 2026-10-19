@@ -1,13 +1,13 @@
 use std::{collections::HashMap, env};
 
 use serde::Serialize;
-use sqlx::{sqlite::SqlitePoolOptions, Pool, Sqlite};
+use sqlx::{Pool, Sqlite, sqlite::SqlitePoolOptions};
 use time::macros::offset;
 use tokio::sync::OnceCell;
 
 use crate::{
     error::{MindPulseError, MindPulseResult},
-    scale::{get_scale_name_by_id, LIST},
+    scale::{LIST, get_scale_name_by_id},
 };
 
 type SqlitePool = Pool<Sqlite>;

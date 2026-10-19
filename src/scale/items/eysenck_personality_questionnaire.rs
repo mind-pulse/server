@@ -240,10 +240,10 @@ const SANGUINE: Temperament = Temperament {
     scene_suggestion: SceneSuggestion {
         study: "适合拆分长任务（比如把背书拆成20分钟一段），用小组讨论、边讲边学的方式（比如给同学讲题），避免独自死记硬背",
         life: "可以多参加社交、运动类活动释放精力，但要留一点独处时间（比如睡前10分钟安静看书），避免精力透支",
-        work: "适配需要临场应变、对外沟通的岗位（销售、活动策划、主持人、客服）；避开长期独处、重复机械的工作（如仓库管理、数据录入）"
+        work: "适配需要临场应变、对外沟通的岗位（销售、活动策划、主持人、客服）；避开长期独处、重复机械的工作（如仓库管理、数据录入）",
     },
     notice: "优势是灵活善交际，短板是容易三分钟热度；可以用“定小目标+及时奖励”的方式，弥补专注力不足的问题",
-    summary: "活泼灵活，适配多变场景，注意稳住专注力"
+    summary: "活泼灵活，适配多变场景，注意稳住专注力",
 };
 
 /// 气质类型 - 胆汁质（choleric）
@@ -253,10 +253,10 @@ const CHOLERIC: Temperament = Temperament {
     scene_suggestion: SceneSuggestion {
         study: "适合短时间高强度冲刺（比如考前集中刷题），避免磨磨蹭蹭；生气时先停1分钟再学习，别带着情绪做题",
         life: "可以通过跑步、拳击等运动释放情绪，少跟人硬碰硬；说话时放慢语速，避免脱口而出伤到人",
-        work: "适配需要决策、抗压、快速行动的岗位（导游、销售管理、应急救援、演讲）；避开需要耐心、反复沟通的工作（如客服、心理咨询）"
+        work: "适配需要决策、抗压、快速行动的岗位（导游、销售管理、应急救援、演讲）；避开需要耐心、反复沟通的工作（如客服、心理咨询）",
     },
     notice: "优势是果敢有冲劲，短板是容易急躁；可以养成“先思考后行动”的习惯，比如做决定前数3秒",
-    summary: "果敢有冲劲，适配高压场景，注意控制情绪"
+    summary: "果敢有冲劲，适配高压场景，注意控制情绪",
 };
 
 /// 气质类型 - 抑郁质（melancholic）
@@ -266,10 +266,10 @@ const MELANCHOLIC: Temperament = Temperament {
     scene_suggestion: SceneSuggestion {
         study: "适合深度思考的方式（比如精读、整理笔记、复盘错题），避开嘈杂的学习环境；别过度纠结细节，先完成再完美",
         life: "可以写日记梳理情绪，少参加人多的聚会，跟1-2个知心朋友相处就好；别胡思乱想，不确定的事直接问清楚",
-        work: "适配需要细心、专注、独立思考的岗位（校对、设计师、科研、档案管理、艺术创作）；避开需要频繁社交、快速决策的工作（如销售、公关）"
+        work: "适配需要细心、专注、独立思考的岗位（校对、设计师、科研、档案管理、艺术创作）；避开需要频繁社交、快速决策的工作（如销售、公关）",
     },
     notice: "优势是细心有深度，短板是容易内耗；可以用“列清单”的方式，减少胡思乱想，聚焦具体事",
-    summary: "细腻有深度，适配精细场景，注意别内耗"
+    summary: "细腻有深度，适配精细场景，注意别内耗",
 };
 
 /// 气质类型 - 粘液质（phlegmatic）
@@ -279,10 +279,10 @@ const PHLEGMATIC: Temperament = Temperament {
     scene_suggestion: SceneSuggestion {
         study: "适合长期积累的方式（比如每天背10个单词），避开临时抱佛脚；学新东西时别着急，给自己足够的适应时间",
         life: "可以尝试偶尔突破舒适区（比如学一个新技能），别太循规蹈矩；跟急性子的人相处时，提前沟通节奏",
-        work: "适配需要稳重、耐心、长期坚持的岗位（医生、法官、会计、教师、心理咨询）；避开需要快速应变、频繁变动的工作（如创业、直播）"
+        work: "适配需要稳重、耐心、长期坚持的岗位（医生、法官、会计、教师、心理咨询）；避开需要快速应变、频繁变动的工作（如创业、直播）",
     },
     notice: "优势是稳重有耐力，短板是不够灵活；可以多关注新信息，偶尔尝试“快速做小决定”，提升应变力",
-    summary: "稳重有耐力，适配长期场景，注意提升灵活度"
+    summary: "稳重有耐力，适配长期场景，注意提升灵活度",
 };
 
 /// 人格维度 - 内外倾向（E）
@@ -379,8 +379,7 @@ const E_DIMENSION: DimensionInterpretation = DimensionInterpretation {
 const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "神经质",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
-    core_explain:
-        "这个维度看你“情绪波动程度”：高分=情绪容易波动（敏感），低分=情绪稳定（冷静），无好坏",
+    core_explain: "这个维度看你“情绪波动程度”：高分=情绪容易波动（敏感），低分=情绪稳定（冷静），无好坏",
     supplementary: Some("情绪波动大的人更能感知细节，情绪稳定的人更能抗压，只是适配不同场景"),
     score_interpret: ScoreInterpret {
         medium: &[
@@ -468,8 +467,7 @@ const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
 const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "精神质",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
-    core_explain:
-        "这个维度看你“是否从众”：高分=更独立、不盲从规则，低分=更温和、愿意配合别人，无好坏",
+    core_explain: "这个维度看你“是否从众”：高分=更独立、不盲从规则，低分=更温和、愿意配合别人，无好坏",
     supplementary: Some("独立的人适合创新，配合的人适合团队，只是适配不同角色"),
     score_interpret: ScoreInterpret {
         medium: &[
@@ -498,8 +496,7 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                 },
                 ScoreInterpretItem {
                     title: "工作建议",
-                    content:
-                        "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
+                    content: "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
                 },
             ],
             low: &[
@@ -517,8 +514,7 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                 },
                 ScoreInterpretItem {
                     title: "工作建议",
-                    content:
-                        "选需要团队协作、沟通的岗位（人力资源、客服、教师），避开需要独断决策的工作",
+                    content: "选需要团队协作、沟通的岗位（人力资源、客服、教师），避开需要独断决策的工作",
                 },
             ],
         },
@@ -534,8 +530,7 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
                 },
                 ScoreInterpretItem {
                     title: "工作建议",
-                    content:
-                        "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
+                    content: "选需要创新、独立决策的岗位（创业、科研、设计），避开需要严格遵守规则的工作",
                 },
                 ScoreInterpretItem {
                     title: "生活建议",
@@ -572,8 +567,7 @@ const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
 const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "掩饰性",
     notice: None,
-    core_explain:
-        "这个维度看你“回答是否真实”：高分=可能想展现自己的好形象，低分=回答更坦诚，仅参考测试效度",
+    core_explain: "这个维度看你“回答是否真实”：高分=可能想展现自己的好形象，低分=回答更坦诚，仅参考测试效度",
     supplementary: None,
     score_interpret: ScoreInterpret {
         medium: &[
@@ -639,7 +633,9 @@ const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
 
 const INTRODUCTION: Texts = &[
     &[
-        SentenceItem::Plain("艾森克人格问卷（Eysenck Personality Questionnaire, 简称 EPQ）是英国伦敦大学心理系和精神病研究所艾森克教授编制的，归纳了三个人格的基本因素："),
+        SentenceItem::Plain(
+            "艾森克人格问卷（Eysenck Personality Questionnaire, 简称 EPQ）是英国伦敦大学心理系和精神病研究所艾森克教授编制的，归纳了三个人格的基本因素：",
+        ),
         SentenceItem::HTMLElement(HTMLElement::Strong("内外向性")),
         SentenceItem::Plain("(E)、"),
         SentenceItem::HTMLElement(HTMLElement::Strong("神经质")),
@@ -647,12 +643,12 @@ const INTRODUCTION: Texts = &[
         SentenceItem::HTMLElement(HTMLElement::Strong("精神质")),
         SentenceItem::Plain("(又称倔强、讲求实际)(P)。"),
     ],
-    &[
-        SentenceItem::Plain("三个人格度不但经过许多数学统计上的和行为观察方面的分析，而且也得到实验室内多种心理实验的考察，被广泛应用于医学、司法、教育和心理咨询等领域，适合各种人群测试。"),
-    ],
-    &[
-        SentenceItem::Plain("艾森克人格问卷简式量表中国版在原量表的基础上针对中国进行了修订，在保持甚至提高信度的同时精简了部分题目。"),
-    ]
+    &[SentenceItem::Plain(
+        "三个人格度不但经过许多数学统计上的和行为观察方面的分析，而且也得到实验室内多种心理实验的考察，被广泛应用于医学、司法、教育和心理咨询等领域，适合各种人群测试。",
+    )],
+    &[SentenceItem::Plain(
+        "艾森克人格问卷简式量表中国版在原量表的基础上针对中国进行了修订，在保持甚至提高信度的同时精简了部分题目。",
+    )],
 ];
 
 const INSTRUCTION: Texts = &[&[
@@ -679,698 +675,706 @@ const INTERPRETATION: Interpretation = Interpretation {
     },
 };
 
-pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpretation, Question> = Scale {
-    id: 4,
-    name: "艾森克人格问卷简式量表中国版",
-    description: "源自国际经典、专为中国优化的性格探索工具",
-    primary_category: ScaleCategory::Personality,
-    related_categories: Some(&[ScaleCategory::Emotion, ScaleCategory::MentalHealth]),
-    abbreviation: "EPQ-RSC",
-    introduction: INTRODUCTION,
-    instruction: INSTRUCTION,
-    idea: Some(&[
-        "此测试能够帮助你了解自己性格中的核心特质，它基于经典的心理学理论，将人格分为情绪稳定性、内外向倾向、行事风格三个主要维度。",
-        "它的原理就像描绘一幅性格简笔画：通过一系列生活情境中的感受与选择，客观地勾勒出你在这些维度上的位置。中国版量表经过了严谨的调整，使其更贴合我们的文化背景和日常表达。",
-        "在科学性上，该量表拥有良好的信度与效度。简单来说，就是测试结果稳定可靠，且能真实反映它想要测量的人格特质，因此被广泛应用于心理健康、职业评估和个人成长等领域。",
-        "你可以将测试结果视为一份实用的“性格参考地图”，它不能定义你，但能帮助你更清晰、更系统地观察自己，为自我了解与提升提供一个科学的起点。",
-    ]),
-    references: Some(&["钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000"]),
-    formula_mode: None,
-    warning: Some("本量表仅适用 16 岁以上的人群。"),
-    tags: &Tag{ info: Some(&[ "人格"]), normal: None, warning: Some(&["16+"]), error: None },
-    interpretation: INTERPRETATION,
-    questions: &[
-        Question {
-            title: "你的情绪是否时起时落?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
+pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpretation, Question> =
+    Scale {
+        id: 4,
+        name: "艾森克人格问卷简式量表中国版",
+        description: "源自国际经典、专为中国优化的性格探索工具",
+        primary_category: ScaleCategory::Personality,
+        related_categories: Some(&[ScaleCategory::Emotion, ScaleCategory::MentalHealth]),
+        abbreviation: "EPQ-RSC",
+        introduction: INTRODUCTION,
+        instruction: INSTRUCTION,
+        idea: Some(&[
+            "此测试能够帮助你了解自己性格中的核心特质，它基于经典的心理学理论，将人格分为情绪稳定性、内外向倾向、行事风格三个主要维度。",
+            "它的原理就像描绘一幅性格简笔画：通过一系列生活情境中的感受与选择，客观地勾勒出你在这些维度上的位置。中国版量表经过了严谨的调整，使其更贴合我们的文化背景和日常表达。",
+            "在科学性上，该量表拥有良好的信度与效度。简单来说，就是测试结果稳定可靠，且能真实反映它想要测量的人格特质，因此被广泛应用于心理健康、职业评估和个人成长等领域。",
+            "你可以将测试结果视为一份实用的“性格参考地图”，它不能定义你，但能帮助你更清晰、更系统地观察自己，为自我了解与提升提供一个科学的起点。",
+        ]),
+        references: Some(&[
+            "钱铭怡等. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报. 2000",
+        ]),
+        formula_mode: None,
+        warning: Some("本量表仅适用 16 岁以上的人群。"),
+        tags: &Tag {
+            info: Some(&["人格"]),
+            normal: None,
+            warning: Some(&["16+"]),
+            error: None,
         },
-        Question {
-            title: "当你看到小孩(或动物)受折磨时是否感到难受?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你是个健谈的人吗?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "如果你说了要做什么事，是否不论此事可能如果不顺利你都总能遵守诺言?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否会无言无故地感到“很惨”?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "欠债会使你感到忧虑吗?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你是个生气勃勃的人吗?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否曾贪图过超过你应得的分外之物?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你是个容易被激怒的人吗?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你会服用能产生奇异或危险效果的药物吗?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你愿意认识陌生人吗?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否曾经有过明知自己做错了事却责备别人的情况?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你的感情容易受伤害吗?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否愿意按照自己的方式行事，而不愿意按照规则办事?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "在热闹的聚会中你能使自己放得开，使自己玩得开心吗?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你所有的习惯是否都是好的?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否时常感到“极其厌倦”?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "良好的举止和整洁对你来说很重要吗?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "在结交新朋友时，你经常是积极主动的吗?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否有过随口骂人的时候?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你认为自己是一个胆怯不安的人吗?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否认为婚姻是不合时宜的，应该废除?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你能否很容易地给一个沉闷的聚会注入活力?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你曾毁坏或丢失过别人的东西吗?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你是个忧心忡忡的人吗?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你爱和别人合作吗?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "在社交场合你是否倾向于呆在不显眼的地方?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "如果在你的工作中出现了错误，你知道后会感到忧虑吗?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你讲过别人的坏话或脏话吗?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你认为自己是个神经紧张或“弦绷得过紧”的人吗?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否觉得人们为了未来有保障，而在储蓄和保险方面花费的时间太多了?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否喜欢和人们相处在一起?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "当你还是个小孩子的时候，你是否曾有过对父母耍赖或不听话的行为?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "在经历了一次令人难堪的事之后，你是否会为此烦恼很长时间?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否努力使自己对人不粗鲁?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你是否喜欢在自己周围有许多热闹和令人兴奋的事情?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你曾在玩游戏时作过弊吗?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你是否因自己的“神经过敏”而感到痛苦?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你愿意别人怕你吗?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你曾利用过别人吗?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你是否喜欢说笑话和谈论有趣的事?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否时常感到孤独?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否认为遵循社会规范比按照个人方式行事更好一些?",
-            dimension: Dimension::P,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "在别人眼里你总是充满活力的吗?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你总能做到言行一致吗?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你是否时常被内疚感所困扰?",
-            dimension: Dimension::N,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-        Question {
-            title: "你有时将今天该做的事情拖到明天去做吗?",
-            dimension: Dimension::L,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 0,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 1,
-                },
-            ],
-        },
-        Question {
-            title: "你能使一个聚会顺利进行下去吗?",
-            dimension: Dimension::E,
-            options: &[
-                QuestionOption {
-                    text: "是",
-                    point: 1,
-                },
-                QuestionOption {
-                    text: "不是",
-                    point: 0,
-                },
-            ],
-        },
-    ]
-};
+        interpretation: INTERPRETATION,
+        questions: &[
+            Question {
+                title: "你的情绪是否时起时落?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "当你看到小孩(或动物)受折磨时是否感到难受?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你是个健谈的人吗?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "如果你说了要做什么事，是否不论此事可能如果不顺利你都总能遵守诺言?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否会无言无故地感到“很惨”?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "欠债会使你感到忧虑吗?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你是个生气勃勃的人吗?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否曾贪图过超过你应得的分外之物?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你是个容易被激怒的人吗?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你会服用能产生奇异或危险效果的药物吗?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你愿意认识陌生人吗?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否曾经有过明知自己做错了事却责备别人的情况?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你的感情容易受伤害吗?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否愿意按照自己的方式行事，而不愿意按照规则办事?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "在热闹的聚会中你能使自己放得开，使自己玩得开心吗?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你所有的习惯是否都是好的?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否时常感到“极其厌倦”?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "良好的举止和整洁对你来说很重要吗?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "在结交新朋友时，你经常是积极主动的吗?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否有过随口骂人的时候?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你认为自己是一个胆怯不安的人吗?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否认为婚姻是不合时宜的，应该废除?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你能否很容易地给一个沉闷的聚会注入活力?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你曾毁坏或丢失过别人的东西吗?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你是个忧心忡忡的人吗?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你爱和别人合作吗?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "在社交场合你是否倾向于呆在不显眼的地方?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "如果在你的工作中出现了错误，你知道后会感到忧虑吗?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你讲过别人的坏话或脏话吗?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你认为自己是个神经紧张或“弦绷得过紧”的人吗?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否觉得人们为了未来有保障，而在储蓄和保险方面花费的时间太多了?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否喜欢和人们相处在一起?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "当你还是个小孩子的时候，你是否曾有过对父母耍赖或不听话的行为?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "在经历了一次令人难堪的事之后，你是否会为此烦恼很长时间?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否努力使自己对人不粗鲁?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否喜欢在自己周围有许多热闹和令人兴奋的事情?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你曾在玩游戏时作过弊吗?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否因自己的“神经过敏”而感到痛苦?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你愿意别人怕你吗?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你曾利用过别人吗?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否喜欢说笑话和谈论有趣的事?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否时常感到孤独?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否认为遵循社会规范比按照个人方式行事更好一些?",
+                dimension: Dimension::P,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "在别人眼里你总是充满活力的吗?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你总能做到言行一致吗?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你是否时常被内疚感所困扰?",
+                dimension: Dimension::N,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+            Question {
+                title: "你有时将今天该做的事情拖到明天去做吗?",
+                dimension: Dimension::L,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 0,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 1,
+                    },
+                ],
+            },
+            Question {
+                title: "你能使一个聚会顺利进行下去吗?",
+                dimension: Dimension::E,
+                options: &[
+                    QuestionOption {
+                        text: "是",
+                        point: 1,
+                    },
+                    QuestionOption {
+                        text: "不是",
+                        point: 0,
+                    },
+                ],
+            },
+        ],
+    };
