@@ -4,9 +4,9 @@
 
 use serde::Serialize;
 
-use crate::scale::category::ScaleCategory;
-use crate::scale::common::{
-    HTMLElement, PlainText, PlainTexts, QuestionOption, Scale, SentenceItem, Tag, Texts,
+use crate::scale::{
+    HTMLElement, PlainText, PlainTexts, QuestionOption, Scale, ScaleCategory, SentenceItem, Tag,
+    Texts,
 };
 
 use super::holland_occupational_interest::{

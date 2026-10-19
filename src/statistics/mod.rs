@@ -1,82 +1,64 @@
 mod sqlite;
+mod types;
 
-use salvo::{
-    Response, Writer, handler,
-    oapi::extract::{HeaderParam, QueryParam},
-    writing::Json,
-};
+use std::collections::HashMap;
 
-use crate::{
-    error::{MindPulseError, MindPulseResult},
-    scale::get_scale_name_by_id,
-    statistics::sqlite::ClientType,
-};
+use crate::db::SqlitePool;
+use crate::error::Result;
+use crate::scale::{self, ScaleId};
 
-use self::sqlite::{insert_completed_test, query_all_statistics, query_scale_statistics};
+pub use types::{ClientType, ScaleStatistics};
 
-pub use self::sqlite::create_statistics_table;
+/// 每个量表的测试次数（包含暂无记录、计数为 0 的量表）
+pub async fn all_counts(pool: &SqlitePool) -> Result<HashMap<u16, ScaleStatistics<'static>>> {
+    trace!(message = "Querying all scale statistics");
 
-/// 获取查询统计信息的处理器
-#[handler]
-pub async fn handle_get_statistics(
-    id: QueryParam<u16, false>,
-    res: &mut Response,
-) -> MindPulseResult<()> {
-    trace!(message = "Querying statistics data");
+    let rows = sqlite::counts_by_scale(pool).await?;
 
-    match id.into_inner() {
-        None => {
-            debug!(message = "No scale specified, querying all records");
-            res.render(Json(query_all_statistics().await?));
+    // 先用注册表补齐所有量表，再用真实计数覆盖
+    let mut statistics: HashMap<u16, ScaleStatistics<'static>> = scale::all_names()
+        .into_iter()
+        .map(|(ScaleId(id), name)| (id, ScaleStatistics { name, count: 0 }))
+        .collect();
+
+    for (id, count) in rows {
+        if let Some(stats) = statistics.get_mut(&id) {
+            stats.count = count;
         }
-        Some(id) => {
-            debug!(message = "Querying specified scale record", id);
-            res.render(Json(query_scale_statistics(id).await?));
-        }
-    };
+    }
 
-    Ok(())
+    info!(message = "All scale statistics retrieved", statistics = ?statistics);
+    Ok(statistics)
 }
 
-/// 处理插入测试记录的请求
-#[handler]
-pub async fn handle_insert_record(
-    id: QueryParam<u16, true>,
-    client_type: QueryParam<u8, true>,
-    x_forwarded_for: HeaderParam<&str, false>,
-) -> MindPulseResult<()> {
-    trace!(
-        message = "Inserting test record",
-        id = *id,
-        client_type = *client_type
+/// 单个量表的测试次数
+pub async fn scale_count(pool: &SqlitePool, id: ScaleId) -> Result<ScaleStatistics<'static>> {
+    trace!(message = "Querying scale statistics", id = id.0);
+
+    let name = scale::name(id)?;
+    let count = sqlite::count_for_scale(pool, id.0).await?;
+
+    info!(message = "Scale statistics retrieved", id = id.0, count);
+    Ok(ScaleStatistics { name, count })
+}
+
+/// 记录一次完成的测试
+pub async fn record(
+    pool: &SqlitePool,
+    id: ScaleId,
+    client_type: ClientType,
+    ip_address: &str,
+) -> Result<u64> {
+    // 校验量表 ID 是否存在
+    scale::name(id)?;
+
+    let affected = sqlite::insert(pool, id.0, client_type, ip_address).await?;
+
+    info!(
+        message = "Test record inserted successfully",
+        scale_index = id.0,
+        ip_address,
+        client_type = ?client_type
     );
-
-    // 验证 ID
-    let name = get_scale_name_by_id(*id)?;
-    debug!(
-        message = "Successfully resolved scale index",
-        name = name,
-        id = *id
-    );
-
-    // 验证 client type
-    let client_type: ClientType = (*client_type).try_into().map_err(|e| {
-        error!(message = "Failed to convert client type", error = ?e);
-        MindPulseError::Response("无效的 clientType".to_owned())
-    })?;
-
-    // 获取客户端 IP 地址
-    let client_ip = x_forwarded_for
-        .into_inner()
-        .unwrap_or("")
-        .split(',')
-        .next()
-        .unwrap_or("")
-        .trim();
-    debug!(message = "Retrieved client IP address", ip = client_ip);
-
-    // 插入测试记录
-    insert_completed_test(*id, client_type, client_ip).await?;
-
-    Ok(())
+    Ok(affected)
 }

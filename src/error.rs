@@ -1,35 +1,38 @@
-use std::time::SystemTimeError;
-
 use salvo::{Depot, Request, Response, Writer, async_trait, http::StatusCode, writing::Text};
 
-pub type MindPulseResult<T> = std::result::Result<T, MindPulseError>;
+pub type Result<T, E = Error> = std::result::Result<T, E>;
 
+/// 服务统一错误类型（领域错误 + 基础设施错误）
 #[derive(Debug, thiserror::Error)]
-pub enum MindPulseError {
+pub enum Error {
     #[error(transparent)]
-    Sqlite(#[from] sqlx::Error),
+    Database(#[from] sqlx::Error),
     #[error(transparent)]
-    SystemTime(#[from] SystemTimeError),
+    Serialization(#[from] serde_json::Error),
+    #[error("无效的量表 ID")]
+    ScaleNotFound,
     #[error("无效的客户端类型：{0}")]
     InvalidClientType(u8),
-    #[error("{0}")]
-    Response(String),
+    #[error("服务内部状态缺失")]
+    StateMissing,
 }
 
-#[async_trait]
-impl Writer for MindPulseError {
-    async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
-        match &self {
-            MindPulseError::Response(_) => res.status_code(StatusCode::BAD_REQUEST),
-            _ => res.status_code(StatusCode::INTERNAL_SERVER_ERROR),
-        };
-
-        res.render(Text::Plain(self.to_string()));
+impl Error {
+    fn status_code(&self) -> StatusCode {
+        match self {
+            Error::ScaleNotFound => StatusCode::NOT_FOUND,
+            Error::InvalidClientType(_) => StatusCode::BAD_REQUEST,
+            Error::StateMissing | Error::Database(_) | Error::Serialization(_) => {
+                StatusCode::INTERNAL_SERVER_ERROR
+            }
+        }
     }
 }
 
-impl From<&str> for MindPulseError {
-    fn from(value: &str) -> Self {
-        MindPulseError::Response(value.to_string())
+#[async_trait]
+impl Writer for Error {
+    async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
+        res.status_code(self.status_code());
+        res.render(Text::Plain(self.to_string()));
     }
 }

@@ -5,10 +5,11 @@ use salvo::http::{Request, Response, StatusCode};
 use salvo::{Depot, FlowCtrl, Handler, async_trait};
 use tracing::info;
 
-pub struct Logger;
+/// 访问日志中间件
+pub struct AccessLog;
 
 #[async_trait]
-impl Handler for Logger {
+impl Handler for AccessLog {
     async fn handle(
         &self,
         req: &mut Request,
