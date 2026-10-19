@@ -113,7 +113,9 @@ pub const ENNEAGRAM_PERSONALITY_TEST: Scale<Interpretation, Question> = Scale {
     references: Some(&[
         "Hook, J. N., Hall, T. W., Davis, D. E., Van Tongeren, D. R., & Conner, M. (2021). The Enneagram: A systematic review of the literature and directions for future research. Journal of Clinical Psychology, 77(4), 865-883.",
     ]),
-    warning: Some("此测试未被心理学界广泛认可，不能正确反映出测试者的人格情况。"),
+    warning: Some(
+        "此测试未被心理学界广泛认可，不能正确反映出测试者的人格情况。 版权提示：本版本为公开改编的九型人格题目，非官方 RHETI；RHETI 版权归 The Enneagram Institute，请通过官方渠道获取授权。",
+    ),
     formula_mode: None,
     tags: &Tag {
         info: Some(&["人格"]),

@@ -159,7 +159,9 @@ pub const EYSENCK_PERSONALITY_QUESTIONNAIRE_REVISED_SHORT_SCALE: Scale<Interpret
             "钱铭怡, 武国城, 朱荣春, 张莘. 艾森克人格问卷简式量表中国版（EPQ-RSC）的修订. 心理学报, 2000, 32(3): 317-323.",
         ]),
         formula_mode: None,
-        warning: Some("本量表仅适用 16 岁以上的人群。"),
+        warning: Some(
+            "本量表仅适用 16 岁以上的人群。 版权提示：本量表的正式版本受版权保护，需通过官方渠道获得授权后使用；此处数据为公开资料转写，仅供个人学习参考，不得用于商业或临床用途。",
+        ),
         tags: &Tag {
             info: Some(&["人格"]),
             normal: None,

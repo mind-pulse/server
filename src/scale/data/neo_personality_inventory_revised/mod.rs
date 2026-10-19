@@ -260,7 +260,9 @@ pub const NEO_PERSONALITY_INVENTORY_REVISED: Scale<Interpretation, Question> = S
     references: Some(&[
         "Costa, P. T., & McCrae, R. R. (1992). Revised NEO Personality Inventory (NEO-PI-R) and NEO Five-Factor Inventory (NEO-FFI) professional manual. Psychological Assessment Resources.",
     ]),
-    warning: Some("适用于初中三年级以上文化水平的人群。"),
+    warning: Some(
+        "适用于初中三年级以上文化水平的人群。 版权提示：本量表的正式版本受版权保护，需通过官方渠道获得授权后使用；此处数据为公开资料转写，仅供个人学习参考，不得用于商业或临床用途。",
+    ),
     formula_mode: None,
     tags: &Tag {
         info: Some(&["人格"]),
