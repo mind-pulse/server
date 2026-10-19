@@ -49,7 +49,8 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
     ),
     formula_mode: Some(FormulaMode {
         operational_rule: OperationalRule::Multiply(1.25),
-        integer: Some(Integer::Round),
+        // Zung 氏量表的标准分为"粗分 × 1.25 后取整数部分"，即向下取整
+        integer: Some(Integer::Floor),
     }),
     tags: &Tag {
         info: Some(&["抑郁"]),
