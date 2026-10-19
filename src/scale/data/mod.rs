@@ -2,6 +2,9 @@
 // 缩写严格使用官方命名。
 // 前端路由可以使用自定义缩写（比如添加前缀以区别相同缩写的量表）以避免冲突。
 
+/// 量表之间共用的文案，本身不是量表
+mod depression_guidance;
+
 mod beck_depression_inventory;
 mod cattell_sixteen_personality_factors;
 mod enneagram_personality_test;
