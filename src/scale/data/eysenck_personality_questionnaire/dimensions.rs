@@ -129,7 +129,7 @@ pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation 
             low: &[
                 ScoreInterpretItem {
                     title: "核心特点",
-                    content: "情绪特别稳定，很少生气/难过，面对压力也能冷静",
+                    content: "不太容易被情绪带走，遇到压力也能保持冷静",
                 },
                 ScoreInterpretItem {
                     title: "学习建议",
@@ -163,7 +163,7 @@ pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation 
             low: &[
                 ScoreInterpretItem {
                     title: "核心特点",
-                    content: "情绪过于稳定，甚至有点“冷漠”，对开心/难过的事反应淡",
+                    content: "情绪很稳，遇事不容易被情绪影响；只是有时身边人会觉得你反应比较平淡",
                 },
                 ScoreInterpretItem {
                     title: "实用建议",
@@ -284,7 +284,7 @@ pub(super) const P_DIMENSION: DimensionInterpretation = DimensionInterpretation 
 pub(super) const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "掩饰性",
     notice: None,
-    core_explain: "这个维度看你“回答是否真实”：高分=可能想展现自己的好形象，低分=回答更坦诚，仅参考测试效度",
+    core_explain: "这一栏看的是答题时有没有不自觉美化自己：高分可能更想展现好形象，低分回答更直接。它只用来说明本次结果的可信度",
     supplementary: None,
     score_interpret: ScoreInterpret {
         medium: &[

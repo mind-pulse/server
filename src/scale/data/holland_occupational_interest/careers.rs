@@ -23,7 +23,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "RSE",
-        information: "消防员、交通巡警、警察、门卫、理发师、房间清洁工、屠夫、锻工、开凿工人、管道安装工、出租汽车驾驶员、货物搬运工、送报员、勘探员、娱乐场所的服务员、起卸机操作工、灭害虫者、电梯操作工、厨房助手。",
+        information: "消防员、交通巡警、警察、门卫、理发师、房间清洁工、屠夫、锻工、开凿工人、管道安装工、出租汽车驾驶员、货物搬运工、送报员、勘探员、娱乐场所的服务员、装卸机械操作工、有害生物防治员、电梯操作工、厨房助手。",
     },
     CareerInformation {
         code: "RSI",
@@ -71,11 +71,11 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "ISR",
-        information: "水生生物学者，昆虫学者、微生物学家、配镜师、矫正视力者、细菌学家、牙科医生、骨科医生。",
+        information: "水生生物学者，昆虫学者、微生物学家、验光师、配镜师、细菌学家、牙科医生、骨科医生。",
     },
     CareerInformation {
         code: "ISA",
-        information: "实验心理学家、普通心理学家、发展心理学家、教育心理学家、社会心理学家、临床心理学家、目标学家、皮肤病学家、精神病学家、妇产科医师、眼科医生、五官科医生、医学实验室技术专家、民航医务人员、护士。",
+        information: "实验心理学家、普通心理学家、发展心理学家、教育心理学家、社会心理学家、临床心理学家、皮肤病学家、精神病学家、妇产科医师、眼科医生、五官科医生、医学实验室技术专家、民航医务人员、护士。",
     },
     CareerInformation {
         code: "IES",
@@ -219,7 +219,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "AER",
-        information: "新闻摄影师、电视摄影师、艺术指导、录音指导、丑角演员、魔术师、木偶戏演员、骑士、跳水员。",
+        information: "新闻摄影师、电视摄影师、艺术指导、录音指导、丑角演员、魔术师、木偶戏演员、跳水员。",
     },
     CareerInformation {
         code: "AEI",

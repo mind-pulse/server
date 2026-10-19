@@ -5,13 +5,13 @@ pub(super) const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretat
         capacity_category: CapacityCategory::R,
         name: "现实型",
         personality_trait: "这个类型的人喜欢使用工具、机器操作，偏爱具体任务而非抽象思想。务实、踏实，体力好，更喜欢与物打交道。喜欢以物质、机械、动物、工作等为对象，从事有规律、清晰、有序、系统的工作。喜欢动手实践解决问题。",
-        occupational_stigma: "适合这类人的专业有工学门类专业（机械类、电气类、电子信息类等）、农学门类专业（植物生产类、动物生产类、动物医学类等）、医学门类专业（临床医学类、口腔医学类、中医学类等）。",
+        occupational_stigma: "适合这类人的专业有工学门类专业（机械类、电气类、电子信息类等）、农学门类专业（植物生产类、动物生产类、动物医学类等）、医学门类专业（医学技术类、口腔医学类等）。",
     },
     CapacityCategoryInterpretation {
         capacity_category: CapacityCategory::I,
         name: "研究型",
-        personality_trait: "也叫探索型。这个类型的人擅长思考和观察，喜欢理论分析和独立研究，求知欲强、逻辑清晰、独立自主、不轻信结论，善于提出疑问，通过逻辑和证据来验证想法，喜欢研究物，抽象思维，不喜欢研究人，更喜欢与概念、数据、理论打交道。",
-        occupational_stigma: "适合这类人的专业有理学门类专业（数学类、物理学类、化学类、生物学类等）、科研方向的医学门类专业（基础医学类、临床医学类、药学类、法医学类等）、哲学门类专业、经济学门类专业（经济学类、财政学类、金融学类）。",
+        personality_trait: "也叫探索型。这个类型的人擅长思考和观察，喜欢理论分析和独立研究，求知欲强、逻辑清晰、独立自主、不轻信结论，善于提出疑问，通过逻辑和证据来验证想法，更喜欢和概念、数据、理论打交道，对人际互动的兴趣相对低一些。",
+        occupational_stigma: "适合这类人的专业有理学门类专业（数学类、物理学类、化学类、生物学类等）、科研方向的医学门类专业（基础医学类、药学类、法医学类等）、哲学门类专业、经济学门类专业（经济学类、财政学类、金融学类）。",
     },
     CapacityCategoryInterpretation {
         capacity_category: CapacityCategory::A,
@@ -23,7 +23,7 @@ pub(super) const CAPACITY_CATEGORY_INTERPRETATIONS: [CapacityCategoryInterpretat
         capacity_category: CapacityCategory::S,
         name: "社会型",
         personality_trait: "这个类型的人天生喜欢帮助、教导、服务他人，并能从中获得巨大的满足感和价值感，善于倾听、理解、沟通和协调，能够敏锐地察觉他人的情绪和需求，心肠软、有爱心，愿意为他人或社会福祉付出努力，更喜欢团队合作、人际互动，而不是独自面对机器、数据和工具。",
-        occupational_stigma: "适合这类人的专业有教育学门类专业（教育学类、体育学类）、医学门类专业（临床医学类、口腔医学类、中医学类等）、法学门类专业（法学类、社会学类、马克思主义理论类等）、管理学门类专业（工商管理类、公共管理类）。",
+        occupational_stigma: "适合这类人的专业有教育学门类专业（教育学类、体育学类）、医学门类专业（护理学类、临床医学类、中医学类等）、法学门类专业（法学类、社会学类、马克思主义理论类等）、管理学门类专业（工商管理类、公共管理类）。",
     },
     CapacityCategoryInterpretation {
         capacity_category: CapacityCategory::E,

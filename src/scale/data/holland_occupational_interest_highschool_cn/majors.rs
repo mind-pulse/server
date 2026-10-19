@@ -284,8 +284,7 @@ pub(super) const MAJORS_MATCHES: [MajorsMatch; 72] = [
             "环境科学",
             "护理学",
             "医疗器械工程",
-            "工业心理学",
-            "管理心理学",
+            "应用心理学",
         ],
         secondary_majors: &["音乐治疗学", "艺术教育"],
         logic: "需科研（如心理机制、环境影响）、社会服务（如护理、心理咨询）、艺术表达（如音乐治疗、艺术教学）。",
@@ -754,7 +753,7 @@ pub(super) const MAJORS_MATCHES: [MajorsMatch; 72] = [
         code: "EIR",
         meaning: "管理 + 研究 + 实操",
         core_majors: &[
-            "科技成果转化管理",
+            "管理科学",
             "工商管理（科技方向）",
             "信息管理与信息系统（IT 项目方向）",
             "生物工程（产业方向）",
@@ -959,7 +958,7 @@ pub(super) const MAJORS_MATCHES: [MajorsMatch; 72] = [
             "旅游管理（服务方向）",
         ],
         secondary_majors: &["社区管理与服务", "家政学（行政方向）"],
-        logic: "需事务规范（如货运记录、交通档案）、社会服务（如社区服务、游客接待）、实操（如货运协调、交通检查）。",
+        logic: "需事务规范（如文件处理、票务记录）、社会服务（如客户接待、游客服务）、实操（如窗口办理、活动执行）。",
     },
     MajorsMatch {
         code: "CSA",
