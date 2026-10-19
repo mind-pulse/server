@@ -1,11 +1,10 @@
-use std::ops::RangeInclusive;
-
 use serde::Serialize;
 
-use crate::scale::category::ScaleCategory;
-use crate::scale::common::{
-    HTMLElement, PlainText, QuestionOption, Scale, SentenceItem, Tag, Texts,
+use crate::scale::{
+    HTMLElement, PlainText, QuestionOption, Scale, ScaleCategory, SentenceItem, Tag, Texts,
 };
+
+use std::ops::RangeInclusive;
 
 #[derive(Serialize)]
 #[serde(rename_all = "UPPERCASE")]

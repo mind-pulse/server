@@ -1,9 +1,6 @@
 use crate::scale::{
-    category::ScaleCategory,
-    common::{
-        ComfortingWord, CriticalWarning, HTMLElement, InterpretationItem, Question, QuestionOption,
-        Scale, SentenceItem, Status, Tag, Texts,
-    },
+    ComfortingWord, CriticalWarning, HTMLElement, InterpretationItem, Question, QuestionOption,
+    Scale, ScaleCategory, SentenceItem, Status, Tag, Texts,
 };
 
 const INTRODUCTION: Texts = &[&[

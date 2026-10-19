@@ -1,9 +1,8 @@
 use serde::Serialize;
 
-use crate::scale::category::ScaleCategory;
-use crate::scale::common::{
+use crate::scale::{
     FormulaMode, HTMLElement, Integer, OperationalRule, PlainText, PlainTexts, QuestionOption,
-    Scale, SentenceItem, SymptomGuidance, Tag, Texts,
+    Scale, ScaleCategory, SentenceItem, SymptomGuidance, Tag, Texts,
 };
 
 #[derive(Debug, Serialize, Hash, Eq, PartialEq)]

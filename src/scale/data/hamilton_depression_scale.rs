@@ -1,8 +1,7 @@
 use serde::Serialize;
 
-use crate::scale::category::ScaleCategory;
-use crate::scale::common::{
-    PlainText, Question, QuestionOption, Scale, SentenceItem, Status, Tag, Texts,
+use crate::scale::{
+    PlainText, Question, QuestionOption, Scale, ScaleCategory, SentenceItem, Status, Tag, Texts,
 };
 
 const INTRODUCTION: Texts = &[
