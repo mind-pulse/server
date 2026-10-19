@@ -6,6 +6,8 @@ mod statistics;
 #[macro_use]
 extern crate tracing;
 
+use std::net::{Ipv4Addr, SocketAddrV4};
+
 use salvo::oapi::extract::PathParam;
 use salvo::prelude::*;
 use salvo::writing::Json;
@@ -15,7 +17,7 @@ use tracing_subscriber::fmt::time::OffsetTime;
 
 use crate::error::MindPulseResult;
 use crate::logger::Logger;
-use crate::scale::{get_scale_json_by_id, LIST};
+use crate::scale::{LIST, get_scale_json_by_id};
 use crate::statistics::{create_statistics_table, handle_get_statistics, handle_insert_record};
 
 trait JsonRender {
@@ -66,8 +68,8 @@ async fn serve(port: u16) {
 
     let service = Service::new(router).hoop(Logger);
 
-    let address = format!("127.0.0.1:{}", port);
-    info!("Server running on {}", address);
+    let address = SocketAddrV4::new(Ipv4Addr::new(127, 0, 0, 1), port);
+    println!("Server running on {}", address);
 
     let listener = TcpListener::new(address).bind().await;
     Server::new(listener).serve(service).await;
