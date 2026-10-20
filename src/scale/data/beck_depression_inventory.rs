@@ -10,9 +10,11 @@ use super::depression_guidance::{
 };
 
 const INTRODUCTION: Texts = &[&[
-    SentenceItem::Plain("贝克抑郁自评量表 BDI（BDI-II 是第二版）是抑郁自评量表中"),
+    SentenceItem::Plain("贝克抑郁自评量表（BDI）是抑郁自评量表中"),
     SentenceItem::HTMLElement(HTMLElement::Strong("最著名的量表")),
-    SentenceItem::Plain("之一，被广泛运用于抑郁心理测试筛查。"),
+    SentenceItem::Plain(
+        "之一。本量表采用其 13 项简版（BDI-13 / BDI-SF），由原版中与总分相关最高的 13 个条目组成，适合快速筛查。",
+    ),
 ]];
 
 const INSTRUCTION: Texts = &[&[
@@ -29,15 +31,17 @@ const INSTRUCTION: Texts = &[&[
 
 pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> = Scale {
     id: 6,
-    name: "贝克抑郁自评量表",
+    name: "贝克抑郁自评量表（13 项简版）",
     description: "13个问题帮你温和地看清自己的情绪状态",
     primary_category: ScaleCategory::Emotion,
     related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Somatic]),
-    abbreviation: "BDI",
+    abbreviation: "BDI-13",
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
     references: Some(&[
+        "Beck, A. T., & Beck, R. W. (1972). Screening depressed patients in family practice: A rapid technic. Postgraduate Medicine, 52(6), 81-85.",
+        "Beck, A. T., Rial, W. Y., & Rickels, K. (1974). Short form of depression inventory: Cross-validation. Psychological Reports, 34(3), 1184-1186.",
         "Beck, A. T., Ward, C. H., Mendelson, M., Mock, J., & Erbaugh, J. (1961). An inventory for measuring depression. Archives of General Psychiatry, 4(6), 561-571.",
     ]),
     warning: Some(
@@ -78,7 +82,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Moderate,
         },
         InterpretationItem {
-            range: [16, 40],
+            range: [16, 39],
             description: "重度抑郁",
             critical_warning: Some(MAJOR_WARNING),
             comforting_word: MAJOR_COMFORT,
