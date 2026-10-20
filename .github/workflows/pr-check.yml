@@ -58,6 +58,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # 检查刚刚在本工作流内跑完，直接合并作为快速路径；打标签触发的原生
+      # auto-merge（automerge-label.yml）负责"标签晚于检查"的情况。
       # 合并逻辑在 .github/scripts/automerge.cjs：只处理带 automerge 标签的 PR，
       # 失败只告警（自动合并失败不该把 PR 检查标红）。
       - name: Auto merge PR
