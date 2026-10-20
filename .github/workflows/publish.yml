@@ -18,6 +18,11 @@ on:
           - patch
           - minor
           - major
+      upx:
+        description: "是否用 UPX 压缩产物（默认关闭）"
+        required: false
+        default: false
+        type: boolean
 
 env:
   CARGO_TERM_COLOR: always
@@ -283,6 +288,7 @@ jobs:
           target-dir: release
 
       - name: Install UPX
+        if: inputs.upx
         run: |
           sudo apt-get update
           sudo apt-get install -y upx
@@ -296,15 +302,19 @@ jobs:
           cargo build --release
           cd target/release
 
-          # UPX 就地压缩：先备份，压缩或校验失败时回退到未压缩产物
-          cp server server.uncompressed
-          if upx -9 server && upx -t server; then
-            echo "UPX 压缩并校验通过"
+          # 仅在显式勾选 upx 时压缩；先备份，压缩或校验失败时回退到未压缩产物
+          if [ "${{ inputs.upx }}" = "true" ]; then
+            cp server server.uncompressed
+            if upx -9 server && upx -t server; then
+              echo "UPX 压缩并校验通过"
+            else
+              echo "::warning::UPX 压缩或校验失败，使用未压缩产物"
+              mv server.uncompressed server
+            fi
+            rm -f server.uncompressed
           else
-            echo "::warning::UPX 压缩或校验失败，使用未压缩产物"
-            mv server.uncompressed server
+            echo "未启用 UPX，跳过压缩"
           fi
-          rm -f server.uncompressed
 
           ASSET="mind-pulse-server-linux-x64-${VERSION}.tar.gz"
           tar zcvf "$ASSET" server
@@ -409,6 +419,7 @@ jobs:
             echo "| 版本 | ${VERSION:-—} |"
             echo "| 触发人 | ${{ github.actor }} |"
             echo "| 递增类型 | ${{ inputs.bump_type }} |"
+            echo "| UPX 压缩 | ${{ inputs.upx }} |"
             echo ""
           } >> "$GITHUB_STEP_SUMMARY"
 
