@@ -56,7 +56,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # 合并逻辑在 .github/scripts/automerge.cjs：只处理带 automerge 标签的 PR，
       # 失败只告警（自动合并失败不该把 PR 检查标红）。
