@@ -188,7 +188,6 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
     warning: Some(
         "本量表原为临床医生他评工具，此处为自评改编版，结果仅供自我了解与就医参考，不能作为诊断依据。 使用提示：本量表原始版本可公开用于研究，正式使用请遵循原始发布方的使用条款；此处仅供个人学习参考，不得用于商业或临床诊断。",
     ),
-    formula_mode: None,
     tags: &Tag {
         info: Some(&["强迫"]),
         normal: None,

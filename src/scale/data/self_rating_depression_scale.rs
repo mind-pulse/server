@@ -1,6 +1,6 @@
 use crate::scale::{
-    FormulaMode, HTMLElement, Integer, InterpretationItem, OperationalRule, Question,
-    QuestionOption, Scale, ScaleCategory, SentenceItem, Status, Tag, Texts,
+    HTMLElement, InterpretationItem, Question, QuestionOption, Scale, ScaleCategory, SentenceItem,
+    Status, Tag, Texts,
 };
 
 use super::depression_guidance::{
@@ -47,11 +47,6 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
     warning: Some(
         "本结果仅为筛查参考，不能作为诊断依据。若情绪困扰持续或影响生活，请咨询精神科医生或心理治疗师。",
     ),
-    formula_mode: Some(FormulaMode {
-        operational_rule: OperationalRule::Multiply(1.25),
-        // Zung 氏量表的标准分为"粗分 × 1.25 后取整数部分"，即向下取整
-        integer: Some(Integer::Floor),
-    }),
     tags: &Tag {
         info: Some(&["抑郁"]),
         normal: None,

@@ -116,7 +116,6 @@ pub const ENNEAGRAM_PERSONALITY_TEST: Scale<Interpretation, Question> = Scale {
     warning: Some(
         "此测试未被心理学界广泛认可，不能正确反映出测试者的人格情况。 版权提示：本版本为公开改编的九型人格题目，非官方 RHETI；RHETI 版权归 The Enneagram Institute，请通过官方渠道获取授权。",
     ),
-    formula_mode: None,
     tags: &Tag {
         info: Some(&["人格"]),
         normal: None,

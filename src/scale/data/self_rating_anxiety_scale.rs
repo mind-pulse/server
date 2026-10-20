@@ -1,7 +1,6 @@
 use crate::scale::{
-    ComfortingWord, CriticalWarning, FormulaMode, HTMLElement, Integer, InterpretationItem,
-    OperationalRule, Question, QuestionOption, Scale, ScaleCategory, SentenceItem, Status, Tag,
-    Texts,
+    ComfortingWord, CriticalWarning, HTMLElement, InterpretationItem, Question, QuestionOption,
+    Scale, ScaleCategory, SentenceItem, Status, Tag, Texts,
 };
 
 const INTRODUCTION: Texts = &[&[SentenceItem::Plain(
@@ -36,11 +35,6 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
     warning: Some(
         "本结果仅为筛查参考，不能作为诊断依据。若焦虑持续或影响生活，请咨询精神科医生或心理治疗师。",
     ),
-    formula_mode: Some(FormulaMode {
-        operational_rule: OperationalRule::Multiply(1.25),
-        // Zung 氏量表的标准分为"粗分 × 1.25 后取整数部分"，即向下取整
-        integer: Some(Integer::Floor),
-    }),
     tags: &Tag {
         info: Some(&["焦虑", "压力", "失眠"]),
         normal: None,
