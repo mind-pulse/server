@@ -1,10 +1,11 @@
 // 自动合并的实现（替代 pascalgn/automerge-action）。
 //
 // 由两处调用：
-//   - pr-check.yml：本工作流的检查跑完后直接合并（括号里的检查就是刚跑完的，无需再查）
+//   - pr-check.yml：本工作流的检查跑完后直接合并（检查就是刚跑完的，无需再查）
 //   - automerge-label.yml：给 PR 打上 automerge 标签时触发——pull_request 事件的默认
-//     类型不含 labeled，只有单独一个工作流才能响应打标签；这时提交上的检查可能还没跑完
-//     或没跑过，所以要先查一次检查结果
+//     类型不含 labeled，只有单独一个工作流才能响应打标签；打标签通常早于 PR Check
+//     完成，所以这里改用 GitHub 原生 auto-merge（enableAutoMerge），由 GitHub
+//     等待必需检查通过后合并，不在 runner 上轮询
 //
 // 行为：
 //   - 只处理 open、非 draft、带 automerge 标签的 PR
@@ -146,4 +147,75 @@ function explainMergeError(error) {
   return message;
 }
 
-module.exports = { merge, describeSkip, explainMergeError, checksPassed };
+/** GitHub 原生 auto-merge 使用的合并方式 */
+const MERGE_METHOD = "MERGE";
+
+/**
+ * 为 PR 开启 GitHub 原生 auto-merge。
+ *
+ * 与直接 merge 的区别：开启后由 GitHub 等待所需检查通过再合并，不需要在
+ * runner 上轮询；打标签发生在检查跑完之前也没问题。
+ *
+ * 前置条件（仓库设置，不由代码控制）：
+ *   1. Settings → General → Pull Requests 勾选 "Allow auto-merge"
+ *   2. 分支保护把 "Rust Check" 设为 required status check
+ *      （否则没有必需检查时 GitHub 会立即合并）
+ */
+async function enableAutoMerge({ github, core, pr }) {
+  const skip = describeSkip(pr);
+  if (skip) {
+    core.info("PR #" + pr.number + " " + skip + "，跳过");
+    return false;
+  }
+
+  const query = [
+    "mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {",
+    "  enablePullRequestAutoMerge(input: { pullRequestId: $pullRequestId, mergeMethod: $mergeMethod }) {",
+    "    pullRequest { number }",
+    "  }",
+    "}",
+  ].join("\n");
+
+  try {
+    await github.graphql(query, {
+      pullRequestId: pr.node_id,
+      mergeMethod: MERGE_METHOD,
+    });
+  } catch (error) {
+    core.warning(
+      "PR #" + pr.number + " 开启自动合并失败：" + explainAutoMergeError(error),
+    );
+    return false;
+  }
+
+  core.info(
+    "已为 PR #" + pr.number + " 开启自动合并，检查通过后 GitHub 会自动合并",
+  );
+  return true;
+}
+
+/** 把开启 auto-merge 的失败信息翻译成可操作的建议。 */
+function explainAutoMergeError(error) {
+  const message = String(error?.message ?? error);
+
+  if (/auto.?merge/i.test(message) && /(not|disabled|allow)/i.test(message)) {
+    return (
+      "仓库未开启 auto-merge。请在 Settings → General → Pull Requests 勾选 " +
+      '"Allow auto-merge"，并把 "Rust Check" 设为 required status check'
+    );
+  }
+
+  if (/not mergeable|merge conflict|clean status/i.test(message)) {
+    return "PR 当前不可合并（可能有冲突或仍是 draft），解决后再试";
+  }
+
+  return message;
+}
+
+module.exports = {
+  merge,
+  describeSkip,
+  explainMergeError,
+  checksPassed,
+  enableAutoMerge,
+};
