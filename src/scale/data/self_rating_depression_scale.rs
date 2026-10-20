@@ -60,7 +60,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 53],
+            range: [0, 52],
             description: "正常范围",
             critical_warning: None,
             comforting_word: NORMAL_COMFORT,
@@ -69,7 +69,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [53, 63],
+            range: [53, 62],
             description: "轻度抑郁倾向",
             critical_warning: None,
             comforting_word: MILD_COMFORT,
@@ -78,7 +78,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [63, 73],
+            range: [63, 72],
             description: "中度抑郁",
             critical_warning: None,
             comforting_word: MODERATE_COMFORT,
@@ -539,3 +539,19 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::SELF_RATING_DEPRESSION_SCALE;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = SELF_RATING_DEPRESSION_SCALE.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}

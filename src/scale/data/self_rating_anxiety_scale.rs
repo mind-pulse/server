@@ -49,7 +49,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 50],
+            range: [0, 49],
             description: "正常",
             critical_warning: None,
             comforting_word: ComfortingWord {
@@ -63,7 +63,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [50, 60],
+            range: [50, 59],
             description: "轻度焦虑",
             critical_warning: None,
             comforting_word: ComfortingWord {
@@ -83,7 +83,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [60, 70],
+            range: [60, 69],
             description: "中度焦虑",
             critical_warning: None,
             comforting_word: ComfortingWord {
@@ -575,3 +575,19 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::SELF_RATING_ANXIETY_SCALE;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = SELF_RATING_ANXIETY_SCALE.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}

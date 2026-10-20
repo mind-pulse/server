@@ -52,7 +52,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 5],
+            range: [0, 4],
             description: "正常范围",
             critical_warning: None,
             comforting_word: NORMAL_COMFORT,
@@ -61,7 +61,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [5, 8],
+            range: [5, 7],
             description: "轻度抑郁",
             critical_warning: None,
             comforting_word: MILD_COMFORT,
@@ -70,7 +70,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [8, 16],
+            range: [8, 15],
             description: "中度抑郁",
             critical_warning: None,
             comforting_word: MODERATE_COMFORT,
@@ -377,3 +377,19 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::BECK_DEPRESSION_INVENTORY;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = BECK_DEPRESSION_INVENTORY.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}

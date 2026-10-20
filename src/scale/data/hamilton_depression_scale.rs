@@ -55,17 +55,17 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 8],
+            range: [0, 7],
             description: "无明显抑郁症状",
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [8, 20],
+            range: [8, 19],
             description: "轻度抑郁症状",
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [20, 35],
+            range: [20, 34],
             description: "中度抑郁症状",
             status: Status::Moderate,
         },
@@ -622,3 +622,19 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::HAMILTON_DEPRESSION_SCALE;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = HAMILTON_DEPRESSION_SCALE.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}
