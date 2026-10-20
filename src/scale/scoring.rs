@@ -11,8 +11,11 @@ pub enum OperationalRule {
 #[derive(Debug, Serialize)]
 #[serde(rename_all(serialize = "UPPERCASE"))]
 pub enum Integer {
-    /// 四舍五入
+    /// 四舍五入（保留供其他量表使用）
+    #[allow(dead_code)]
     Round,
+    /// 取整数部分（向下取整）
+    Floor,
 }
 
 /// 前端计算用到的公式

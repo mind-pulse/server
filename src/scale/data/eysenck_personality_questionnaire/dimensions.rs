@@ -92,7 +92,7 @@ pub(super) const E_DIMENSION: DimensionInterpretation = DimensionInterpretation 
 
 /// 人格维度 - 神经质/情绪稳定性（N）
 pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation {
-    label: "神经质",
+    label: "情绪性（神经质）",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
     core_explain: "这个维度看你“情绪波动程度”：高分=情绪容易波动（敏感），低分=情绪稳定（冷静），无好坏",
     supplementary: Some("情绪波动大的人更能感知细节，情绪稳定的人更能抗压，只是适配不同场景"),
@@ -129,7 +129,7 @@ pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation 
             low: &[
                 ScoreInterpretItem {
                     title: "核心特点",
-                    content: "情绪特别稳定，很少生气/难过，面对压力也能冷静",
+                    content: "不太容易被情绪带走，遇到压力也能保持冷静",
                 },
                 ScoreInterpretItem {
                     title: "学习建议",
@@ -163,7 +163,7 @@ pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation 
             low: &[
                 ScoreInterpretItem {
                     title: "核心特点",
-                    content: "情绪过于稳定，甚至有点“冷漠”，对开心/难过的事反应淡",
+                    content: "情绪很稳，遇事不容易被情绪影响；只是有时身边人会觉得你反应比较平淡",
                 },
                 ScoreInterpretItem {
                     title: "实用建议",
@@ -180,10 +180,12 @@ pub(super) const N_DIMENSION: DimensionInterpretation = DimensionInterpretation 
 
 /// 人格维度 - 精神质（P）
 pub(super) const P_DIMENSION: DimensionInterpretation = DimensionInterpretation {
-    label: "精神质",
+    label: "倔强性（精神质）",
     notice: Some("这是正常人格特质，和“精神病/心理疾病”无关！"),
-    core_explain: "这个维度看你“是否从众”：高分=更独立、不盲从规则，低分=更温和、愿意配合别人，无好坏",
-    supplementary: Some("独立的人适合创新，配合的人适合团队，只是适配不同角色"),
+    core_explain: "这个维度测量“倔强性/精神质”：高分者往往更独立、不拘泥规则、对他人感受关注较少、敢于冒险；低分者更温和、合作、有同理心。它反映正常人格差异，与精神疾病无关",
+    supplementary: Some(
+        "高分者的果断与独立性适合需要开拓的情境，低分者的亲和与配合适合需要协作的情境",
+    ),
     score_interpret: ScoreInterpret {
         medium: &[
             ScoreInterpretItem {
@@ -282,7 +284,7 @@ pub(super) const P_DIMENSION: DimensionInterpretation = DimensionInterpretation 
 pub(super) const L_DIMENSION: DimensionInterpretation = DimensionInterpretation {
     label: "掩饰性",
     notice: None,
-    core_explain: "这个维度看你“回答是否真实”：高分=可能想展现自己的好形象，低分=回答更坦诚，仅参考测试效度",
+    core_explain: "这一栏看的是答题时有没有不自觉美化自己：高分可能更想展现好形象，低分回答更直接。它只用来说明本次结果的可信度",
     supplementary: None,
     score_interpret: ScoreInterpret {
         medium: &[

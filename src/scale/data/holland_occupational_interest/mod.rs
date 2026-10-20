@@ -85,8 +85,12 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST: Scale<Interpretation, Question> = Scale
         "霍兰德的职业兴趣理论主要从兴趣的角度出发来探索职业指导的问题。他明确提出了职业兴趣的人格观，使人们对职业兴趣的认识有了质的变化。霍兰德的职业兴趣理论反映了他长期专注于职业指导的实践经历，他把对职业环境的研究与对职业兴趣个体差异的研究有机地结合起来，而在霍兰德的职业兴趣类型理论提出之前，二者的研究是相对独立进行的。",
         "兴趣测试和能力测试的结合在职业指导和职业咨询的实际操作中起到了促进作用。",
     ]),
-    references: None,
-    warning: None,
+    references: Some(&[
+        "Holland, J. L. (1959). A theory of vocational choice. Journal of Counseling Psychology, 6(1), 35-45.",
+    ]),
+    warning: Some(
+        "版权提示：本测评参考霍兰德 RIASEC 职业兴趣理论编制，并非 PAR 出版的 Self-Directed Search 原版；原版测评受版权保护，请通过官方渠道获取授权。",
+    ),
     formula_mode: None,
     tags: &Tag {
         info: Some(&["职业", "高考", "就业", "专业"]),

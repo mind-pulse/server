@@ -23,7 +23,7 @@ pub(super) const INSTRUCTION: Texts = &[
     &[
         SentenceItem::Plain("本测试有 "),
         SentenceItem::HTMLElement(HTMLElement::Strong("240")),
-        SentenceItem::Plain(" 题，由于题目较多，在开始测试前请保证您有充足的时间完成此测试。"),
+        SentenceItem::Plain(" 题，由于题目较多，在开始测试前请保证你有充足的时间完成此测试。"),
     ],
     &[
         SentenceItem::Plain("测试的过程中要保持"),
@@ -32,10 +32,10 @@ pub(super) const INSTRUCTION: Texts = &[
         SentenceItem::HTMLElement(HTMLElement::Strong("适当的照明和温度")),
         SentenceItem::Plain("，"),
         SentenceItem::HTMLElement(HTMLElement::Strong("排除任何可能的干扰")),
-        SentenceItem::Plain("（比如有人旁观您的回答情况或者有人在室内走动等）。"),
+        SentenceItem::Plain("（比如有人旁观你的回答情况或者有人在室内走动等）。"),
     ],
     &[
-        SentenceItem::Plain("您应以"),
+        SentenceItem::Plain("你应以"),
         SentenceItem::HTMLElement(HTMLElement::Strong("直觉性的反应")),
         SentenceItem::Plain("依题作答，"),
         SentenceItem::HTMLElement(HTMLElement::Strong("无须迟疑不决，拖延时间")),

@@ -23,7 +23,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "RSE",
-        information: "消防员、交通巡警、警察、门卫、理发师、房间清洁工、屠夫、锻工、开凿工人、管道安装工、出租汽车驾驶员、货物搬运工、送报员、勘探员、娱乐场所的服务员、起卸机操作工、灭害虫者、电梯操作工、厨房助手。",
+        information: "消防员、交通巡警、警察、门卫、理发师、房间清洁工、屠夫、锻工、开凿工人、管道安装工、出租汽车驾驶员、货物搬运工、送报员、勘探员、娱乐场所的服务员、装卸机械操作工、有害生物防治员、电梯操作工、厨房助手。",
     },
     CareerInformation {
         code: "RSI",
@@ -39,11 +39,11 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "RES",
-        information: "旅馆服务员、家畜饲养员、渔民、渔网修补工、水手长、收割机操作工、搬运行李工人、公园服务员、救  生员、登山导游、火车工程技术员、建筑工作、铺轨工人。",
+        information: "旅馆服务员、家畜饲养员、渔民、渔网修补工、水手长、收割机操作工、搬运行李工人、公园服务员、救生员、登山导游、火车工程技术员、建筑工作、铺轨工人。",
     },
     CareerInformation {
         code: "RCI",
-        information: "测量员、勘测员、仪表操作者、农业工程技术、化学工程技师、民用工程技师、石油工程技师、资料室管理员、探矿工、煅烧工、烧窖工、矿工、保养工、磨床工、取样工、样品检验员、纺纱工、炮手、漂洗工、电焊工、锯木工、刨床工、制帽工、手工缝纫工、油漆工、染色工、按摩工、木匠、农民建筑工作、电影放映员、勘测员助手。",
+        information: "测量员、勘测员、仪表操作者、农业工程技术、化学工程技师、民用工程技师、石油工程技师、资料室管理员、探矿工、煅烧工、烧窑工、矿工、保养工、磨床工、取样工、样品检验员、纺纱工、炮手、漂洗工、电焊工、锯木工、刨床工、制帽工、手工缝纫工、油漆工、染色工、按摩工、木匠、农民建筑工作、电影放映员、勘测员助手。",
     },
     CareerInformation {
         code: "RCS",
@@ -67,15 +67,15 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "ISC",
-        information: "侦察员、播音室/电视修理服务员、验尸室人员、编目录者、医学实验定技师、调查研究者。",
+        information: "侦察员、播音室/电视修理服务员、验尸室人员、编目录者、医学实验技师、调查研究者。",
     },
     CareerInformation {
         code: "ISR",
-        information: "水生生物学者，昆虫学者、微生物学家、配镜师、矫正视力者、细菌学家、牙科医生、骨科医生。",
+        information: "水生生物学者，昆虫学者、微生物学家、验光师、配镜师、细菌学家、牙科医生、骨科医生。",
     },
     CareerInformation {
         code: "ISA",
-        information: "实验心理学家、普通心理学家、发展心理学家、教育心理学家、社会心理学家、临床心理学家、目标学家、皮肤病学家、精神病学家、妇产科医师、眼科医生、五官科医生、医学实验室技术专家、民航医务人员、护士。",
+        information: "实验心理学家、普通心理学家、发展心理学家、教育心理学家、社会心理学家、临床心理学家、皮肤病学家、精神病学家、妇产科医师、眼科医生、五官科医生、医学实验室技术专家、民航医务人员、护士。",
     },
     CareerInformation {
         code: "IES",
@@ -127,7 +127,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "CIR",
-        information: "校对员、工程职员、海底电报员、检修计划员、发扳员。",
+        information: "校对员、工程职员、海底电报员、检修计划员、发报员。",
     },
     CareerInformation {
         code: "CSE",
@@ -135,7 +135,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "CSR",
-        information: "运货代理商、铁路职员、交通检查员、办公室通信员、薄记员、出纳员、银行财务职员。",
+        information: "运货代理商、铁路职员、交通检查员、办公室通信员、簿记员、出纳员、银行财务职员。",
     },
     CareerInformation {
         code: "CSA",
@@ -191,11 +191,11 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "EAR",
-        information: "展览室管理员、舞台管理员、播音员、训兽员。",
+        information: "展览室管理员、舞台管理员、播音员、驯兽员。",
     },
     CareerInformation {
         code: "ESC",
-        information: "理发师、裁判员、政府行政管理员、财政管理员、I程管理员、职业病防治、售货员、商业经理、办公室主任、人事负责人、调度员。",
+        information: "理发师、裁判员、政府行政管理员、财政管理员、工程管理员、职业病防治、售货员、商业经理、办公室主任、人事负责人、调度员。",
     },
     CareerInformation {
         code: "ESR",
@@ -219,7 +219,7 @@ pub(super) const CAREER_INFORMATION: [CareerInformation; 72] = [
     },
     CareerInformation {
         code: "AER",
-        information: "新闻摄影师、电视摄影师、艺术指导、录音指导、丑角演员、魔术师、木偶戏演员、骑士、跳水员。",
+        information: "新闻摄影师、电视摄影师、艺术指导、录音指导、丑角演员、魔术师、木偶戏演员、跳水员。",
     },
     CareerInformation {
         code: "AEI",

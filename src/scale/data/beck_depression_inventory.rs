@@ -20,7 +20,7 @@ const INSTRUCTION: Texts = &[&[
     SentenceItem::HTMLElement(HTMLElement::Strong("13")),
     SentenceItem::Plain(" 个项目，分为 "),
     SentenceItem::HTMLElement(HTMLElement::Strong("4")),
-    SentenceItem::Plain(" 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您"),
+    SentenceItem::Plain(" 级评分，为保证调查结果的准确性，务必请你仔细阅读以下内容，然后根据你"),
     SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
     SentenceItem::Plain(
         "的实际情况选择适当的选项，每一条文字后面有四个选项，请根据选项内容进行恰当的选择。",
@@ -37,8 +37,12 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
-    warning: None,
+    references: Some(&[
+        "Beck, A. T., Ward, C. H., Mendelson, M., Mock, J., & Erbaugh, J. (1961). An inventory for measuring depression. Archives of General Psychiatry, 4(6), 561-571.",
+    ]),
+    warning: Some(
+        "版权提示：本量表的正式版本受版权保护，需通过官方渠道获得授权后使用；此处数据为公开资料转写，仅供个人学习参考，不得用于商业或临床用途。 本结果仅为筛查参考，不能作为诊断依据。若情绪困扰持续或影响生活，请咨询精神科医生或心理治疗师。",
+    ),
     formula_mode: None,
     tags: &Tag {
         info: Some(&["抑郁"]),
@@ -48,7 +52,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 5],
+            range: [0, 4],
             description: "正常范围",
             critical_warning: None,
             comforting_word: NORMAL_COMFORT,
@@ -57,7 +61,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [5, 8],
+            range: [5, 7],
             description: "轻度抑郁",
             critical_warning: None,
             comforting_word: MILD_COMFORT,
@@ -66,7 +70,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [8, 16],
+            range: [8, 15],
             description: "中度抑郁",
             critical_warning: None,
             comforting_word: MODERATE_COMFORT,
@@ -373,3 +377,19 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::BECK_DEPRESSION_INVENTORY;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = BECK_DEPRESSION_INVENTORY.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}

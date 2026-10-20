@@ -9,10 +9,10 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
     first_personality_factor: &[
         FirstPersonalityFactor {
             factor: Factor::A,
-            name: "乐群性",
+            name: "乐群性（合群、爱与人相处）",
             characteristic: Characteristic {
                 low: &[
-                    "性格偏内向、沉默，不擅长也不喜欢主动与人交往，显得有些冷漠。标准分低于3分的人通常比较固执，坚持自己的想法，不轻易妥协，做事追求高标准、严谨认真，更愿意独自完成工作，关注事情本身而非人际关系，偶尔会对他人或事情细节过于挑剔。",
+                    "性格偏内向、沉默，不擅长也不喜欢主动与人交往，显得有些冷淡。标准分低于3分的人更愿意独自完成任务，关注事情本身而非人际关系，在人群中容易感到不自在。",
                 ],
                 high: &[
                     "性格外向、热情，喜欢和人打交道。标准分超过8分的人，待人亲切友善，合作和适应能力很强，愿意和他人协作完成工作，也喜欢参与、组织各类集体活动；为人大度不斤斤计较，能坦然接受他人的批评建议，即使是初次见面的人，也能很快熟络起来。",
@@ -22,7 +22,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::B,
-            name: "聪慧性",
+            name: "聪慧性（理解与推理）",
             characteristic: Characteristic {
                 low: &[
                     "抽象思维能力较弱，学习和理解新知识的速度偏慢，不太擅长举一反三、触类旁通。需要注意的是，得分低并不代表“愚笨”，可能是因为情绪状态不稳定、注意力不集中，或是对所接触的领域缺乏兴趣，而非智力本身的问题。",
@@ -35,7 +35,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::C,
-            name: "稳定性",
+            name: "稳定性（情绪是否稳定）",
             characteristic: Characteristic {
                 low: &[
                     "情绪容易波动，遇到不顺心的事易烦躁、焦虑。得分低的人面对生活中的挫折和阻碍时，心态不够平和，容易被外界环境影响，出现心神不宁、急躁易怒的情况；长期下来可能会感到身心疲惫，甚至出现失眠、多梦等睡眠问题。需要注意的是，低得分仅反映情绪调节能力较弱，并非等同于患有精神或神经类疾病。",
@@ -48,7 +48,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::E,
-            name: "恃强性",
+            name: "恃强性（主见与强势）",
             characteristic: Characteristic {
                 low: &[
                     "性格谦逊、随和，愿意配合他人的想法和安排，不喜欢争执。得分低的人往往行事温顺，容易迁就他人，有时会缺乏自信，即便自身条件不错，也可能产生“不如别人”的消极感受；这种心态只是自信心不足的表现，并非精神疾病的特征。",
@@ -61,7 +61,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::F,
-            name: "兴奋性",
+            name: "兴奋性（活泼、热情）",
             characteristic: Characteristic {
                 low: &[
                     "性格严肃、冷静，话不多，做事谨慎克制。得分低的人行为偏拘谨，习惯先思考再表达，不轻易发表意见，偶尔会显得消极、情绪偏低；有时会因过度深思熟虑而显得固执，不过在工作中通常认真负责、值得信赖。",
@@ -74,7 +74,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::G,
-            name: "有恒性",
+            name: "有恒性（责任心、守规矩）",
             characteristic: Characteristic {
                 low: &[
                     "做事更看重实际效果，不太拘泥于规则和长远目标。得分低的人缺乏长期坚持的动力，对规则和责任的重视度偏低，更倾向于灵活解决问题，偶尔会为了达成短期目标忽视规则，但并非刻意违法违规；这类人解决实际问题时效率较高，不喜欢在形式上浪费时间。",
@@ -83,11 +83,11 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
                     "有责任心，做事有始有终，坚守原则和底线。得分高的人认真细致，对自己的行为有明确的是非判断，无论工作还是生活都能坚持既定目标；交友也更倾向于踏实努力的人，相对不喜欢过于浮夸、爱开玩笑的类型。",
                 ],
             },
-            occupations: "社团负责人、企业管理者、警察、教师、医护人员等需要高度责任感和规则意识的职业，有恒性通常偏高；而犯罪人员往往无视规则和责任，有恒性得分极低。对于销售、创业等需要灵活变通的职业，有恒性偏低未必是劣势，反而能更快适应变化。",
+            occupations: "社团负责人、企业管理者、警察、教师、医护人员等需要高度责任感和规则意识的职业，有恒性通常偏高。对于销售、创业等需要灵活变通的职业，有恒性偏低未必是劣势，反而能更快适应变化。",
         },
         FirstPersonalityFactor {
             factor: Factor::H,
-            name: "敢为性",
+            name: "敢为性（胆量与社交自信）",
             characteristic: Characteristic {
                 low: &[
                     "性格腼腆、缺乏自信，在陌生环境或人群中容易感到紧张不自在。得分低的人不擅长当众发言，也不愿主动和陌生人交流，面对新机会时习惯观望，有时会因过度关注自身感受，忽略周围的重要信息和活动。",
@@ -100,7 +100,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::I,
-            name: "敏感性",
+            name: "敏感性（细腻、感性）",
             characteristic: Characteristic {
                 low: &[
                     "性格理智、务实，做事靠自己，不轻易被情绪左右。得分低的人处理问题时客观冷静，有主见且独立，注重实际效果；但有时会过于理性，显得不够共情，让人觉得有些“冷漠”。",
@@ -113,7 +113,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::L,
-            name: "怀疑性",
+            name: "怀疑性（警惕、多疑）",
             characteristic: Characteristic {
                 low: &[
                     "性格随和、容易信任他人，不喜欢猜忌和竞争。得分低的人待人真诚，愿意配合他人，善于体谅对方的感受，在团队中能友好协作。",
@@ -126,7 +126,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::M,
-            name: "幻想性",
+            name: "幻想性（想象与务实）",
             characteristic: Characteristic {
                 low: &[
                     "性格务实、循规蹈矩，做决策前会充分考虑现实条件。得分低的人做事稳妥、不莽撞，遇到紧急情况能保持冷静；但有时会过于看重实际，缺乏想象力，生活和工作中显得比较单调乏味。",
@@ -139,7 +139,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::N,
-            name: "世故性",
+            name: "世故性（懂人情、直率）",
             characteristic: Characteristic {
                 low: &[
                     "性格坦率、单纯，心里想什么就说什么，不擅长掩饰自己。得分低的人想法简单，做事容易凭感觉，待人友善不争抢，容易满足；但有时会因过于直白显得幼稚、不懂变通，甚至让人觉得不够周到。",
@@ -152,7 +152,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::O,
-            name: "忧虑性",
+            name: "忧虑性（容易担心）",
             characteristic: Characteristic {
                 low: &[
                     "心态乐观、自信，对自己解决问题的能力有把握。得分低的人沉着稳定，有安全感，能很好地适应社会环境；但有时会因过于自信，忽略他人的感受，缺乏共情，从而引起别人的不满。",
@@ -165,7 +165,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::Q1,
-            name: "实验性",
+            name: "实验性（接受新想法）",
             characteristic: Characteristic {
                 low: &[
                     "偏向保守，认可传统的观念和做事方式。得分低的人愿意接受经过时间检验的权威观点，不喜欢轻易尝试新事物、新方法，对新思想和变化的接受度低；但这也意味着他们做事更稳妥，不易出错，并非“老顽固”或“落伍”。",
@@ -178,7 +178,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::Q2,
-            name: "独立性",
+            name: "独立性（自己做主）",
             characteristic: Characteristic {
                 low: &[
                     "习惯依赖他人，做事喜欢和人协作，不愿独自承担。得分低的人容易放弃自己的想法去迎合他人，需要得到团队的认可来建立自信；但这并不代表他们真的喜欢社交，只是更害怕独自面对问题。",
@@ -191,7 +191,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::Q3,
-            name: "自律性",
+            name: "自律性（自我管理）",
             characteristic: Characteristic {
                 low: &[
                     "自我约束能力较弱，做事容易随心所欲，不注重规则和他人感受。得分低的人难以克制自己的情绪和行为，既不遵守既定的礼仪规范，也很少考虑别人的需求，内心容易陷入矛盾，生活和工作中也可能出现适应不良的情况。",
@@ -204,7 +204,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         FirstPersonalityFactor {
             factor: Factor::Q4,
-            name: "紧张性",
+            name: "紧张性（内心的紧迫感）",
             characteristic: Characteristic {
                 low: &[
                     "心态平和、放松，不喜欢给自己太大压力。得分低的人容易满足，能保持内心的平静；但有时会因过于安逸，缺乏进取心和行动力，显得有些懒散。",

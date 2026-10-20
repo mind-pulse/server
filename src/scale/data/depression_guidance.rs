@@ -7,21 +7,21 @@ use crate::scale::{ComfortingWord, CriticalWarning, PlainTexts};
 
 /// 正常范围
 pub const NORMAL_COMFORT: ComfortingWord = ComfortingWord {
-    text: "您的得分在正常范围内，这表明您当前的心理状态比较健康。",
+    text: "你的得分在正常范围内，这表明你当前的心理状态比较健康。",
     caution: None,
 };
 
 pub const NORMAL_ADVICE: PlainTexts =
-    &["请继续保持积极的生活态度，关注生活中的小美好，您的阳光心态也能为他人带来温暖。"];
+    &["请继续保持积极的生活态度，关注生活中的小美好，你的阳光心态也能为他人带来温暖。"];
 
 /// 轻度
 pub const MILD_COMFORT: ComfortingWord = ComfortingWord {
-    text: "如果您的得分在这个范围，请别太担心，很多人都会经历类似的情绪波动。",
+    text: "如果你的得分在这个范围，请别太担心，很多人都会经历类似的情绪波动。",
     caution: None,
 };
 
 pub const MILD_ADVICE: PlainTexts = &[
-    "与他人倾诉：和信任的亲友分享您的感受，寻求理解和支持，倾诉本身就能减轻心理负担。",
+    "与他人倾诉：和信任的亲友分享你的感受，寻求理解和支持，倾诉本身就能减轻心理负担。",
     "规律生活作息：尽量保证充足睡眠、均衡饮食和适度运动，这有助于稳定身心状态。",
     "寻求专业支持：如果这些情绪持续较长时间或影响生活，考虑咨询心理医生或心理咨询师，他们能提供更个性化的帮助。",
     "设定小目标：将大任务分解成小步骤，每完成一点就给自己肯定，慢慢积累信心和成就感。",
@@ -39,12 +39,12 @@ pub const MILD_SYMPTOMS: PlainTexts = &[
 
 /// 中度
 pub const MODERATE_COMFORT: ComfortingWord = ComfortingWord {
-    text: "您的得分显示有中度抑郁倾向，这可能需要更多关注和支持。",
-    caution: Some("中度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+    text: "你的得分显示有中度抑郁倾向，这可能需要更多关注和支持。",
+    caution: Some("中度抑郁并非你的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
 };
 
 pub const MODERATE_ADVICE: PlainTexts = &[
-    "建立支持网络：主动与亲友沟通，让他们了解您的状态，获得陪伴和理解。",
+    "建立支持网络：主动与亲友沟通，让他们了解你的状态，获得陪伴和理解。",
     "维持健康习惯：注意规律饮食、适度运动和睡眠，这些小习惯对心理有积极影响。",
     "设定可行目标：从微小、具体的任务开始，比如每天散步10分钟，逐步恢复掌控感。",
     "学习应对技巧：练习识别负面思维，用更平衡的想法替代，比如告诉自己“这只是暂时的困难”。",
@@ -71,14 +71,14 @@ pub const MAJOR_WARNING: CriticalWarning = CriticalWarning {
 };
 
 pub const MAJOR_COMFORT: ComfortingWord = ComfortingWord {
-    text: "您的得分表明可能有重度抑郁倾向，这需要立即的专业干预。",
-    caution: Some("重度抑郁并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+    text: "你的得分表明可能有重度抑郁倾向，这需要立即的专业干预。",
+    caution: Some("重度抑郁并非你的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
 };
 
 pub const MAJOR_ADVICE: PlainTexts = &[
     "立即行动：尽快前往精神专科医院或综合医院精神科就诊，让专业医生进行评估。",
     "考虑全面治疗：医生可能会建议药物治疗、心理治疗或住院治疗，请信任专业方案。",
-    "不要独自承受：告诉家人或朋友您的情况，寻求他们的陪伴和支持。",
+    "不要独自承受：告诉家人或朋友你的情况，寻求他们的陪伴和支持。",
 ];
 
 pub const MAJOR_SYMPTOMS: PlainTexts = &[

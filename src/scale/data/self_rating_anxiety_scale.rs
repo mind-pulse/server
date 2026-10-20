@@ -5,14 +5,14 @@ use crate::scale::{
 };
 
 const INTRODUCTION: Texts = &[&[SentenceItem::Plain(
-    "本量表是根据Zung于1971年编制的“焦虑自评量表（Self—Rating Anxiety Scale，SAS）改编而成，可为临床心理咨询、诊断、治疗以及病理心理机制的研究提供科学依据。本测验应用范围颇广，适用于各种职业、文化阶层及年龄段的正常人或各类精神病人。",
+    "本量表由 Zung 于 1971 年编制（Self-Rating Anxiety Scale，SAS），用于评估最近一周焦虑情绪的主观感受。它适合作为自我了解与初筛的参考，不能替代专业诊断；若困扰明显，请咨询专业人员。",
 )]];
 
 const INSTRUCTION: Texts = &[&[
     SentenceItem::Plain("本量表包含 "),
     SentenceItem::HTMLElement(HTMLElement::Strong("20")),
     SentenceItem::Plain(
-        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您",
+        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请你仔细阅读以下内容，然后根据你",
     ),
     SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
     SentenceItem::Plain(
@@ -30,11 +30,16 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
-    warning: None,
+    references: Some(&[
+        "Zung, W. W. K. (1971). A rating instrument for anxiety disorders. Psychosomatics, 12(6), 371-379.",
+    ]),
+    warning: Some(
+        "本结果仅为筛查参考，不能作为诊断依据。若焦虑持续或影响生活，请咨询精神科医生或心理治疗师。",
+    ),
     formula_mode: Some(FormulaMode {
         operational_rule: OperationalRule::Multiply(1.25),
-        integer: Some(Integer::Round),
+        // Zung 氏量表的标准分为"粗分 × 1.25 后取整数部分"，即向下取整
+        integer: Some(Integer::Floor),
     }),
     tags: &Tag {
         info: Some(&["焦虑", "压力", "失眠"]),
@@ -44,7 +49,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 50],
+            range: [0, 49],
             description: "正常",
             critical_warning: None,
             comforting_word: ComfortingWord {
@@ -58,7 +63,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [50, 60],
+            range: [50, 59],
             description: "轻度焦虑",
             critical_warning: None,
             comforting_word: ComfortingWord {
@@ -78,7 +83,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [60, 70],
+            range: [60, 69],
             description: "中度焦虑",
             critical_warning: None,
             comforting_word: ComfortingWord {
@@ -116,7 +121,7 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
             advice: Some(&[
                 "立即联系专业人士：建议优先考虑前往医院的精神科或心理科，进行全面的评估。也可以寻求有资质的心理咨询师/治疗师的帮助。",
                 "你不是负担：将你的感受告诉你信任的家人或朋友，获得他们的支持。你的痛苦是真实的，值得被认真对待。",
-                "安全第一：如果脑海中出现伤害自己或他人的念头，请立即拨打心理援助热线（24小时全国生命危机干预热线：400-161-9995），或前往最近的医院急诊室。保护你的生命安全永远是第一位。",
+                "安全第一：如果脑海中出现伤害自己或他人的念头，请立即拨打全国统一心理援助热线 12356（24 小时），或前往最近的医院急诊室。保护你的生命安全永远是第一位。",
             ]),
             // 重度焦虑尽量减少症状描述，避免增加用户的焦虑
             symptom: Some(&[
@@ -570,3 +575,19 @@ pub const SELF_RATING_ANXIETY_SCALE: Scale<&[InterpretationItem<u8>], Question> 
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::SELF_RATING_ANXIETY_SCALE;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = SELF_RATING_ANXIETY_SCALE.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}

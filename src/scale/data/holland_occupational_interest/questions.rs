@@ -2,7 +2,7 @@ use super::{CapacityCategory, Question, QuestionOption, QuestionType};
 
 pub(super) const QUESTIONS: &[Question] = &[
     Question {
-        title: "（可多选或不选）选择您所感兴趣的活动：",
+        title: "（可多选或不选）选择你所感兴趣的活动：",
         question_type: QuestionType::InterestedEvent,
         capacity_category: CapacityCategory::R,
         is_multiple: true,
@@ -50,7 +50,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所感兴趣的活动：",
+        title: "（可多选或不选）选择你所感兴趣的活动：",
         question_type: QuestionType::InterestedEvent,
         capacity_category: CapacityCategory::A,
         is_multiple: true,
@@ -98,7 +98,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所感兴趣的活动：",
+        title: "（可多选或不选）选择你所感兴趣的活动：",
         question_type: QuestionType::InterestedEvent,
         capacity_category: CapacityCategory::I,
         is_multiple: true,
@@ -146,7 +146,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所感兴趣的活动：",
+        title: "（可多选或不选）选择你所感兴趣的活动：",
         question_type: QuestionType::InterestedEvent,
         capacity_category: CapacityCategory::S,
         is_multiple: true,
@@ -194,7 +194,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所感兴趣的活动：",
+        title: "（可多选或不选）选择你所感兴趣的活动：",
         question_type: QuestionType::InterestedEvent,
         capacity_category: CapacityCategory::E,
         is_multiple: true,
@@ -242,7 +242,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所感兴趣的活动：",
+        title: "（可多选或不选）选择你所感兴趣的活动：",
         question_type: QuestionType::InterestedEvent,
         capacity_category: CapacityCategory::C,
         is_multiple: true,
@@ -290,7 +290,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所擅长的事：",
+        title: "（可多选或不选）选择你所擅长的事：",
         question_type: QuestionType::GoodAt,
         capacity_category: CapacityCategory::R,
         is_multiple: true,
@@ -338,7 +338,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所擅长的事：",
+        title: "（可多选或不选）选择你所擅长的事：",
         question_type: QuestionType::GoodAt,
         capacity_category: CapacityCategory::A,
         is_multiple: true,
@@ -386,7 +386,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所擅长的事：",
+        title: "（可多选或不选）选择你所擅长的事：",
         question_type: QuestionType::GoodAt,
         capacity_category: CapacityCategory::I,
         is_multiple: true,
@@ -434,7 +434,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所擅长的事：",
+        title: "（可多选或不选）选择你所擅长的事：",
         question_type: QuestionType::GoodAt,
         capacity_category: CapacityCategory::S,
         is_multiple: true,
@@ -482,7 +482,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所擅长的事：",
+        title: "（可多选或不选）选择你所擅长的事：",
         question_type: QuestionType::GoodAt,
         capacity_category: CapacityCategory::E,
         is_multiple: true,
@@ -530,7 +530,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您所擅长的事：",
+        title: "（可多选或不选）选择你所擅长的事：",
         question_type: QuestionType::GoodAt,
         capacity_category: CapacityCategory::C,
         is_multiple: true,
@@ -578,7 +578,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您喜欢的职业：",
+        title: "（可多选或不选）选择你喜欢的职业：",
         question_type: QuestionType::LovedJob,
         capacity_category: CapacityCategory::R,
         is_multiple: true,
@@ -626,7 +626,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您喜欢的职业：",
+        title: "（可多选或不选）选择你喜欢的职业：",
         question_type: QuestionType::LovedJob,
         capacity_category: CapacityCategory::A,
         is_multiple: true,
@@ -674,7 +674,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您喜欢的职业：",
+        title: "（可多选或不选）选择你喜欢的职业：",
         question_type: QuestionType::LovedJob,
         capacity_category: CapacityCategory::I,
         is_multiple: true,
@@ -722,7 +722,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您喜欢的职业：",
+        title: "（可多选或不选）选择你喜欢的职业：",
         question_type: QuestionType::LovedJob,
         capacity_category: CapacityCategory::S,
         is_multiple: true,
@@ -770,7 +770,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您喜欢的职业：",
+        title: "（可多选或不选）选择你喜欢的职业：",
         question_type: QuestionType::LovedJob,
         capacity_category: CapacityCategory::E,
         is_multiple: true,
@@ -818,7 +818,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "（可多选或不选）选择您喜欢的职业：",
+        title: "（可多选或不选）选择你喜欢的职业：",
         question_type: QuestionType::LovedJob,
         capacity_category: CapacityCategory::C,
         is_multiple: true,
@@ -840,7 +840,7 @@ pub(super) const QUESTIONS: &[Question] = &[
                 point: 1,
             },
             QuestionOption {
-                text: "薄记人员",
+                text: "簿记人员",
                 point: 1,
             },
             QuestionOption {
@@ -866,7 +866,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的机械操作能力在什么水平：",
+        title: "满分 7 分的话，你觉得你的机械操作能力在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::R,
         is_multiple: false,
@@ -902,7 +902,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的体育技能在什么水平：",
+        title: "满分 7 分的话，你觉得你的体育技能在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::R,
         is_multiple: false,
@@ -938,7 +938,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的科学研究能力在什么水平：",
+        title: "满分 7 分的话，你觉得你的科学研究能力在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::I,
         is_multiple: false,
@@ -974,7 +974,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的数学技能在什么水平：",
+        title: "满分 7 分的话，你觉得你的数学技能在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::I,
         is_multiple: false,
@@ -1010,7 +1010,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的艺术创作能力在什么水平：",
+        title: "满分 7 分的话，你觉得你的艺术创作能力在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::A,
         is_multiple: false,
@@ -1046,7 +1046,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的音乐技能在什么水平：",
+        title: "满分 7 分的话，你觉得你的音乐技能在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::A,
         is_multiple: false,
@@ -1082,7 +1082,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的解释表达能力在什么水平：",
+        title: "满分 7 分的话，你觉得你的解释表达能力在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::S,
         is_multiple: false,
@@ -1118,7 +1118,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的交际技能在什么水平：",
+        title: "满分 7 分的话，你觉得你的交际技能在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::S,
         is_multiple: false,
@@ -1154,7 +1154,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的商业洽谈能力在什么水平：",
+        title: "满分 7 分的话，你觉得你的商业洽谈能力在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::E,
         is_multiple: false,
@@ -1190,7 +1190,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的领导技能在什么水平：",
+        title: "满分 7 分的话，你觉得你的领导技能在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::E,
         is_multiple: false,
@@ -1226,7 +1226,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的事务执行能力在什么水平：",
+        title: "满分 7 分的话，你觉得你的事务执行能力在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::C,
         is_multiple: false,
@@ -1262,7 +1262,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
     Question {
-        title: "满分 7 分的话，您觉得您的办公技能在什么水平：",
+        title: "满分 7 分的话，你觉得你的办公技能在什么水平：",
         question_type: QuestionType::CapacityCategory,
         capacity_category: CapacityCategory::C,
         is_multiple: false,

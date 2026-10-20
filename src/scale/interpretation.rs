@@ -36,7 +36,8 @@ pub struct InterpretationItem<I>
 where
     I: PartialOrd + Serialize + Copy,
 {
-    /// 范围，左开右闭
+    /// 分数区间 [start, end]，闭区间（与前端 pickInterpretation 的匹配逻辑一致）。
+    /// 相邻档位必须连续且不重叠，即下一档的 start = 上一档的 end + 1。
     pub range: [I; 2],
     /// 描述
     pub description: PlainText,
@@ -67,6 +68,8 @@ pub enum Status {
     Moderate,
     /// 重度
     Major,
+    /// 极重度
+    Extreme,
 }
 
 /// 人格特征的两端描述

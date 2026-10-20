@@ -1,5 +1,6 @@
 use super::{Comparison, Operator, QuestionOption, Score, ScoringRule};
 
+/// 按常模 T 分（M=50, SD=10）划档：档位边界为 M 的 ±0.5SD 整数倍，即每 5 个 T 分一档。
 pub(super) const SCORING_RULE: ScoringRule = ScoringRule {
     range: 1..=10,
     low: &[
@@ -75,7 +76,7 @@ pub(super) const SCORING_RULE: ScoringRule = ScoringRule {
                     operator: Operator::G,
                 }),
                 Some(Comparison {
-                    expression: "M+0.3*SD",
+                    expression: "M+0.5*SD",
                     operator: Operator::LE,
                 }),
             ],
@@ -86,11 +87,11 @@ pub(super) const SCORING_RULE: ScoringRule = ScoringRule {
             value: 7,
             comparisons: &[
                 Some(Comparison {
-                    expression: "M+0.3*SD",
+                    expression: "M+0.5*SD",
                     operator: Operator::G,
                 }),
                 Some(Comparison {
-                    expression: "M+0.6*SD",
+                    expression: "M+1*SD",
                     operator: Operator::LE,
                 }),
             ],
@@ -99,11 +100,11 @@ pub(super) const SCORING_RULE: ScoringRule = ScoringRule {
             value: 8,
             comparisons: &[
                 Some(Comparison {
-                    expression: "M+0.6*SD",
+                    expression: "M+1*SD",
                     operator: Operator::G,
                 }),
                 Some(Comparison {
-                    expression: "M+SD",
+                    expression: "M+1.5*SD",
                     operator: Operator::LE,
                 }),
             ],
@@ -112,11 +113,11 @@ pub(super) const SCORING_RULE: ScoringRule = ScoringRule {
             value: 9,
             comparisons: &[
                 Some(Comparison {
-                    expression: "M+SD",
+                    expression: "M+1.5*SD",
                     operator: Operator::G,
                 }),
                 Some(Comparison {
-                    expression: "M+1.5*SD",
+                    expression: "M+2*SD",
                     operator: Operator::LE,
                 }),
             ],
@@ -125,7 +126,7 @@ pub(super) const SCORING_RULE: ScoringRule = ScoringRule {
             value: 10,
             comparisons: &[
                 Some(Comparison {
-                    expression: "M+1.5*SD",
+                    expression: "M+2*SD",
                     operator: Operator::G,
                 }),
                 None,

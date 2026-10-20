@@ -71,13 +71,14 @@ type Ranges = &'static [Range; 10];
 #[derive(Serialize)]
 struct NormItem {
     ranges: Ranges,
-    mean: f32,
-    standard_deviation: f32,
+    mean: f64,
+    standard_deviation: f64,
 }
 
+/// 单个性别的 16 个因素常模
 #[derive(Serialize)]
 #[serde(rename_all = "UPPERCASE")]
-struct Norm {
+struct FactorNorms {
     a: NormItem,
     b: NormItem,
     c: NormItem,
@@ -94,6 +95,13 @@ struct Norm {
     q2: NormItem,
     q3: NormItem,
     q4: NormItem,
+}
+
+/// 成人常模按性别分组（男 / 女）
+#[derive(Serialize)]
+struct Norm {
+    male: FactorNorms,
+    female: FactorNorms,
 }
 
 #[derive(Serialize)]
@@ -140,9 +148,14 @@ pub const SIXTEEN_PERSONALITY_FACTORS: Scale<Interpretation, Question> = Scale {
         "3. 十六维地图：通过科学分析，卡特尔将这些根源特质归纳为16个核心因素，涵盖了你为人处世的风格（如乐群性、世故性）、情绪模式（如稳定性、紧张性）、以及动力与自律（如有恒性、自律性）等主要方面。",
         "接下来，你将通过回答一系列问题，在这张16维人格地图上找到自己的坐标。",
     ]),
-    references: None,
+    references: Some(&[
+        "Cattell, R. B., Eber, H. W., & Tatsuoka, M. M. (1970). Handbook for the Sixteen Personality Factor Questionnaire (16PF). Institute for Personality and Ability Testing.",
+        "16PF 成人常模（男 n=470 / 女 n=508），转写自常模附表 3-5、3-6。",
+    ]),
     formula_mode: None,
-    warning: Some("本量表仅适用 16 岁以上的人群。"),
+    warning: Some(
+        "本量表仅适用 16 岁以上的人群。 版权提示：本量表的正式版本受版权保护，需通过官方渠道获得授权后使用；此处数据为公开资料转写，仅供个人学习参考，不得用于商业或临床用途。",
+    ),
     tags: &Tag {
         info: Some(&["人格"]),
         normal: None,

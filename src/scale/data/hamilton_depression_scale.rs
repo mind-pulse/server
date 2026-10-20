@@ -40,10 +40,11 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     references: Some(&[
+        "Hamilton, M. (1960). A rating scale for depression. Journal of Neurology, Neurosurgery & Psychiatry, 23(1), 56-62.",
         "张作记主编.《行为医学量表手册》（光盘版）[M].中华医学电子音像出版社.2005年",
     ]),
     warning: Some(
-        "此为量表非自评，仅供心理科和精神科医生、实习生使用，如需自评抑郁状态，请使用抑郁自评量表（SDS）",
+        "此为量表非自评，仅供心理科和精神科医生、实习生使用，如需自评抑郁状态，请使用抑郁自评量表（SDS）。 使用提示：本量表原始版本可公开用于研究，正式使用请遵循原始发布方的使用条款；此处仅供个人学习参考，不得用于商业或临床诊断。",
     ),
     formula_mode: None,
     tags: &Tag {
@@ -54,23 +55,23 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 8],
-            description: "正常",
+            range: [0, 7],
+            description: "无明显抑郁症状",
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [8, 20],
-            description: "可能有抑郁症",
+            range: [8, 19],
+            description: "轻度抑郁症状",
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [20, 35],
-            description: "肯定有抑郁症",
+            range: [20, 34],
+            description: "中度抑郁症状",
             status: Status::Moderate,
         },
         InterpretationItem {
             range: [35, 76],
-            description: "严重抑郁症",
+            description: "重度抑郁症状",
             status: Status::Major,
         },
     ],
@@ -621,3 +622,19 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::HAMILTON_DEPRESSION_SCALE;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = HAMILTON_DEPRESSION_SCALE.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}

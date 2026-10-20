@@ -1,0 +1,99 @@
+name: "Nightly Build"
+
+on:
+  schedule:
+    # 每天 04:00 UTC（北京时间 12:00）
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  CARGO_INCREMENTAL: 0
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    outputs:
+      should_build: ${{ steps.check.outputs.should_build }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check for changes since the last build
+        id: check
+        run: |
+          set -euo pipefail
+
+          LAST_STABLE=$(git describe --tags --abbrev=0 --exclude="nightly" 2>/dev/null || echo "")
+          LAST_NIGHTLY=$(git rev-parse nightly 2>/dev/null || echo "")
+
+          if [ -n "$LAST_NIGHTLY" ] && [ "$LAST_NIGHTLY" = "$(git rev-parse HEAD)" ]; then
+            echo "HEAD 与上次夜间构建相同，跳过"
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+          elif [ -z "$LAST_STABLE" ]; then
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          elif [ "$(git rev-list "$LAST_STABLE"..HEAD --count)" -gt 0 ]; then
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "自上一个正式版本以来没有新提交，跳过"
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.should_build == 'true'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Delete previous nightly release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete nightly --cleanup-tag --yes || true
+
+      - name: Setup Rust
+        uses: ./.github/actions/rust-setup
+        with:
+          cache-prefix: rust-release
+          target-dir: release
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Package
+        run: |
+          set -euo pipefail
+
+          DATE=$(date +'%Y%m%d')
+          ASSET="mind-pulse-server-linux-x64-nightly-${DATE}.tar.gz"
+
+          cd target/release
+          tar zcvf "$ASSET" server
+          sha256sum "$ASSET" > "$ASSET.sha256"
+
+          echo "ASSET_PATH=$(pwd)/$ASSET" >> "$GITHUB_ENV"
+
+      - name: Publish nightly prerelease
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          gh release create nightly \
+            "${ASSET_PATH}" "${ASSET_PATH}.sha256" \
+            --title "Nightly $(date +'%Y-%m-%d')" \
+            --notes "每日构建，可能包含尚未稳定的改动，仅供参考。" \
+            --prerelease

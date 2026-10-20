@@ -15,7 +15,7 @@ struct ScoreStandard {
 pub struct InterpretationItem {
     range: ScoreStandard,
 
-    /// 标签，如"正常"、"轻度"、"中度"、"重度"
+    /// 标签，如"正常"、"轻度"、"中度"、"重度"、"极重度"
     label: PlainText,
 
     /// 安慰语 - 包含核心结论和重要提醒
@@ -38,26 +38,26 @@ pub struct InterpretationItem {
 }
 
 const INTRODUCTION: Texts = &[&[SentenceItem::Plain(
-    "耶鲁布朗强迫量表是美国 GOODMAN 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。",
+    "耶鲁布朗强迫量表是美国 Goodman 等人根据 DSM-III-R 诊断标准而制定的专门测定强迫症状严重程度的量表，是临床上使用的评定强迫症的主要量表之一。",
 )]];
 
 const INSTRUCTION: Texts = &[&[
     SentenceItem::Plain("本量表包含 "),
     SentenceItem::HTMLElement(HTMLElement::Strong("10")),
     SentenceItem::Plain(
-        " 个项目，为保证调查结果的准确性，务必请您仔细阅读测试内容，依照你主要的强迫症状作答。",
+        " 个项目，为保证调查结果的准确性，务必请你仔细阅读测试内容，依照你主要的强迫症状作答。",
     ),
 ]];
 
 const INTERPRETATION: &[InterpretationItem] = &[
     InterpretationItem {
         range: ScoreStandard {
-            total: [0, 5],
+            total: [0, 7],
             any: [0, 5],
         },
         label: "正常",
         comforting_word: ComfortingWord {
-            text: "您的得分在正常范围内，这是一个积极的信号。",
+            text: "你的得分在正常范围内，这是一个积极的信号。",
             caution: Some("心理状态会随时间和压力变化，继续保持对自己心理健康的关注是有益的。"),
         },
         symptoms: None,
@@ -70,12 +70,12 @@ const INTERPRETATION: &[InterpretationItem] = &[
     },
     InterpretationItem {
         range: ScoreStandard {
-            total: [6, 15],
+            total: [8, 15],
             any: [6, 9],
         },
         label: "轻度",
         comforting_word: ComfortingWord {
-            text: "您的得分显示有轻度强迫倾向，这在很多人身上都会出现。",
+            text: "你的得分提示有一些轻度的强迫倾向，这并不少见。",
             caution: Some("这些感觉在压力大时更常见，并不代表你有严重问题，但值得关注。"),
         },
         symptoms: Some(&[
@@ -93,13 +93,15 @@ const INTERPRETATION: &[InterpretationItem] = &[
     },
     InterpretationItem {
         range: ScoreStandard {
-            total: [16, 25],
+            total: [16, 23],
             any: [10, 14],
         },
         label: "中度",
         comforting_word: ComfortingWord {
-            text: "您的得分显示有中度强迫倾向，这可能需要更多关注和支持。",
-            caution: Some("中度强迫并非您的错，它是一种可治疗的医疗状况。寻求帮助是勇敢的表现。"),
+            text: "你的得分显示有中度强迫倾向，这可能需要更多关注和支持。",
+            caution: Some(
+                "这类困扰并不代表你已经确诊，它很常见、也可以改善。寻求帮助是勇敢的表现。",
+            ),
         },
         symptoms: Some(&[
             "重复的想法或行为已经明显影响日常效率",
@@ -116,12 +118,12 @@ const INTERPRETATION: &[InterpretationItem] = &[
     },
     InterpretationItem {
         range: ScoreStandard {
-            total: [26, 40],
-            any: [15, 20],
+            total: [24, 31],
+            any: [15, 17],
         },
         label: "重度",
         comforting_word: ComfortingWord {
-            text: "您的得分显示有重度强迫倾向，这已经严重影响到生活。",
+            text: "你的得分处在偏高的区间，说明这些想法或行为可能已占用不少时间和精力，值得尽快找专业人士评估。",
             caution: Some("重度强迫是可以治疗的医疗状况。寻求专业帮助是改善的第一步。"),
         },
         symptoms: Some(&[
@@ -140,20 +142,52 @@ const INTERPRETATION: &[InterpretationItem] = &[
         }),
         status: Status::Major,
     },
+    InterpretationItem {
+        range: ScoreStandard {
+            total: [32, 40],
+            any: [18, 20],
+        },
+        label: "极重度",
+        comforting_word: ComfortingWord {
+            text: "你的得分处在最高区间，说明这些想法或行为可能已经占据了大部分时间和精力。",
+            caution: Some(
+                "这不代表你已经确诊，但它提示你值得尽快获得专业支持。寻求帮助是勇敢的表现。",
+            ),
+        },
+        symptoms: Some(&[
+            "这些感觉几乎每天都在影响你，持续时间很长",
+            "需要花费大量时间处理这些想法或行为",
+            "已经明显影响到日常生活、工作或人际关系",
+        ]),
+        advice: Some(&[
+            "建议尽快联系精神科医生或心理治疗师进行评估。",
+            "如果愿意，可以请信任的家人或朋友陪你一起就医。",
+            "在等待就诊期间，尽量保持规律的作息和基本的日常活动。",
+        ]),
+        critical_warning: Some(CriticalWarning {
+            title: "重要提醒",
+            content: "如果这些困扰让你感到非常痛苦，或者有伤害自己的想法，请立即联系专业医疗人员或拨打全国统一心理援助热线 12356。",
+        }),
+        status: Status::Extreme,
+    },
 ];
 
 pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Question> = Scale {
     id: 9,
-    name: "耶鲁布朗强迫症量表",
-    description: "专为强迫症设计的科学自测工具，10题看清困扰程度",
+    name: "耶鲁-布朗强迫量表",
+    description: "国际通用的强迫症状严重程度评估量表（自评改编版），10题评估困扰程度",
     abbreviation: "Y-BOCS",
     primary_category: ScaleCategory::Emotion,
     related_categories: Some(&[ScaleCategory::MentalHealth, ScaleCategory::Behavior]),
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
-    warning: None,
+    references: Some(&[
+        "Goodman, W. K., Price, L. H., Rasmussen, S. A., Mazure, C., Fleischmann, R. L., Hill, C. L., Heninger, G. R., & Charney, D. S. (1989). The Yale-Brown Obsessive Compulsive Scale: I. Development, use, and reliability. Archives of General Psychiatry, 46(11), 1006-1011.",
+    ]),
+    warning: Some(
+        "本量表原为临床医生他评工具，此处为自评改编版，结果仅供自我了解与就医参考，不能作为诊断依据。 使用提示：本量表原始版本可公开用于研究，正式使用请遵循原始发布方的使用条款；此处仅供个人学习参考，不得用于商业或临床诊断。",
+    ),
     formula_mode: None,
     tags: &Tag {
         info: Some(&["强迫"]),
@@ -164,7 +198,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
     interpretation: INTERPRETATION,
     questions: &[
         Question {
-            title: "您每天花多少时间在强迫思维上？每天强迫思维出现的频率有多高？",
+            title: "你每天花多少时间在强迫思维上？每天强迫思维出现的频率有多高？",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -190,7 +224,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "您的强迫思维对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫思维对每天日常活动的妨碍有多大？回答此题时，请想是否有任何事情因为强迫思维而不去做或较少做）",
+            title: "你的强迫思维对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫思维对每天日常活动的妨碍有多大？回答此题时，请想是否有任何事情因为强迫思维而不去做或较少做）",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -216,7 +250,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "您的强迫思维给您带来多大的苦恼或困扰？",
+            title: "你的强迫思维给你带来多大的苦恼或困扰？",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -242,7 +276,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "您有多少努力对抗强迫思维？你是否尝试转移注意力或不去想它呢？（重点不在于是否成功转移，而在于你有多努力对抗或尝试频率有多高）",
+            title: "你有多少努力对抗强迫思维？你是否尝试转移注意力或不去想它呢？（重点不在于是否成功转移，而在于你有多努力对抗或尝试频率有多高）",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -268,7 +302,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "您控制强迫思维的能力有多少？您停止或转移强迫思维的效果如何？（不包括通过强迫行为来停止强迫思维）",
+            title: "你控制强迫思维的能力有多少？你停止或转移强迫思维的效果如何？（不包括通过强迫行为来停止强迫思维）",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -294,7 +328,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "您每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？",
+            title: "你每天花多少时间在强迫行为上？每天做出强迫行为的频率有多高？",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -314,13 +348,13 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
                     point: 3,
                 },
                 QuestionOption {
-                    text: "极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫思维）",
+                    text: "极重（多于八小时），或几乎无时无刻都有（次数多到无法计算，且一小时内很少没有多种强迫行为）",
                     point: 4,
                 },
             ],
         },
         Question {
-            title: "您的强迫行为对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫行为对每天日常活动的妨碍有多大？）",
+            title: "你的强迫行为对社交、学业成就或工作能力有多大妨碍？（假如目前没有工作，则强迫行为对每天日常活动的妨碍有多大？）",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -346,7 +380,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "假如被制止从事强迫行为时，您有什么感觉？您会多焦虑？",
+            title: "假如被制止从事强迫行为时，你有什么感觉？你会多焦虑？",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -372,7 +406,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "您有多努力去对抗强迫行为？或尝试停止强迫行为的频率？（仅评估你有多努力对抗强迫行为或尝试频率有多高，而不在于评估您停止强迫行为的效果有多好）",
+            title: "你有多努力去对抗强迫行为？或尝试停止强迫行为的频率？（仅评估你有多努力对抗强迫行为或尝试频率有多高，而不在于评估你停止强迫行为的效果有多好）",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -398,7 +432,7 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
             ],
         },
         Question {
-            title: "您控制强迫行为的能力如何？您停止强迫（仪式）行为的效果如何？（假如你很少去对抗，那就回想那些少数对抗的情境，以便回答此题。）",
+            title: "你控制强迫行为的能力如何？你停止强迫（仪式）行为的效果如何？（假如你很少去对抗，那就回想那些少数对抗的情境，以便回答此题。）",
             is_multiple: false,
             options: &[
                 QuestionOption {
@@ -425,3 +459,34 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::INTERPRETATION;
+    use crate::scale::Status;
+
+    #[test]
+    fn total_ranges_partition_0_to_40() {
+        let mut expected_start = 0u8;
+
+        for item in INTERPRETATION {
+            assert_eq!(
+                item.range.total[0], expected_start,
+                "总分区间必须连续、不重叠"
+            );
+            expected_start = item.range.total[1] + 1;
+        }
+
+        assert_eq!(expected_start, 41, "最高一档必须覆盖满分 40");
+    }
+
+    #[test]
+    fn has_five_bands_and_extreme_top() {
+        assert_eq!(INTERPRETATION.len(), 5);
+
+        let extreme = INTERPRETATION.last().unwrap();
+        assert_eq!(extreme.label, "极重度");
+        assert_eq!(extreme.range.total, [32, 40]);
+        assert!(matches!(extreme.status, Status::Extreme));
+    }
+}

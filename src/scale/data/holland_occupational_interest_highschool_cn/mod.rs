@@ -1,4 +1,4 @@
-//! 此为开源版霍兰德职业兴趣高中生专用中文版本，专业来自2024年教育部公开专业目录文件，因专业数量多，这里只能硬编码一部分。
+//! 此为开源版霍兰德职业兴趣高中生专用中文版本，专业名参考教育部公开的《普通高等学校本科专业目录》，因专业数量多，这里只能硬编码一部分。
 //!
 //! 商业版使用高级算法实现，会对所有专业进行智能推荐组合。
 
@@ -61,8 +61,12 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN: Scale<Interpretation, Qu
         "这个理论的核心就是：帮你找到“喜欢的”和“适合的”专业之间的交集。过去，大家选专业可能只看分数或就业前景，而霍兰德则强调兴趣才是最关键的方向标。他把“个人特点”和“专业环境”联系起来，让我们明白：选专业不只是选一个学科，更是选择一种适合自己特质的学习方式和未来发展路径。",
         "所以，在填报志愿前，不妨做个职业兴趣测试，再结合自己的学科能力，这样能更清晰地找到既感兴趣又学得好的专业方向，让大学生活更有目标感和动力。",
     ]),
-    references: None,
-    warning: None,
+    references: Some(&[
+        "Holland, J. L. (1959). A theory of vocational choice. Journal of Counseling Psychology, 6(1), 35-45.",
+    ]),
+    warning: Some(
+        "版权提示：本测评参考霍兰德 RIASEC 职业兴趣理论编制，并非 PAR 出版的 Self-Directed Search 原版；原版测评受版权保护，请通过官方渠道获取授权。",
+    ),
     formula_mode: None,
     tags: &Tag {
         info: Some(&["高考", "专业"]),

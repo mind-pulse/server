@@ -12,14 +12,14 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         any_symptom_average: Rule {
             value: 2,
-            comparison_operator: ">",
+            comparison_operator: ">=",
         },
     },
     symptoms: Symptoms {
         somatization: SymptomInterpretation {
             name: "躯体化",
             terminology: "Somatization",
-            description: "指心理上的压力、烦恼或情绪问题，没有直接表现为心情不好，反而转化成了身体上的不舒服。通常表现多样，但去医院做检查，常常发现不了明确的生理疾病。",
+            description: "指压力大时，身体有时会先出现一些不舒服（如头痛、胃部不适、心慌）。身体不适的原因很多，应先请医生排查生理疾病，再考虑情绪与压力的影响。",
             positive: &[
                 "反复或持续的身体疼痛（如头痛、背痛、肌肉酸痛）。",
                 "肠胃不适，比如没来由的胃痛、胀气、腹泻或便秘。",
@@ -27,7 +27,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
                 "经常感到头晕、眼花或乏力。",
                 "睡眠问题，如失眠、多梦、醒后不解乏。",
             ],
-            negative: "身体感受基本正常，偶尔的不适（如累了酸痛、饿了的胃痛）能明确找到原因，并且不影响日常生活。",
+            negative: "身体感受基本正常，偶尔的不适（如运动后酸痛、熬夜后头痛）能找到明确原因，休息后缓解，也不影响日常生活。",
             guidance: SymptomGuidance {
                 self_help: &[
                     "在医生已排除明显生理问题的前提下，可以尝试记录身体不适出现的时间、情境和当时的情绪状态。",
@@ -46,7 +46,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         },
         obsessive_compulsive: SymptomInterpretation {
             name: "强迫症状",
-            terminology: "Obsessive-Compulsive Disorder (OCD)",
+            terminology: "Obsessive-Compulsive Symptoms",
             description: "指头脑中反复冒出一些自己不想要的想法，或者忍不住想做某些重复动作。自己也知道这些想法或行为没必要，但就是控制不住，不做就会非常焦虑。",
             positive: &[
                 "总控制不住地想一些事（如是否锁门、是否脏、是否犯错）。",
@@ -105,7 +105,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         depression: SymptomInterpretation {
             name: "抑郁",
             terminology: "Depression",
-            description: "指的是一种持续较长时间（如连续两周以上）的低落情绪。感觉开心不起来，对以前喜欢的事情也提不起兴趣，整个人容易累，想法容易变得悲观、消极。这种状态已经影响到了日常的工作、学习或生活。",
+            description: "描述最近一段时间情绪是否常常低落、对事情提不起兴趣、容易觉得累。这类感受很常见，并不等于得了抑郁症；如果持续存在或明显影响生活，建议寻求专业评估。",
             positive: &[
                 "几乎每天大部分时间都情绪低落、悲伤或空虚。",
                 "对几乎所有活动的兴趣或乐趣都明显减退。",
@@ -129,7 +129,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
                 ],
                 seek_help_when: &[
                     "持续感到绝望、无助，或生活功能明显下降。",
-                    "出现反复想到死亡或自伤的念头（请尽快寻求专业帮助）。",
+                    "出现反复想到死亡或自伤的念头时，请立即拨打全国统一心理援助热线 12356，或前往急诊，不要独自承受。",
                 ],
             },
         },
@@ -192,7 +192,7 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
             },
         },
         phobic_anxiety: SymptomInterpretation {
-            name: "恐怖",
+            name: "恐惧",
             terminology: "Phobic Anxiety",
             description: "指的是对某些特定的场所、事物或情境（如高处、人群、封闭空间）产生一种强烈的、不合理的恐惧。这种恐惧感非常真实，以至于你会极力去回避那些场合，这可能会明显干扰你的正常生活。",
             positive: &[

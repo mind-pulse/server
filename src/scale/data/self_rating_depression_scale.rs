@@ -23,7 +23,7 @@ const INSTRUCTION: Texts = &[&[
     SentenceItem::Plain("本量表包含 "),
     SentenceItem::HTMLElement(HTMLElement::Strong("20")),
     SentenceItem::Plain(
-        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请您仔细阅读以下内容，然后根据您",
+        " 个项目，分为 4 级评分，为保证调查结果的准确性，务必请你仔细阅读以下内容，然后根据你",
     ),
     SentenceItem::HTMLElement(HTMLElement::Strong("最近 1 周")),
     SentenceItem::Plain(
@@ -41,11 +41,16 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
     introduction: INTRODUCTION,
     instruction: INSTRUCTION,
     idea: None,
-    references: None,
-    warning: None,
+    references: Some(&[
+        "Zung, W. W. K. (1965). A self-rating depression scale. Archives of General Psychiatry, 12(1), 63-70.",
+    ]),
+    warning: Some(
+        "本结果仅为筛查参考，不能作为诊断依据。若情绪困扰持续或影响生活，请咨询精神科医生或心理治疗师。",
+    ),
     formula_mode: Some(FormulaMode {
         operational_rule: OperationalRule::Multiply(1.25),
-        integer: Some(Integer::Round),
+        // Zung 氏量表的标准分为"粗分 × 1.25 后取整数部分"，即向下取整
+        integer: Some(Integer::Floor),
     }),
     tags: &Tag {
         info: Some(&["抑郁"]),
@@ -55,7 +60,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
     },
     interpretation: &[
         InterpretationItem {
-            range: [0, 53],
+            range: [0, 52],
             description: "正常范围",
             critical_warning: None,
             comforting_word: NORMAL_COMFORT,
@@ -64,7 +69,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
             status: Status::Normal,
         },
         InterpretationItem {
-            range: [53, 63],
+            range: [53, 62],
             description: "轻度抑郁倾向",
             critical_warning: None,
             comforting_word: MILD_COMFORT,
@@ -73,7 +78,7 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
             status: Status::Mild,
         },
         InterpretationItem {
-            range: [63, 73],
+            range: [63, 72],
             description: "中度抑郁",
             critical_warning: None,
             comforting_word: MODERATE_COMFORT,
@@ -534,3 +539,19 @@ pub const SELF_RATING_DEPRESSION_SCALE: Scale<&[InterpretationItem<u8>], Questio
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::SELF_RATING_DEPRESSION_SCALE;
+
+    #[test]
+    fn interpretation_ranges_are_contiguous_closed_intervals() {
+        let items = SELF_RATING_DEPRESSION_SCALE.interpretation;
+        let mut expected_start: u8 = 0;
+
+        for item in items {
+            assert_eq!(item.range[0], expected_start, "区间必须连续、不重叠");
+            expected_start = item.range[1] + 1;
+        }
+    }
+}
