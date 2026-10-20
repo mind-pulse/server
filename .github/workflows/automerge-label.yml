@@ -1,8 +1,11 @@
 name: "Auto Merge (label)"
 
 # pull_request 事件的默认类型不含 labeled，所以"打上 automerge 标签就合并"必须
-# 有一个单独的工作流来响应；这里不跑任何检查，只确认该提交的检查已全部通过后再合并。
-# 合并逻辑与 pr-check.yml 共用 .github/scripts/automerge.cjs。
+# 有一个单独的工作流来响应。
+#
+# 打标签通常发生在 PR Check 跑完之前，因此这里**等待**检查跑完再决定是否合并，
+# 而不是一看到 pending 就直接跳过（那样会永久错过合并）。合并逻辑与
+# pr-check.yml 共用 .github/scripts/automerge.cjs。
 #
 # 两个步骤用两个 token，各司其职：
 #   - 读检查结果只需 checks: read，默认 GITHUB_TOKEN 就够
@@ -25,10 +28,12 @@ jobs:
   auto-merge:
     name: "Auto Merge (label)"
     runs-on: ubuntu-24.04
+    # waitForChecks 最多等 30 分钟，给作业留出余量
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v6
 
-      - name: Check the commit's checks
+      - name: Wait for the commit's checks
         id: checks
         uses: actions/github-script@v9
         with:
@@ -36,14 +41,17 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
           script: |
-            const { checksPassed } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
-            const ok = await checksPassed({
+            const { waitForChecks } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+
+            const ok = await waitForChecks({
               github,
               core,
               owner: context.repo.owner,
               repo: context.repo.repo,
               pr: context.payload.pull_request,
+              timeoutMs: 30 * 60 * 1000,
             });
+
             return ok ? 'true' : 'false';
 
       - name: Auto merge PR
