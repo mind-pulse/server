@@ -116,7 +116,6 @@ struct FirstPersonalityFactor {
 struct SecondPersonalityFactor {
     key: PlainText,
     name: PlainText,
-    expression: PlainText,
     characteristic: Characteristic,
 }
 
