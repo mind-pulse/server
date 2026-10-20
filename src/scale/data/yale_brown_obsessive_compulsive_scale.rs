@@ -15,7 +15,7 @@ struct ScoreStandard {
 pub struct InterpretationItem {
     range: ScoreStandard,
 
-    /// 标签，如"正常"、"轻度"、"中度"、"重度"
+    /// 标签，如"正常"、"轻度"、"中度"、"重度"、"极重度"
     label: PlainText,
 
     /// 安慰语 - 包含核心结论和重要提醒
@@ -118,8 +118,8 @@ const INTERPRETATION: &[InterpretationItem] = &[
     },
     InterpretationItem {
         range: ScoreStandard {
-            total: [24, 40],
-            any: [15, 20],
+            total: [24, 31],
+            any: [15, 17],
         },
         label: "重度",
         comforting_word: ComfortingWord {
@@ -141,6 +141,34 @@ const INTERPRETATION: &[InterpretationItem] = &[
             content: "如果这些困扰让你感到非常痛苦，或者有伤害自己的想法，请立即联系专业医疗人员或拨打心理援助热线。",
         }),
         status: Status::Major,
+    },
+    InterpretationItem {
+        range: ScoreStandard {
+            total: [32, 40],
+            any: [18, 20],
+        },
+        label: "极重度",
+        comforting_word: ComfortingWord {
+            text: "你的得分处在最高区间，说明这些想法或行为可能已经占据了大部分时间和精力。",
+            caution: Some(
+                "这不代表你已经确诊，但它提示你值得尽快获得专业支持。寻求帮助是勇敢的表现。",
+            ),
+        },
+        symptoms: Some(&[
+            "这些感觉几乎每天都在影响你，持续时间很长",
+            "需要花费大量时间处理这些想法或行为",
+            "已经明显影响到日常生活、工作或人际关系",
+        ]),
+        advice: Some(&[
+            "建议尽快联系精神科医生或心理治疗师进行评估。",
+            "如果愿意，可以请信任的家人或朋友陪你一起就医。",
+            "在等待就诊期间，尽量保持规律的作息和基本的日常活动。",
+        ]),
+        critical_warning: Some(CriticalWarning {
+            title: "重要提醒",
+            content: "如果这些困扰让你感到非常痛苦，或者有伤害自己的想法，请立即联系专业医疗人员或拨打全国统一心理援助热线 12356。",
+        }),
+        status: Status::Extreme,
     },
 ];
 
@@ -431,3 +459,34 @@ pub const YALE_BROWN_OBSESSIVE_COMPULSIVE_SCALE: Scale<&[InterpretationItem], Qu
         },
     ],
 };
+
+#[cfg(test)]
+mod tests {
+    use super::INTERPRETATION;
+    use crate::scale::Status;
+
+    #[test]
+    fn total_ranges_partition_0_to_40() {
+        let mut expected_start = 0u8;
+
+        for item in INTERPRETATION {
+            assert_eq!(
+                item.range.total[0], expected_start,
+                "总分区间必须连续、不重叠"
+            );
+            expected_start = item.range.total[1] + 1;
+        }
+
+        assert_eq!(expected_start, 41, "最高一档必须覆盖满分 40");
+    }
+
+    #[test]
+    fn has_five_bands_and_extreme_top() {
+        assert_eq!(INTERPRETATION.len(), 5);
+
+        let extreme = INTERPRETATION.last().unwrap();
+        assert_eq!(extreme.label, "极重度");
+        assert_eq!(extreme.range.total, [32, 40]);
+        assert!(matches!(extreme.status, Status::Extreme));
+    }
+}

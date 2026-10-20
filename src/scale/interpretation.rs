@@ -68,6 +68,8 @@ pub enum Status {
     Moderate,
     /// 重度
     Major,
+    /// 极重度
+    Extreme,
 }
 
 /// 人格特征的两端描述
