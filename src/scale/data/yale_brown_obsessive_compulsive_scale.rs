@@ -8,7 +8,6 @@ use crate::scale::{
 #[derive(Debug, Serialize)]
 struct ScoreStandard {
     total: [u8; 2],
-    any: [u8; 2],
 }
 
 #[derive(Debug, Serialize)]
@@ -51,10 +50,7 @@ const INSTRUCTION: Texts = &[&[
 
 const INTERPRETATION: &[InterpretationItem] = &[
     InterpretationItem {
-        range: ScoreStandard {
-            total: [0, 7],
-            any: [0, 5],
-        },
+        range: ScoreStandard { total: [0, 7] },
         label: "正常",
         comforting_word: ComfortingWord {
             text: "你的得分在正常范围内，这是一个积极的信号。",
@@ -69,10 +65,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
         status: Status::Normal,
     },
     InterpretationItem {
-        range: ScoreStandard {
-            total: [8, 15],
-            any: [6, 9],
-        },
+        range: ScoreStandard { total: [8, 15] },
         label: "轻度",
         comforting_word: ComfortingWord {
             text: "你的得分提示有一些轻度的强迫倾向，这并不少见。",
@@ -92,10 +85,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
         status: Status::Mild,
     },
     InterpretationItem {
-        range: ScoreStandard {
-            total: [16, 23],
-            any: [10, 14],
-        },
+        range: ScoreStandard { total: [16, 23] },
         label: "中度",
         comforting_word: ComfortingWord {
             text: "你的得分显示有中度强迫倾向，这可能需要更多关注和支持。",
@@ -117,10 +107,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
         status: Status::Moderate,
     },
     InterpretationItem {
-        range: ScoreStandard {
-            total: [24, 31],
-            any: [15, 17],
-        },
+        range: ScoreStandard { total: [24, 31] },
         label: "重度",
         comforting_word: ComfortingWord {
             text: "你的得分处在偏高的区间，说明这些想法或行为可能已占用不少时间和精力，值得尽快找专业人士评估。",
@@ -143,10 +130,7 @@ const INTERPRETATION: &[InterpretationItem] = &[
         status: Status::Major,
     },
     InterpretationItem {
-        range: ScoreStandard {
-            total: [32, 40],
-            any: [18, 20],
-        },
+        range: ScoreStandard { total: [32, 40] },
         label: "极重度",
         comforting_word: ComfortingWord {
             text: "你的得分处在最高区间，说明这些想法或行为可能已经占据了大部分时间和精力。",

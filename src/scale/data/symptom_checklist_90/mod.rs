@@ -70,19 +70,6 @@ const OPTIONS: [QuestionOption; 5] = [
 ];
 
 #[derive(Debug, Serialize)]
-struct Rule {
-    value: u8,
-    comparison_operator: PlainText,
-}
-
-#[derive(Debug, Serialize)]
-struct Positive {
-    total: Rule,
-    positive_amount: Rule,
-    any_symptom_average: Rule,
-}
-
-#[derive(Debug, Serialize)]
 pub struct SymptomInterpretation {
     /// 中文名称
     name: PlainText,
@@ -115,7 +102,6 @@ struct Symptoms {
 
 #[derive(Debug, Serialize)]
 pub struct Interpretation {
-    positive: Positive,
     symptoms: Symptoms,
 }
 
