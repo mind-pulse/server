@@ -45,7 +45,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
         "Beck, A. T., Ward, C. H., Mendelson, M., Mock, J., & Erbaugh, J. (1961). An inventory for measuring depression. Archives of General Psychiatry, 4(6), 561-571.",
     ]),
     warning: Some(
-        "版权提示：本量表的正式版本受版权保护，需通过官方渠道获得授权后使用；此处数据为公开资料转写，仅供个人学习参考，不得用于商业或临床用途。 本结果仅为筛查参考，不能作为诊断依据。若情绪困扰持续或影响生活，请咨询精神科医生或心理治疗师。",
+        "适用年龄：13 岁及以上。版权提示：本量表的正式版本受版权保护，需通过官方渠道获得授权后使用；此处数据为公开资料转写，仅供个人学习参考，不得用于商业或临床用途。本结果仅为筛查参考，不能作为诊断依据。若情绪困扰持续或影响生活，请咨询精神科医生或心理治疗师。",
     ),
     tags: &Tag {
         info: Some(&["抑郁"]),
@@ -427,19 +427,31 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "我没觉得睡眠有什么变化",
+                    text: "我没有感觉到睡眠有什么变化",
                     point: 0,
                 },
                 QuestionOption {
-                    text: "我的睡眠比过去略少，或略多",
+                    text: "我比平时睡得多一些",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "我的睡眠比以前少了很多，或多了很多",
+                    text: "我比平时睡得少一些",
+                    point: 1,
+                },
+                QuestionOption {
+                    text: "我比平时睡得多很多",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "我根本无法睡觉，或我一直想睡觉",
+                    text: "我比平时睡得少很多",
+                    point: 2,
+                },
+                QuestionOption {
+                    text: "我一天大部分时间都在睡觉",
+                    point: 3,
+                },
+                QuestionOption {
+                    text: "我比平时早醒 1–2 小时，而且无法再入睡",
                     point: 3,
                 },
             ],
@@ -471,19 +483,31 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
             is_multiple: false,
             options: &[
                 QuestionOption {
-                    text: "我没觉得食欲有什么变化",
+                    text: "我没有感觉到食欲有什么变化",
                     point: 0,
                 },
                 QuestionOption {
-                    text: "我的食欲比过去略差，或略好",
+                    text: "我的食欲比平时差一些",
                     point: 1,
                 },
                 QuestionOption {
-                    text: "我的食欲比过去差了很多，或好很多",
+                    text: "我的食欲比平时好一些",
+                    point: 1,
+                },
+                QuestionOption {
+                    text: "我的食欲比平时差很多",
                     point: 2,
                 },
                 QuestionOption {
-                    text: "我完全没有食欲，或总是非常渴望吃东西",
+                    text: "我的食欲比平时好很多",
+                    point: 2,
+                },
+                QuestionOption {
+                    text: "我完全没有食欲",
+                    point: 3,
+                },
+                QuestionOption {
+                    text: "我总是很想吃东西",
                     point: 3,
                 },
             ],
