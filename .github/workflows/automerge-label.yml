@@ -1,0 +1,58 @@
+name: "Auto Merge (label)"
+
+# pull_request 事件的默认类型不含 labeled，所以"打上 automerge 标签就合并"必须
+# 有一个单独的工作流来响应；这里不跑任何检查，只确认该提交的检查已全部通过后再合并。
+# 合并逻辑与 pr-check.yml 共用 .github/scripts/automerge.cjs。
+#
+# 两个步骤用两个 token，各司其职：
+#   - 读检查结果只需 checks: read，默认 GITHUB_TOKEN 就够
+#   - 真正合并才需要 AUTOMERGE_TOKEN（改动 .github/workflows/** 的 PR 只有它合得动）
+
+on:
+  pull_request:
+    types: [labeled]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  auto-merge:
+    name: "Auto Merge (label)"
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check the commit's checks
+        id: checks
+        uses: actions/github-script@v9
+        with:
+          # 只读检查结果，用默认 token 即可（不需要 PAT 的额外权限）
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
+          script: |
+            const { checksPassed } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            const ok = await checksPassed({
+              github,
+              core,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pr: context.payload.pull_request,
+            });
+            return ok ? 'true' : 'false';
+
+      - name: Auto merge PR
+        if: steps.checks.outputs.result == 'true'
+        uses: actions/github-script@v9
+        with:
+          # 改动 .github/workflows/** 的 PR 需要 workflows 权限，GITHUB_TOKEN 没有
+          github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { merge } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            // 上一步已经确认过检查状态，这里不再重复查询
+            await merge({ github, context, core, verifyChecks: false });
