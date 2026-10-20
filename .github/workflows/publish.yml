@@ -276,32 +276,11 @@ jobs:
         with:
           ref: release
 
-      - name: Install Rust stable
-        id: rust-toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache cargo registry
-        uses: actions/cache@v5
+      - name: Setup Rust
+        uses: ./.github/actions/rust-setup
         with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-          key: ${{ runner.os }}-cargo-registry-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-registry-
-
-      - name: Cache Rust dependencies
-        uses: actions/cache@v5
-        with:
-          path: |
-            target/release/.fingerprint
-            target/release/deps
-            target/release/build
-          key: ${{ runner.os }}-rust-release-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-rust-release-${{ steps.rust-toolchain.outputs.cachekey }}-
+          cache-prefix: rust-release
+          target-dir: release
 
       - name: Install UPX
         run: |

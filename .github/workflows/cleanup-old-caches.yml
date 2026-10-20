@@ -1,0 +1,98 @@
+name: "Cleanup Old Caches"
+
+on:
+  schedule:
+    # 每周一 00:00 UTC
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "只打印、不删除"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  cleanup-caches:
+    name: "Cleanup Duplicate Prefix Caches"
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+
+    steps:
+      - name: Fetch and cleanup old caches
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const DRY_RUN = '${{ github.event.inputs.dry_run }}' === 'true';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            let allCaches = [];
+            let page = 1;
+            while (true) {
+              const { data } = await github.rest.actions.getActionsCacheList({
+                owner,
+                repo,
+                per_page: 100,
+                page,
+                sort: 'created_at',
+                direction: 'desc',
+              });
+              if (!data.actions_caches.length) break;
+              allCaches = allCaches.concat(data.actions_caches);
+              if (data.actions_caches.length < 100) break;
+              page++;
+            }
+
+            console.log('Found ' + allCaches.length + ' cache entries');
+
+            const getPrefix = (key) => {
+              const idx = key.lastIndexOf('-');
+              return idx > 0 ? key.substring(0, idx) : key;
+            };
+
+            const groups = {};
+            for (const cache of allCaches) {
+              const prefix = getPrefix(cache.key);
+              if (!groups[prefix]) groups[prefix] = [];
+              groups[prefix].push(cache);
+            }
+
+            const toDelete = [];
+            for (const [prefix, caches] of Object.entries(groups)) {
+              const rest = caches.slice(1);
+              if (rest.length === 0) continue;
+              console.log(
+                'Prefix "' + prefix + '": keep ' + caches[0].key + ', delete ' + rest.length,
+              );
+              toDelete.push(...rest);
+            }
+
+            if (toDelete.length === 0) {
+              console.log('No old caches to clean up.');
+              return;
+            }
+
+            if (DRY_RUN) {
+              console.log('Dry run: would delete ' + toDelete.length + ' cache(s).');
+              return;
+            }
+
+            let deleted = 0;
+            let failed = 0;
+            for (const cache of toDelete) {
+              try {
+                await github.rest.actions.deleteActionsCacheById({
+                  owner,
+                  repo,
+                  cache_id: cache.id,
+                });
+                deleted++;
+              } catch (err) {
+                failed++;
+                console.error('Failed to delete ' + cache.key + ': ' + err.message);
+              }
+            }
+
+            console.log('Deleted ' + deleted + ', failed ' + failed + '.');

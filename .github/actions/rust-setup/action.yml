@@ -1,0 +1,42 @@
+name: "Rust setup"
+description: "安装 Rust stable，并恢复 cargo registry 与 target 缓存"
+
+inputs:
+  cache-prefix:
+    description: "target 缓存的键前缀，如 rust-release / rust-debug"
+    required: false
+    default: "rust-release"
+  target-dir:
+    description: "target 下的构建目录：release 或 debug"
+    required: false
+    default: "release"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Rust stable
+      id: toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Cache cargo registry
+      uses: actions/cache@v5
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: ${{ runner.os }}-cargo-registry-${{ steps.toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-registry-
+
+    - name: Cache Rust dependencies
+      uses: actions/cache@v5
+      with:
+        path: |
+          target/${{ inputs.target-dir }}/.fingerprint
+          target/${{ inputs.target-dir }}/deps
+          target/${{ inputs.target-dir }}/build
+        key: ${{ runner.os }}-${{ inputs.cache-prefix }}-${{ steps.toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ inputs.cache-prefix }}-${{ steps.toolchain.outputs.cachekey }}-
