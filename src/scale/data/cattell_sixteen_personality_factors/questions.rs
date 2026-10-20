@@ -1379,11 +1379,11 @@ pub(super) const QUESTIONS: &[Question] = &[
             },
             QuestionOption {
                 text: "焦虑",
-                point: 1,
+                point: 0,
             },
             QuestionOption {
                 text: "恐怖",
-                point: 2,
+                point: 1,
             },
         ],
     },
@@ -1401,7 +1401,7 @@ pub(super) const QUESTIONS: &[Question] = &[
             },
             QuestionOption {
                 text: "3/11",
-                point: 2,
+                point: 0,
             },
         ],
     },
@@ -1789,7 +1789,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         options: &[
             QuestionOption {
                 text: "是的",
-                point: 2,
+                point: 0,
             },
             QuestionOption {
                 text: "不太确定",
@@ -1797,7 +1797,7 @@ pub(super) const QUESTIONS: &[Question] = &[
             },
             QuestionOption {
                 text: "不是的",
-                point: 0,
+                point: 2,
             },
         ],
     },
@@ -1825,11 +1825,11 @@ pub(super) const QUESTIONS: &[Question] = &[
         options: &[
             QuestionOption {
                 text: "理不如词",
-                point: 2,
+                point: 0,
             },
             QuestionOption {
                 text: "理多而词少",
-                point: 1,
+                point: 0,
             },
             QuestionOption {
                 text: "辞藻华丽而理不足",
@@ -1843,7 +1843,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         options: &[
             QuestionOption {
                 text: "琢磨",
-                point: 2,
+                point: 0,
             },
             QuestionOption {
                 text: "切割",
@@ -1915,7 +1915,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         options: &[
             QuestionOption {
                 text: "是的",
-                point: 2,
+                point: 0,
             },
             QuestionOption {
                 text: "介于 A、C 之间",
@@ -1923,7 +1923,7 @@ pub(super) const QUESTIONS: &[Question] = &[
             },
             QuestionOption {
                 text: "不是的",
-                point: 0,
+                point: 2,
             },
         ],
     },
@@ -1933,7 +1933,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         options: &[
             QuestionOption {
                 text: "是的",
-                point: 2,
+                point: 0,
             },
             QuestionOption {
                 text: "不完全这样",
@@ -1941,7 +1941,7 @@ pub(super) const QUESTIONS: &[Question] = &[
             },
             QuestionOption {
                 text: "不是的",
-                point: 0,
+                point: 2,
             },
         ],
     },
@@ -2077,7 +2077,7 @@ pub(super) const QUESTIONS: &[Question] = &[
         options: &[
             QuestionOption {
                 text: "是的",
-                point: 2,
+                point: 0,
             },
             QuestionOption {
                 text: "介于 A、C 之间",
@@ -2085,7 +2085,7 @@ pub(super) const QUESTIONS: &[Question] = &[
             },
             QuestionOption {
                 text: "不是的",
-                point: 0,
+                point: 2,
             },
         ],
     },
@@ -3368,3 +3368,47 @@ pub(super) const QUESTIONS: &[Question] = &[
         ],
     },
 ];
+
+#[cfg(test)]
+mod tests {
+    use super::QUESTIONS;
+    use crate::scale::data::cattell_sixteen_personality_factors::Factor;
+
+    fn max_points(is_target: impl Fn(&Factor) -> bool) -> i32 {
+        QUESTIONS
+            .iter()
+            .filter(|q| q.factor.as_ref().is_some_and(&is_target))
+            .map(|q| {
+                q.options
+                    .iter()
+                    .map(|option| i32::from(option.point))
+                    .max()
+                    .unwrap_or_default()
+            })
+            .sum()
+    }
+
+    /// 各因子原始分上限必须与 16PF 成人常模表一致。
+    ///
+    /// B（聪慧性）是 0/1 计分，其余因子每题最高 2 分；上限一旦偏离，
+    /// 说明有题目的计分键或分值写错了。
+    #[test]
+    fn per_factor_max_matches_published_norms() {
+        assert_eq!(max_points(|f| matches!(f, Factor::A)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::B)), 13);
+        assert_eq!(max_points(|f| matches!(f, Factor::C)), 26);
+        assert_eq!(max_points(|f| matches!(f, Factor::E)), 26);
+        assert_eq!(max_points(|f| matches!(f, Factor::F)), 26);
+        assert_eq!(max_points(|f| matches!(f, Factor::G)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::H)), 26);
+        assert_eq!(max_points(|f| matches!(f, Factor::I)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::L)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::M)), 26);
+        assert_eq!(max_points(|f| matches!(f, Factor::N)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::O)), 26);
+        assert_eq!(max_points(|f| matches!(f, Factor::Q1)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::Q2)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::Q3)), 20);
+        assert_eq!(max_points(|f| matches!(f, Factor::Q4)), 26);
+    }
+}
