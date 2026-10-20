@@ -41,3 +41,30 @@ jobs:
 
       - name: Run tests
         run: cargo test
+
+  auto-merge:
+    name: "Auto Merge PR"
+    runs-on: ubuntu-24.04
+    needs: [rust-check]
+    # 只在 PR 事件里合并；push 到 main/dev 没有 pull_request 上下文。
+    # 检查被跳过（无相关改动）可以接受，失败或被取消的不行。
+    if: >-
+      always() && !cancelled()
+      && github.event_name == 'pull_request'
+      && (needs.rust-check.result == 'success' || needs.rust-check.result == 'skipped')
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+
+      # 合并逻辑在 .github/scripts/automerge.cjs：只处理带 automerge 标签的 PR，
+      # 失败只告警（自动合并失败不该把 PR 检查标红）。
+      - name: Auto merge PR
+        uses: actions/github-script@v9
+        with:
+          # 改动 .github/workflows/** 的 PR 需要 workflows 权限，GITHUB_TOKEN 没有
+          github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { merge } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            await merge({ github, context, core, verifyChecks: false });
