@@ -19,7 +19,7 @@ runs:
       uses: dtolnay/rust-toolchain@stable
 
     - name: Cache cargo registry
-      uses: actions/cache@v5
+      uses: actions/cache@v6
       with:
         path: |
           ~/.cargo/bin/
@@ -31,7 +31,7 @@ runs:
           ${{ runner.os }}-cargo-registry-
 
     - name: Cache Rust dependencies
-      uses: actions/cache@v5
+      uses: actions/cache@v6
       with:
         path: |
           target/${{ inputs.target-dir }}/.fingerprint
