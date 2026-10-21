@@ -3,13 +3,11 @@ name: "Auto Merge (label)"
 # pull_request 事件的默认类型不含 labeled，所以"打上 automerge 标签就合并"必须
 # 有一个单独的工作流来响应。
 #
-# 打标签通常早于 PR Check 完成，因此先等待该提交的检查全部结束，再直接调用
-# pulls.merge 合并。不使用 GitHub 原生 auto-merge：它在 UNSTABLE（检查未完成/
-# 失败）状态下会拒绝开启，反而更难用。合并逻辑与 pr-check.yml 共用
-# .github/scripts/automerge.cjs。
+# 这里只查一次检查结果，不等待：
+#   - 已经全部通过 → 直接合并（适用于标签晚于 PR Check 的情况）
+#   - 还没跑完 → 不做等待，交给 pr-check.yml（检查跑完后会自动合并）
 #
-# 读检查用默认 GITHUB_TOKEN；真正合并用 AUTOMERGE_TOKEN（可选），以支持改动
-# .github/workflows/** 的 PR。
+# 合并逻辑与 pr-check.yml 共用 .github/scripts/automerge.cjs。
 
 on:
   pull_request:
@@ -28,12 +26,11 @@ jobs:
   auto-merge:
     name: "Auto Merge (label)"
     runs-on: ubuntu-24.04
-    # waitForChecks 最多等 30 分钟，给作业留出余量
-    timeout-minutes: 35
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
 
-      - name: Wait for the commit's checks
+      - name: Check the commit's checks
         id: checks
         uses: actions/github-script@v9
         with:
@@ -41,14 +38,13 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
           script: |
-            const { waitForChecks } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
-            const ok = await waitForChecks({
+            const { checksPassed } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            const ok = await checksPassed({
               github,
               core,
               owner: context.repo.owner,
               repo: context.repo.repo,
               pr: context.payload.pull_request,
-              timeoutMs: 30 * 60 * 1000,
             });
             return ok ? 'true' : 'false';
 
@@ -60,5 +56,4 @@ jobs:
           github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const { merge } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
-            // 上一步已经确认检查全部通过，这里不再重复查询
             await merge({ github, context, core, verifyChecks: false });
