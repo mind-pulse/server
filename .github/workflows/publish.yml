@@ -251,7 +251,7 @@ jobs:
           done < /tmp/prereleases.txt
 
   open-version-pr:
-    needs: build
+    needs: [create-release, build]
     permissions:
       contents: read
       pull-requests: write
