@@ -5,9 +5,10 @@ on:
     branches:
       - main
   push:
+    # 只保留 main：dev 通常是 PR 的源分支，对应的 pull_request 事件已经会跑一遍，
+    # 再把 dev 放在这里会让同一个提交同时出现 Rust Check (push) 和 (pull_request)。
     branches:
       - main
-      - dev
 
 env:
   CARGO_TERM_COLOR: always
