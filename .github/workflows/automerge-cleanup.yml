@@ -1,0 +1,41 @@
+name: "Auto Merge (cleanup)"
+
+# 合并成功后删除临时分支。
+#
+# pr-check.yml / automerge-label.yml 在自己完成合并时会删除分支；但手动点
+# Merge 或由其他工具合并时不会经过这两个工作流。这里监听 pull_request closed，
+# 覆盖所有合并方式。
+#
+# 只处理 merged == true 且带 automerge 标签的 PR；fork 与 main/dev/release
+# 等长期分支由 deleteHeadBranch 内部跳过。
+
+on:
+  pull_request:
+    types: [closed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  delete-branch:
+    name: "Delete merged branch"
+    if: >-
+      github.event.pull_request.merged == true
+      && contains(github.event.pull_request.labels.*.name, 'automerge')
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Delete head branch
+        uses: actions/github-script@v9
+        with:
+          # 删除 ref 需要 contents: write
+          github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const modulePath = process.env.GITHUB_WORKSPACE + "/.github/scripts/automerge.cjs";
+            const { deleteHeadBranch } = require(modulePath);
+            await deleteHeadBranch({ github, context, core });
