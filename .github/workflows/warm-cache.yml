@@ -1,11 +1,9 @@
 name: "Cache Warming"
 
-# 预热 pr-check / publish 真正会用的缓存。
+# 预热 pr-check / publish 用到的缓存。
 #
-# 缓存 key 与 pr-check / publish 共用，而 actions/cache 对同一个 key 只在缺失时
-# 写入（先写者赢）。如果这里只跑 cargo build --tests，写进去的缓存不含 clippy
-# 产物，PR 命中后也无法补写，clippy 每次都会冷编译。因此这里必须跑与
-# pr-check 完全相同的命令，并同时预热 publish 用的 release 缓存。
+# 缓存 key 必须与 .github/actions/rust-setup 完全一致，否则 PR 无法命中。
+# 这里显式配置 registry / debug / release 三段缓存，方便核对是否真的写了缓存。
 
 on:
   push:
@@ -14,10 +12,17 @@ on:
     paths:
       - "Cargo.toml"
       - "Cargo.lock"
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+    paths:
+      - "Cargo.toml"
+      - "Cargo.lock"
+  workflow_dispatch:
   schedule:
     # 每周一 05:00 UTC；stable 工具链更新后缓存键会变，需要定期预热
     - cron: "0 5 * * 1"
-  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
@@ -27,6 +32,8 @@ env:
 jobs:
   warm-rust-cache:
     name: "Warm Rust Cache"
+    # PR 关闭时只在已合并的情况下预热
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ubuntu-26.04
     # release 构建带 LTO，留足时间
     timeout-minutes: 60
@@ -34,24 +41,48 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Rust (debug)
-        uses: ./.github/actions/rust-setup
+      - name: Setup Rust
+        id: rust-toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v6
         with:
-          cache-prefix: rust-debug
-          target-dir: debug
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-registry-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
 
-      - name: Setup Rust (release)
-        uses: ./.github/actions/rust-setup
+      - name: Cache Rust debug dependencies
+        uses: actions/cache@v6
         with:
-          cache-prefix: rust-release
-          target-dir: release
+          path: |
+            target/debug/.fingerprint
+            target/debug/deps
+            target/debug/build
+          key: ${{ runner.os }}-rust-debug-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-debug-${{ steps.rust-toolchain.outputs.cachekey }}-
 
-      - name: Fetch dependencies
-        run: cargo fetch
+      - name: Cache Rust release dependencies
+        uses: actions/cache@v6
+        with:
+          path: |
+            target/release/.fingerprint
+            target/release/deps
+            target/release/build
+          key: ${{ runner.os }}-rust-release-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-release-${{ steps.rust-toolchain.outputs.cachekey }}-
 
-      # 与 pr-check 一致：build --tests + clippy（clippy 才是 PR 里最慢的一步）
+      # 与 pr-check 一致：build --tests + clippy（clippy 是 PR 里最慢的一步）
       - name: Warm debug cache
         run: |
+          cargo fetch
           cargo build --tests
           cargo clippy --all-targets -- -D warnings
 
