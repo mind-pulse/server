@@ -3,9 +3,9 @@ name: "Auto Merge (label)"
 # pull_request 事件的默认类型不含 labeled，所以"打上 automerge 标签就合并"必须
 # 有一个单独的工作流来响应。
 #
-# 这里使用 GitHub 原生 auto-merge：打标签后为 PR 开启 auto-merge，由 GitHub
-# 等待所需检查通过再合并，不在 runner 上轮询，也不存在"检查还没跑完就跳过"的
-# 时机问题。
+# 这里使用 GitHub 原生 auto-merge，但 GitHub 在 UNSTABLE（检查未完成/失败）
+# 状态下会拒绝开启，而打标签通常发生在检查跑完之前。因此先等待该提交的检查
+# 全部结束，再开启 auto-merge；若仍因 UNSTABLE 失败则退化为直接合并。
 #
 # 前置条件（仓库设置）：
 #   1. Settings → General → Pull Requests 勾选 "Allow auto-merge"
@@ -30,11 +30,12 @@ jobs:
   auto-merge:
     name: "Auto Merge (label)"
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    # waitForChecks 最多等 30 分钟，给作业留出余量
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v6
 
-      - name: Enable native auto-merge
+      - name: Enable auto-merge (wait for checks)
         uses: actions/github-script@v9
         with:
           # 改动 .github/workflows/** 的 PR 需要 workflows 权限，GITHUB_TOKEN 没有
@@ -44,5 +45,8 @@ jobs:
             await enableAutoMerge({
               github,
               core,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               pr: context.payload.pull_request,
+              timeoutMs: 30 * 60 * 1000,
             });
