@@ -48,6 +48,7 @@ jobs:
             return ok ? 'true' : 'false';
 
       - name: Merge PR
+        id: merge
         if: steps.checks.outputs.result == 'true'
         uses: actions/github-script@v9
         with:
@@ -55,4 +56,15 @@ jobs:
           github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const { merge } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
-            await merge({ github, context, core, verifyChecks: false });
+            const merged = await merge({ github, context, core, verifyChecks: false });
+            core.setOutput("merged", merged ? "true" : "false");
+
+      - name: Delete merged branch
+        if: steps.merge.outputs.merged == 'true'
+        uses: actions/github-script@v9
+        with:
+          # 删除 ref 需要 contents: write
+          github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { deleteHeadBranch } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            await deleteHeadBranch({ github, context, core });
