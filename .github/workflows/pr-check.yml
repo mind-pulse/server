@@ -59,15 +59,27 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      # 检查刚刚在本工作流内跑完，直接合并作为快速路径；打标签触发的原生
-      # auto-merge（automerge-label.yml）负责"标签晚于检查"的情况。
+      # 检查刚刚在本工作流内跑完，直接合并作为快速路径；打标签触发的
+      # automerge-label.yml 负责"标签晚于检查"的情况。
       # 合并逻辑在 .github/scripts/automerge.cjs：只处理带 automerge 标签的 PR，
       # 失败只告警（自动合并失败不该把 PR 检查标红）。
       - name: Auto merge PR
+        id: merge
         uses: actions/github-script@v9
         with:
           # 改动 .github/workflows/** 的 PR 需要 workflows 权限，GITHUB_TOKEN 没有
           github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const { merge } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
-            await merge({ github, context, core, verifyChecks: false });
+            const merged = await merge({ github, context, core, verifyChecks: false });
+            core.setOutput("merged", merged ? "true" : "false");
+
+      - name: Delete merged branch
+        if: steps.merge.outputs.merged == 'true'
+        uses: actions/github-script@v9
+        with:
+          # 删除 ref 需要 contents: write
+          github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { deleteHeadBranch } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            await deleteHeadBranch({ github, context, core });

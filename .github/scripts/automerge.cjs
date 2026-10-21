@@ -8,7 +8,8 @@
 //
 // 行为：
 //   - 只处理 open、非 draft、带 automerge 标签的 PR
-//   - 合并方式为 merge（与之前一致）；合并成功后移除 automerge 标签
+//   - 合并方式为 merge（与之前一致）；合并成功后移除 automerge 标签，并删除
+//     已合并的 head 分支（长期分支与 fork 分支除外）
 //   - 失败只告警、不让作业失败：自动合并失败不该把 PR 检查标红
 //
 // 已知限制：改动 .github/workflows/** 的 PR 不能用 GITHUB_TOKEN 合并——GitHub 不允许
@@ -28,13 +29,13 @@ async function merge({ github, context, core, verifyChecks }) {
   const pr = context.payload.pull_request;
   if (!pr) {
     core.info("不是 pull_request 事件，跳过");
-    return;
+    return false;
   }
 
   const skip = describeSkip(pr);
   if (skip) {
     core.info(`PR #${pr.number} ${skip}，跳过`);
-    return;
+    return false;
   }
 
   const owner = context.repo.owner;
@@ -44,7 +45,7 @@ async function merge({ github, context, core, verifyChecks }) {
     verifyChecks &&
     !(await checksPassed({ github, core, owner, repo, pr }))
   ) {
-    return;
+    return false;
   }
 
   try {
@@ -56,7 +57,7 @@ async function merge({ github, context, core, verifyChecks }) {
     });
   } catch (error) {
     core.warning(`PR #${pr.number} 自动合并失败：${explainMergeError(error)}`);
-    return;
+    return false;
   }
 
   core.info(`已合并 PR #${pr.number}`);
@@ -72,6 +73,62 @@ async function merge({ github, context, core, verifyChecks }) {
     // 标签删不掉不影响合并结果
     core.info(`移除 ${LABEL} 标签失败（忽略）：${error?.message ?? error}`);
   }
+
+  return true;
+}
+
+/** 长期分支：即使 PR 合并成功也不删除 */
+const PROTECTED_BRANCHES = new Set([
+  "main",
+  "master",
+  "dev",
+  "develop",
+  "release",
+]);
+
+/**
+ * 删除已合并 PR 的 head 分支。
+ *
+ * - 来自 fork 的 PR 不删除（分支在对方仓库）
+ * - main / dev / release 等长期分支不删除
+ * - 删除失败只告警：分支残留不应把合并结果标红
+ */
+async function deleteHeadBranch({ github, context, core }) {
+  const pr = context.payload.pull_request;
+  if (!pr) {
+    core.info("不是 pull_request 事件，跳过删除分支");
+    return false;
+  }
+
+  const branch = pr.head?.ref;
+  if (!branch) {
+    core.info(`PR #${pr.number} 没有 head 分支信息，跳过删除`);
+    return false;
+  }
+
+  if (pr.head.repo?.full_name !== pr.base.repo?.full_name) {
+    core.info(`PR #${pr.number} 来自 fork，保留分支 ${branch}`);
+    return false;
+  }
+
+  if (PROTECTED_BRANCHES.has(branch)) {
+    core.info(`分支 ${branch} 是长期分支，保留`);
+    return false;
+  }
+
+  try {
+    await github.rest.git.deleteRef({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      ref: `heads/${branch}`,
+    });
+  } catch (error) {
+    core.warning(`删除分支 ${branch} 失败：${String(error?.message ?? error)}`);
+    return false;
+  }
+
+  core.info(`已删除分支 ${branch}`);
+  return true;
 }
 
 /** 返回跳过原因；可以合并时返回 null。 */
@@ -151,4 +208,5 @@ module.exports = {
   describeSkip,
   explainMergeError,
   checksPassed,
+  deleteHeadBranch,
 };
