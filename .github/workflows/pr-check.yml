@@ -20,8 +20,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # 先判断这次改动是否涉及 Rust 代码，避免文档/CI 改动也去编译
+  detect-changes:
+    name: "Detect Changes"
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      rust: ${{ steps.changes.outputs.rust }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            rust:
+              - 'src/**'
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+              - 'build.rs'
+              - 'rust-toolchain.toml'
+
   rust-check:
     name: "Rust Check"
+    needs: detect-changes
+    # 只有 Rust 相关文件变化时才跑编译检查
+    if: needs.detect-changes.outputs.rust == 'true'
     runs-on: ubuntu-26.04
     timeout-minutes: 30
 
@@ -46,12 +71,13 @@ jobs:
   auto-merge:
     name: "Auto Merge PR"
     runs-on: ubuntu-26.04
-    needs: [rust-check]
-    # 只在 PR 事件里合并；push 到 main/dev 没有 pull_request 上下文。
-    # 检查被跳过（无相关改动）可以接受，失败或被取消的不行。
+    needs: [detect-changes, rust-check]
+    # 只在 PR 事件里合并；push 到 main 没有 pull_request 上下文。
+    # Rust 文件未变化时 rust-check 会被跳过，这种情况仍允许合并。
     if: >-
       always() && !cancelled()
       && github.event_name == 'pull_request'
+      && needs.detect-changes.result == 'success'
       && (needs.rust-check.result == 'success' || needs.rust-check.result == 'skipped')
     permissions:
       contents: write
