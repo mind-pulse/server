@@ -125,7 +125,7 @@
 
 ## 7. CI 与发布
 
-- **pr-check.yml**：PR 到 main、push 到 main 时跑 fmt / clippy / test；dev 的改动由对应 PR 的 pull_request 事件覆盖，不要再把 dev 加进 push，否则同一提交会跑两次。
+- **pr-check.yml**：PR 到 main、push 到 main；仅当 Rust 相关文件（src/**、Cargo.toml、Cargo.lock 等）变化时才跑 fmt / clippy / test，其它改动只走轻量的 detect-changes。dev 的改动由对应 PR 的 pull_request 事件覆盖，不要再把 dev 加进 push，否则同一提交会跑两次。
 - **publish.yml**：手动触发，选择 bump_type；UPX 压缩可选，默认关闭。
 - **automerge-label.yml**：给 PR 打 **automerge** 标签，检查通过后由脚本直接合并；改动 .github/workflows/** 的 PR 需要配置 **AUTOMERGE_TOKEN**。
 - **nightly.yml**、**warm-cache.yml**、**cleanup-old-caches.yml**：夜间构建、缓存预热与清理。
