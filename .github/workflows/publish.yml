@@ -1,16 +1,17 @@
 name: "publish"
 
-# 发布流程（手动触发，必须在 main 分支上运行）：
-#   1. 预检：确认在 main 上、且当前提交尚未打过标签
-#   2. 递增 Cargo.toml / Cargo.lock 版本，提交并推送 release 分支
-#   3. 生成 changelog（区间不可用时回退到提交列表），创建草稿 Release
-#   4. 构建 Linux x64 产物，UPX 压缩并做完整性校验，上传 tar.gz 与 sha256
-#   5. 发布 Release，把 release 合回 main，删除 release 分支
+# 发布流程（手动触发）：
+#   1. 预检：当前提交尚未打标签（nightly 除外）
+#   2. 按 bump_type + release_channel 递增 Cargo 版本（prerelease 只递增预发布号）
+#   3. 推送 release 分支，生成 changelog，创建草稿 Release
+#   4. 构建 Linux x64 产物，可选 UPX，上传 tar.gz 与 sha256
+#   5. 发布 Release；alpha/beta 通道删除旧预发布
+#   6. release 合回 main，删除 release 分支
 on:
   workflow_dispatch:
     inputs:
       bump_type:
-        description: "版本递增类型"
+        description: "版本递增类型（prerelease 只递增预发布号，需配合 alpha/beta 通道）"
         required: true
         default: "patch"
         type: choice
@@ -18,6 +19,16 @@ on:
           - patch
           - minor
           - major
+          - prerelease
+      release_channel:
+        description: "发布通道（alpha/beta 标记为预发布）"
+        required: true
+        default: "stable"
+        type: choice
+        options:
+          - stable
+          - alpha
+          - beta
       upx:
         description: "是否用 UPX 压缩产物（默认关闭）"
         required: false
@@ -27,10 +38,8 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
-  # 增量产物不在缓存范围内，开着只会让 target 变大
   CARGO_INCREMENTAL: 0
 
-# 同一时间只允许一个发布流程，避免并发创建同名 Release
 concurrency:
   group: release
   cancel-in-progress: false

@@ -129,12 +129,14 @@
 - **publish.yml**：手动触发，选择 bump_type；UPX 压缩可选，默认关闭。
 - **automerge-label.yml**：给 PR 打 **automerge** 标签，检查通过后由脚本直接合并；改动 .github/workflows/** 的 PR 需要配置 **AUTOMERGE_TOKEN**。
 - **nightly.yml**、**warm-cache.yml**、**cleanup-old-caches.yml**：夜间构建、缓存预热与清理。
-- Rust 安装与缓存统一走 **.github/actions/rust-setup**。
+- Rust 安装直接用 **dtolnay/rust-toolchain**；缓存按工作流显式配置：**pr-check** 用 **actions/cache/restore**（只读），**publish**、**nightly**、**warm-cache** 用 **actions/cache**（可写）。
+- 缓存 key 统一为 **cargo-registry**、**rust-debug-v2**、**rust-release-v2**、**rust-nightly-release-v2**；改动预热内容或构建方式时递增 **-vN**。
 - 修改 workflow 后至少本地校验 YAML，改 .cjs 后跑 node --check。
 
 ## 8. 分支与提交
 
-- 单一功能的变动必须基于 main 创建分支；一个分支可以包含多个子功能提交。
+- 所有代码变动必须根据功能创建分支；远程仓库通过 PR 合并；禁止直接修改 main 分支。
+- 功能分支从 main 或集成分支（dev）切出；一个分支可以包含多个子功能提交。
 - 按功能拆分提交：一个提交只承载一项功能性变更；跨区域改动拆成多个提交，并说明每部分承担的具体工作。
 - 每次提交后都要询问维护者是推送还是保留在本地，并等待答复；推送、强制推送、更新 PR 都需要明确指示。
 - 修改提交或变基前先运行 git log --oneline '@{u}..HEAD'；若目标提交已到远程，追加新提交而不是重写。

@@ -123,6 +123,12 @@ async function deleteHeadBranch({ github, context, core }) {
       ref: `heads/${branch}`,
     });
   } catch (error) {
+    // 分支可能已被合并工作流删掉，重复删除时不必告警
+    const status = error?.status;
+    if (status === 404 || status === 422) {
+      core.info(`分支 ${branch} 已不存在，跳过删除`);
+      return false;
+    }
     core.warning(`删除分支 ${branch} 失败：${String(error?.message ?? error)}`);
     return false;
   }
