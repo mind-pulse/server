@@ -115,8 +115,8 @@ jobs:
               id: rust-toolchain
               uses: dtolnay/rust-toolchain@stable
 
-            - name: Cache cargo registry
-              uses: actions/cache@v6
+            - name: Restore cargo registry
+              uses: actions/cache/restore@v6
               with:
                   path: |
                       ~/.cargo/bin/
@@ -127,8 +127,8 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-cargo-registry-
 
-            - name: Cache Rust release dependencies
-              uses: actions/cache@v6
+            - name: Restore Rust release dependencies
+              uses: actions/cache/restore@v6
               with:
                   path: |
                       target/release/.fingerprint
@@ -137,8 +137,6 @@ jobs:
                   key: ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
                   restore-keys: |
                       ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
-                  restore-keys: |
-                      ${{ runner.os }}-rust-
 
             - name: Install UPX
               run: |

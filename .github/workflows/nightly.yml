@@ -68,8 +68,8 @@ jobs:
         id: rust-toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Cache cargo registry
-        uses: actions/cache@v6
+      - name: Restore cargo registry
+        uses: actions/cache/restore@v6
         with:
           path: |
             ~/.cargo/bin/
@@ -80,16 +80,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-registry-
 
-      - name: Cache Rust nightly release dependencies
-        uses: actions/cache@v6
+      - name: Restore Rust release dependencies
+        uses: actions/cache/restore@v6
         with:
           path: |
             target/release/.fingerprint
             target/release/deps
             target/release/build
-          key: ${{ runner.os }}-rust-nightly-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-rust-nightly-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
+            ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
 
       - name: Build
         run: cargo build --release

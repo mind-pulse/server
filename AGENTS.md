@@ -129,8 +129,8 @@
 - **publish.yml**：手动触发，选择 bump_type；UPX 压缩可选，默认关闭。
 - **automerge-label.yml**：给 PR 打 **automerge** 标签，检查通过后由脚本直接合并；改动 .github/workflows/** 的 PR 需要配置 **AUTOMERGE_TOKEN**。
 - **nightly.yml**、**warm-cache.yml**、**cleanup-old-caches.yml**：夜间构建、缓存预热与清理。
-- Rust 安装直接用 **dtolnay/rust-toolchain**；缓存按工作流显式配置：**pr-check** 用 **actions/cache/restore**（只读），**publish**、**nightly**、**warm-cache** 用 **actions/cache**（可写）。
-- 缓存 key 统一为 **cargo-registry**、**rust-debug-v2**、**rust-release-v2**、**rust-nightly-release-v2**；改动预热内容或构建方式时递增 **-vN**。
+- Rust 安装直接用 **dtolnay/rust-toolchain**；只有 **warm-cache** 用 **actions/cache** 写缓存，**pr-check**、**publish**、**nightly** 一律用 **actions/cache/restore**（只读）。
+- 缓存 key 统一为 **cargo-registry**、**rust-debug-v2**、**rust-release-v2**（nightly 与 publish 共用 release）；改动预热内容或构建方式时递增 **-vN**。
 - 修改 workflow 后至少本地校验 YAML，改 .cjs 后跑 node --check。
 
 ## 8. 分支与提交
