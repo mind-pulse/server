@@ -1,16 +1,17 @@
 name: "publish"
 
-# 发布流程（手动触发，必须在 main 分支上运行）：
-#   1. 预检：确认在 main 上、且当前提交尚未打过标签
-#   2. 递增 Cargo.toml / Cargo.lock 版本，提交并推送 release 分支
-#   3. 生成 changelog（区间不可用时回退到提交列表），创建草稿 Release
-#   4. 构建 Linux x64 产物，UPX 压缩并做完整性校验，上传 tar.gz 与 sha256
-#   5. 发布 Release，把 release 合回 main，删除 release 分支
+# 发布流程（手动触发）：
+#   1. 预检：当前提交尚未打标签（nightly 除外）
+#   2. 按 bump_type + release_channel 递增 Cargo 版本（prerelease 只递增预发布号）
+#   3. 推送 release 分支，生成 changelog，创建草稿 Release
+#   4. 构建 Linux x64 产物，可选 UPX，上传 tar.gz 与 sha256
+#   5. 发布 Release；alpha/beta 通道删除旧预发布
+#   6. release 合回 main，删除 release 分支
 on:
   workflow_dispatch:
     inputs:
       bump_type:
-        description: "版本递增类型"
+        description: "版本递增类型（prerelease 只递增预发布号，需配合 alpha/beta 通道）"
         required: true
         default: "patch"
         type: choice
@@ -18,6 +19,16 @@ on:
           - patch
           - minor
           - major
+          - prerelease
+      release_channel:
+        description: "发布通道（alpha/beta 标记为预发布）"
+        required: true
+        default: "stable"
+        type: choice
+        options:
+          - stable
+          - alpha
+          - beta
       upx:
         description: "是否用 UPX 压缩产物（默认关闭）"
         required: false
@@ -27,137 +38,259 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
-  # 增量产物不在缓存范围内，开着只会让 target 变大
   CARGO_INCREMENTAL: 0
 
-# 同一时间只允许一个发布流程，避免并发创建同名 Release
 concurrency:
   group: release
   cancel-in-progress: false
 
 jobs:
-    create-release:
-        permissions:
-            contents: write
-        runs-on: ubuntu-26.04
-        # 将版本定义为 Job Output，方便下游 Job 使用
-        outputs:
-            release_id: ${{ steps.create-release.outputs.result }}
-            version: ${{ steps.version.outputs.version }}
+  pre-checks:
+    runs-on: ubuntu-26.04
+    outputs:
+      should_continue: ${{ steps.check.outputs.should_continue }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v7
-              with:
-                  # 必须获取完整的 Git 历史，否则 Changelog 生成器无法比对版本差异
-                  fetch-depth: 0
+      - name: Check if release is needed
+        id: check
+        run: |
+          if git describe --tags --exact-match HEAD 2>/dev/null; then
+            current_tag=$(git describe --tags --exact-match HEAD 2>/dev/null)
+            if [ "$current_tag" = "nightly" ]; then
+              echo "should_continue=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "::error::当前提交已打标签 $current_tag，不能重复发布"
+              echo "should_continue=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "should_continue=true" >> "$GITHUB_OUTPUT"
+          fi
 
-            - name: Get version from Cargo.toml
-              id: version
-              run: |
-                  # 使用 head -n 1 确保只取第一个 version 字段，防止 workspace 干扰
-                  version=$(grep -o '^version = "[^"]*"' Cargo.toml | head -n 1 | awk -F'"' '{print $2}')
-                  echo "version=$version" >> $GITHUB_OUTPUT
-                  echo "Detected version: $version"
+  create-release:
+    needs: pre-checks
+    if: needs.pre-checks.outputs.should_continue == 'true'
+    permissions:
+      contents: write
+    runs-on: ubuntu-26.04
+    outputs:
+      release_id: ${{ steps.create-release.outputs.result }}
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-            - name: Build changelog
-              id: github_release_changelog
-              uses: mikepenz/release-changelog-builder-action@v6
-              with:
-                  configuration: ".github/changelog-configuration.json"
-                  # 默认行为会自动对比上一个 Tag 到当前 HEAD 的提交
-                  failOnError: true
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-            - name: Create Release
-              id: create-release
-              uses: actions/github-script@v9
-              env:
-                  changelog: ${{ steps.github_release_changelog.outputs.changelog }}
-                  version: ${{ steps.version.outputs.version }}
-              with:
-                  script: |
-                      const { data } = await github.rest.repos.createRelease({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        tag_name: `v${process.env.version}`,
-                        name: `v${process.env.version}`,
-                        body: process.env.changelog,
-                        // 显式指定 tag 指向本次 workflow 的提交，避免 tag 被打在默认分支 HEAD 上
-                        target_commitish: context.sha,
-                        draft: true, // 先创建草稿，构建成功后再发布
-                        generate_release_notes: false,
-                        prerelease: false
-                      })
-                      console.log(`Release created with ID: ${data.id}`)
-                      return data.id
+      - name: Bump version
+        id: version
+        env:
+          BUMP_TYPE: ${{ inputs.bump_type }}
+          RELEASE_CHANNEL: ${{ inputs.release_channel }}
+        run: python3 .github/scripts/bump_version.py
 
-    build:
-        needs: create-release
-        permissions:
-            contents: write
-        runs-on: ubuntu-26.04
+      - name: Create and push release branch
+        run: |
+          set -euo pipefail
+          git checkout -b release
+          git add Cargo.toml Cargo.lock
+          git commit -m "Bump version to $VERSION"
+          git push origin release --force
 
-        steps:
-            - uses: actions/checkout@v7
+      - name: Build changelog
+        id: github_release_changelog
+        uses: mikepenz/release-changelog-builder-action@v6
+        with:
+          configuration: ".github/changelog-configuration.json"
+          failOnError: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Install Rust stable
-              uses: dtolnay/rust-toolchain@stable
+      - name: Create Release
+        id: create-release
+        uses: actions/github-script@v9
+        env:
+          changelog: ${{ steps.github_release_changelog.outputs.changelog }}
+          VERSION: ${{ steps.version.outputs.version }}
+          PRERELEASE: ${{ inputs.release_channel != 'stable' }}
+        with:
+          script: |
+            const prerelease = process.env.PRERELEASE === "true";
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: "v" + process.env.VERSION,
+              name: "v" + process.env.VERSION,
+              body: process.env.changelog || "",
+              target_commitish: "release",
+              draft: true,
+              generate_release_notes: false,
+              prerelease: prerelease,
+              make_latest: prerelease ? "false" : "true",
+            });
+            console.log("Release created: " + data.id);
+            return data.id;
 
-            - name: Cache Rust dependencies
-              uses: actions/cache@v6
-              with:
-                  path: |
-                      ~/.cargo/bin/
-                      ~/.cargo/registry/index/
-                      ~/.cargo/registry/cache/
-                      ~/.cargo/git/db/
-                      target/release/.fingerprint
-                      target/release/deps
-                      target/release/build
-                  key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-rust-
+  build:
+    needs: create-release
+    permissions:
+      contents: write
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: release
 
-            - name: Install UPX
-              run: |
-                  sudo apt-get update
-                  sudo apt-get install -y upx
+      - name: Setup Rust
+        uses: ./.github/actions/rust-setup
+        with:
+          cache-prefix: rust-release
+          target-dir: release
 
-            - name: Build Release
-              env:
-                  VERSION: ${{ needs.create-release.outputs.version }}
-              run: |
-                  cargo build -r
-                  cd target/release
+      - name: Install UPX
+        if: inputs.upx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y upx
 
-                  upx -9 server || echo "UPX compression failed or skipped"
-                  asset_name="mind-pulse-server-linux-x64-${VERSION}.tar.gz"
-                  tar zcvf "$asset_name" server
+      - name: Build and package
+        env:
+          VERSION: ${{ needs.create-release.outputs.version }}
+        run: |
+          set -euo pipefail
 
-                  echo "ASSET_PATH=$(pwd)/$asset_name" >> $GITHUB_ENV
-                  echo "ASSET_NAME=$asset_name" >> $GITHUB_ENV
+          cargo build --release
+          cd target/release
 
-            - name: Upload Release Asset
-              uses: softprops/action-gh-release@v3
-              with:
-                  tag_name: v${{ needs.create-release.outputs.version }}
-                  files: ${{ env.ASSET_PATH }}
-                  # 如果 release 已经存在（在上一步 job 创建的），它会自动上传附件而不是创建新的 release
+          if [ "${{ inputs.upx }}" = "true" ]; then
+            cp server server.uncompressed
+            if upx -9 server && upx -t server; then
+              echo "UPX 压缩并校验通过"
+            else
+              echo "::warning::UPX 压缩或校验失败，使用未压缩产物"
+              mv server.uncompressed server
+            fi
+            rm -f server.uncompressed
+          fi
 
-            - name: Publish Release
-              id: publish-release
-              uses: actions/github-script@v9
-              env:
-                  release_id: ${{ needs.create-release.outputs.release_id }}
-              with:
-                  script: |
-                      // 只有在所有上传成功后，才将 release 从草稿状态转为正式发布
-                      await github.rest.repos.updateRelease({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        release_id: Number(process.env.release_id),
-                        draft: false,
-                      })
-                      console.log("Release published successfully!")
+          ASSET="mind-pulse-server-linux-x64-$VERSION.tar.gz"
+          tar zcvf "$ASSET" server
+          sha256sum "$ASSET" > "$ASSET.sha256"
+
+          echo "ASSET_PATH=$(pwd)/$ASSET" >> "$GITHUB_ENV"
+          echo "ASSET_SHA=$(pwd)/$ASSET.sha256" >> "$GITHUB_ENV"
+
+      - name: Upload assets
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v${{ needs.create-release.outputs.version }}
+          files: |
+            ${{ env.ASSET_PATH }}
+            ${{ env.ASSET_SHA }}
+          prerelease: ${{ inputs.release_channel != 'stable' }}
+
+      - name: Publish Release
+        uses: actions/github-script@v9
+        env:
+          release_id: ${{ needs.create-release.outputs.release_id }}
+          PRERELEASE: ${{ inputs.release_channel != 'stable' }}
+        with:
+          script: |
+            const prerelease = process.env.PRERELEASE === "true";
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: Number(process.env.release_id),
+              draft: false,
+              prerelease: prerelease,
+              make_latest: prerelease ? "false" : "true",
+            });
+
+      - name: Drop older pre-releases
+        if: inputs.release_channel != 'stable'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEEP_TAG: v${{ needs.create-release.outputs.version }}
+        run: |
+          set -euo pipefail
+          gh release list --repo "$GITHUB_REPOSITORY" --exclude-drafts --limit 100 --json tagName,isPrerelease --jq '.[] | select(.isPrerelease) | .tagName' > /tmp/prereleases.txt
+          while read -r tag; do
+            if [ -z "$tag" ] || [ "$tag" = "$KEEP_TAG" ]; then
+              continue
+            fi
+            echo "Dropping older pre-release $tag"
+            gh release delete "$tag" --repo "$GITHUB_REPOSITORY" --yes
+          done < /tmp/prereleases.txt
+
+  update-main:
+    needs: build
+    permissions:
+      contents: write
+    runs-on: ubuntu-26.04
+    if: success()
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Merge release into main
+        run: |
+          set -euo pipefail
+          git fetch origin release:release
+          git checkout main
+          git merge release --ff-only
+          git push origin main
+
+  cleanup-release-branch:
+    needs: update-main
+    permissions:
+      contents: write
+    runs-on: ubuntu-26.04
+    if: success()
+    steps:
+      - name: Delete release branch
+        uses: actions/github-script@v9
+        with:
+          script: |
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "heads/release",
+              });
+              core.info("已删除 release 分支");
+            } catch (error) {
+              core.info("release 分支删除失败（忽略）：" + error.message);
+            }
+
+  summary:
+    if: always()
+    needs: [pre-checks, create-release, build, update-main, cleanup-release-branch]
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Write summary
+        run: |
+          {
+            echo "## 发布结束"
+            echo ""
+            echo "| 项目 | 值 |"
+            echo "| --- | --- |"
+            echo "| 版本 | v${{ needs.create-release.outputs.version }} |"
+            echo "| 通道 | ${{ inputs.release_channel }} |"
+            echo "| 递增类型 | ${{ inputs.bump_type }} |"
+            echo "| UPX | ${{ inputs.upx }} |"
+            echo "| 状态 | ${{ job.status }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
