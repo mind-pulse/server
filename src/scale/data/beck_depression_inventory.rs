@@ -50,7 +50,7 @@ pub const BECK_DEPRESSION_INVENTORY: Scale<&[InterpretationItem<u8>], Question> 
     tags: &Tag {
         info: Some(&["抑郁"]),
         normal: None,
-        warning: None,
+        warning: Some(&["13+"]),
         error: None,
     },
     interpretation: &[
