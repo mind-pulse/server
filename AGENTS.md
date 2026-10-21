@@ -52,10 +52,12 @@
     cargo clippy --all-targets -- -D warnings
     cargo test
 
-如果改动涉及 API 字段（新增、删除、重命名），还必须同步前端仓库 **/home/thepoy/confidant/www**，并运行：
+如果改动涉及 API 字段（新增、删除、重命名），还必须同步前端仓库 **confidant/www**（独立仓库，本地检出路径因环境而异），并在该仓库根目录运行：
 
     bun run check:types
     bun run test
+
+不要假设前端仓库有固定的绝对路径。
 
 ## 4. 领域规则（最重要）
 
