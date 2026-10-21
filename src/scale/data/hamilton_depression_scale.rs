@@ -46,7 +46,6 @@ pub const HAMILTON_DEPRESSION_SCALE: Scale<&[InterpretationItem], Question> = Sc
     warning: Some(
         "此为量表非自评，仅供心理科和精神科医生、实习生使用，如需自评抑郁状态，请使用抑郁自评量表（SDS）。 使用提示：本量表原始版本可公开用于研究，正式使用请遵循原始发布方的使用条款；此处仅供个人学习参考，不得用于商业或临床诊断。",
     ),
-    formula_mode: None,
     tags: &Tag {
         info: None,
         normal: None,

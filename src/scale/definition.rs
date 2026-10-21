@@ -1,7 +1,6 @@
 use serde::Serialize;
 
 use crate::scale::category::ScaleCategory;
-use crate::scale::scoring::FormulaMode;
 use crate::scale::text::{PlainText, PlainTexts, Texts};
 
 /// 量表标签
@@ -43,9 +42,6 @@ pub struct Scale<'r, I, Q> {
     /// 警告
     #[serde(skip_serializing_if = "Option::is_none")]
     pub warning: Option<PlainText>,
-    /// js 计算用到的表达式，和用"<SUM>"替代
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub formula_mode: Option<FormulaMode>,
     /// 理念
     pub idea: Option<PlainTexts>,
     /// 标签

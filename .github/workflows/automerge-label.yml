@@ -3,16 +3,11 @@ name: "Auto Merge (label)"
 # pull_request 事件的默认类型不含 labeled，所以"打上 automerge 标签就合并"必须
 # 有一个单独的工作流来响应。
 #
-# 这里使用 GitHub 原生 auto-merge：打标签后为 PR 开启 auto-merge，由 GitHub
-# 等待所需检查通过再合并，不在 runner 上轮询，也不存在"检查还没跑完就跳过"的
-# 时机问题。
+# 这里只查一次检查结果，不等待：
+#   - 已经全部通过 → 直接合并（适用于标签晚于 PR Check 的情况）
+#   - 还没跑完 → 不做等待，交给 pr-check.yml（检查跑完后会自动合并）
 #
-# 前置条件（仓库设置）：
-#   1. Settings → General → Pull Requests 勾选 "Allow auto-merge"
-#   2. 分支保护把 "Rust Check" 设为 required status check
-#
-# 合并用 AUTOMERGE_TOKEN（可选）：改动 .github/workflows/** 的 PR 需要
-# workflows 权限，GITHUB_TOKEN 没有。
+# 合并逻辑与 pr-check.yml 共用 .github/scripts/automerge.cjs。
 
 on:
   pull_request:
@@ -25,6 +20,7 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  checks: read
 
 jobs:
   auto-merge:
@@ -33,15 +29,30 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Enable native auto-merge
+      - name: Check the commit's checks
+        id: checks
+        uses: actions/github-script@v9
+        with:
+          # 只读检查结果，用默认 token 即可
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
+          script: |
+            const { checksPassed } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            const ok = await checksPassed({
+              github,
+              core,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pr: context.payload.pull_request,
+            });
+            return ok ? 'true' : 'false';
+
+      - name: Merge PR
+        if: steps.checks.outputs.result == 'true'
         uses: actions/github-script@v9
         with:
           # 改动 .github/workflows/** 的 PR 需要 workflows 权限，GITHUB_TOKEN 没有
           github-token: ${{ secrets.AUTOMERGE_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
-            const { enableAutoMerge } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
-            await enableAutoMerge({
-              github,
-              core,
-              pr: context.payload.pull_request,
-            });
+            const { merge } = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/automerge.cjs`);
+            await merge({ github, context, core, verifyChecks: false });

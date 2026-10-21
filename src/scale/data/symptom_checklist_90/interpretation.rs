@@ -1,20 +1,6 @@
-use super::{Interpretation, Positive, Rule, SymptomGuidance, SymptomInterpretation, Symptoms};
+use super::{Interpretation, SymptomGuidance, SymptomInterpretation, Symptoms};
 
 pub(super) const INTERPRETATION: Interpretation = Interpretation {
-    positive: Positive {
-        total: Rule {
-            value: 160,
-            comparison_operator: ">=",
-        },
-        positive_amount: Rule {
-            value: 43,
-            comparison_operator: ">",
-        },
-        any_symptom_average: Rule {
-            value: 2,
-            comparison_operator: ">=",
-        },
-    },
     symptoms: Symptoms {
         somatization: SymptomInterpretation {
             name: "躯体化",

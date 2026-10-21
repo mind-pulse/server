@@ -220,7 +220,6 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         SecondPersonalityFactor {
             key: "X1",
             name: "适应与焦虑型",
-            expression: "(38+2*L+3*O+4*Q4-2*C-2*H-2*Q2)/10",
             characteristic: Characteristic {
                 low: &[
                     "生活和工作状态整体适应良好，心态满足，能完成自己在意的目标和事情。但有时面对难度较大的工作，可能缺乏坚持下去的毅力，容易知难而退，不愿付出过多努力。",
@@ -233,7 +232,6 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         SecondPersonalityFactor {
             key: "X2",
             name: "内向与外向型",
-            expression: "(2*A+3*E+4*F+5*H-2*Q2-11)/10",
             characteristic: Characteristic {
                 low: &[
                     "性格偏内向，更习惯独处，在人际交往中会有所克制，不喜欢过度社交。这种特质适合从事科研、精密仪器操作、文字编辑等需要专注、细致的工作。",
@@ -246,7 +244,6 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         SecondPersonalityFactor {
             key: "X3",
             name: "感情用事与安详机警型",
-            expression: "(77+2*C+2*E+2*F+2*N-4*A-6*I-2*M)/10",
             characteristic: Characteristic {
                 low: &[
                     "情感丰富细腻，但容易被情绪困扰，自信心不足，偶尔会情绪低落。对生活中的小细节很敏感，性格温和，注重生活品质；但做决策时会反复思考、顾虑过多，容易犹豫不决。",
@@ -259,7 +256,6 @@ pub(super) const INTERPRETATION: Interpretation = Interpretation {
         SecondPersonalityFactor {
             key: "X4",
             name: "怯懦与果敢型",
-            expression: "(4*E+3*M+4*Q1+4*Q2-3*A-2*G)/10",
             characteristic: Characteristic {
                 low: &[
                     "性格偏怯懦，习惯顺从他人，做事依赖别人的安排，缺乏主动性。为了获得他人的认可，容易事事迁就，不敢坚持自己的想法，显得被动。",

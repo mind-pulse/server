@@ -8,7 +8,6 @@ mod data;
 mod definition;
 mod interpretation;
 mod question;
-mod scoring;
 mod summary;
 mod text;
 
@@ -19,6 +18,5 @@ pub use interpretation::{
     Characteristic, ComfortingWord, CriticalWarning, InterpretationItem, Status, SymptomGuidance,
 };
 pub use question::{Question, QuestionOption};
-pub use scoring::{FormulaMode, Integer, OperationalRule};
 pub use summary::ScaleId;
 pub use text::{HTMLElement, PlainText, PlainTexts, SentenceItem, Texts};

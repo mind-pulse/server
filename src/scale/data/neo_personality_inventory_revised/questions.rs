@@ -1,4 +1,51 @@
-use super::scoring::{FORWARD, REVERSE};
+use crate::scale::QuestionOption;
+
+const FORWARD: &[QuestionOption; 5] = &[
+    QuestionOption {
+        text: "完全不符合",
+        point: 0,
+    },
+    QuestionOption {
+        text: "不太符合",
+        point: 1,
+    },
+    QuestionOption {
+        text: "一般般吧",
+        point: 2,
+    },
+    QuestionOption {
+        text: "比较符合",
+        point: 3,
+    },
+    QuestionOption {
+        text: "完全符合",
+        point: 4,
+    },
+];
+
+const REVERSE: &[QuestionOption; 5] = &[
+    QuestionOption {
+        text: "完全不符合",
+        point: 4,
+    },
+    QuestionOption {
+        text: "不太符合",
+        point: 3,
+    },
+    QuestionOption {
+        text: "一般般吧",
+        point: 2,
+    },
+    QuestionOption {
+        text: "比较符合",
+        point: 1,
+    },
+    QuestionOption {
+        text: "完全符合",
+        point: 0,
+    },
+];
+
 use super::{
     AgreeablenessSubdimension, ConscientiousnessSubdimension, Dimension, ExtraversionSubdimension,
     NegativeEmotionalitySubdimension, OpenMindednessSubdimension, Question, Subdimension,

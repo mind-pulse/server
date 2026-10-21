@@ -67,7 +67,6 @@ pub const HOLLAND_OCCUPATIONAL_INTEREST_HIGH_SCHOOL_CN: Scale<Interpretation, Qu
     warning: Some(
         "版权提示：本测评参考霍兰德 RIASEC 职业兴趣理论编制，并非 PAR 出版的 Self-Directed Search 原版；原版测评受版权保护，请通过官方渠道获取授权。",
     ),
-    formula_mode: None,
     tags: &Tag {
         info: Some(&["高考", "专业"]),
         normal: None,

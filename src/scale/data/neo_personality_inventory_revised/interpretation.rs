@@ -1,5 +1,4 @@
 use super::norms::NORM;
-use super::scoring::SCORING_RULE;
 use super::{
     AgreeablenessSubdimension, ConscientiousnessSubdimension, Dimension, DimensionInterpretation,
     ExtraversionSubdimension, Interpretation, NegativeEmotionalitySubdimension,
@@ -666,6 +665,5 @@ pub(super) const DIMENSIONS: &[DimensionInterpretation; 5] = &[
 
 pub(super) const INTERPRETATION: Interpretation = Interpretation {
     norm: NORM,
-    scoring_rule: SCORING_RULE,
     dimensions: DIMENSIONS,
 };
