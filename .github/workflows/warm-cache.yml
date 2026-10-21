@@ -1,5 +1,12 @@
 name: "Cache Warming"
 
+# 预热 pr-check / publish 真正会用的缓存。
+#
+# 缓存 key 与 pr-check / publish 共用，而 actions/cache 对同一个 key 只在缺失时
+# 写入（先写者赢）。如果这里只跑 cargo build --tests，写进去的缓存不含 clippy
+# 产物，PR 命中后也无法补写，clippy 每次都会冷编译。因此这里必须跑与
+# pr-check 完全相同的命令，并同时预热 publish 用的 release 缓存。
+
 on:
   push:
     branches:
@@ -21,19 +28,33 @@ jobs:
   warm-rust-cache:
     name: "Warm Rust Cache"
     runs-on: ubuntu-26.04
-    timeout-minutes: 30
+    # release 构建带 LTO，留足时间
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Rust
+      - name: Setup Rust (debug)
         uses: ./.github/actions/rust-setup
         with:
           cache-prefix: rust-debug
           target-dir: debug
 
+      - name: Setup Rust (release)
+        uses: ./.github/actions/rust-setup
+        with:
+          cache-prefix: rust-release
+          target-dir: release
+
       - name: Fetch dependencies
         run: cargo fetch
 
-      - name: Build tests
-        run: cargo build --tests
+      # 与 pr-check 一致：build --tests + clippy（clippy 才是 PR 里最慢的一步）
+      - name: Warm debug cache
+        run: |
+          cargo build --tests
+          cargo clippy --all-targets -- -D warnings
+
+      # 与 publish 一致
+      - name: Warm release cache
+        run: cargo build --release

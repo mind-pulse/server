@@ -10,6 +10,10 @@ inputs:
     description: "target 下的构建目录：release 或 debug"
     required: false
     default: "release"
+  cache-version:
+    description: "缓存内容版本；预热脚本变化时递增，强制重建缓存"
+    required: false
+    default: "2"
 
 runs:
   using: "composite"
@@ -37,6 +41,6 @@ runs:
           target/${{ inputs.target-dir }}/.fingerprint
           target/${{ inputs.target-dir }}/deps
           target/${{ inputs.target-dir }}/build
-        key: ${{ runner.os }}-${{ inputs.cache-prefix }}-${{ steps.toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+        key: ${{ runner.os }}-${{ inputs.cache-prefix }}-${{ inputs.cache-version }}-${{ steps.toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
-          ${{ runner.os }}-${{ inputs.cache-prefix }}-${{ steps.toolchain.outputs.cachekey }}-
+          ${{ runner.os }}-${{ inputs.cache-prefix }}-${{ inputs.cache-version }}-${{ steps.toolchain.outputs.cachekey }}-
