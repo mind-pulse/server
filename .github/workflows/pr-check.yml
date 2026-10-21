@@ -54,10 +54,31 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Setup Rust
-        uses: ./.github/actions/rust-setup
+        id: rust-toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Restore cargo registry
+        uses: actions/cache/restore@v6
         with:
-          cache-prefix: rust-debug
-          target-dir: debug
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-registry-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Restore Rust debug dependencies
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            target/debug/.fingerprint
+            target/debug/deps
+            target/debug/build
+          key: ${{ runner.os }}-rust-debug-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-debug-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
 
       - name: Check formatting
         run: cargo fmt --all -- --check

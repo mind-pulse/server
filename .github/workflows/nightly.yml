@@ -65,10 +65,31 @@ jobs:
           gh release delete nightly --cleanup-tag --yes || true
 
       - name: Setup Rust
-        uses: ./.github/actions/rust-setup
+        id: rust-toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v6
         with:
-          cache-prefix: rust-release
-          target-dir: release
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-registry-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Cache Rust nightly release dependencies
+        uses: actions/cache@v6
+        with:
+          path: |
+            target/release/.fingerprint
+            target/release/deps
+            target/release/build
+          key: ${{ runner.os }}-rust-nightly-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-nightly-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
 
       - name: Build
         run: cargo build --release
