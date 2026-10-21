@@ -103,9 +103,10 @@ jobs:
             - uses: actions/checkout@v7
 
             - name: Install Rust stable
+              id: rust-toolchain
               uses: dtolnay/rust-toolchain@stable
 
-            - name: Cache Rust dependencies
+            - name: Cache cargo registry
               uses: actions/cache@v6
               with:
                   path: |
@@ -113,10 +114,20 @@ jobs:
                       ~/.cargo/registry/index/
                       ~/.cargo/registry/cache/
                       ~/.cargo/git/db/
+                  key: ${{ runner.os }}-cargo-registry-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-cargo-registry-
+
+            - name: Cache Rust release dependencies
+              uses: actions/cache@v6
+              with:
+                  path: |
                       target/release/.fingerprint
                       target/release/deps
                       target/release/build
-                  key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+                  key: ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
                   restore-keys: |
                       ${{ runner.os }}-rust-
 

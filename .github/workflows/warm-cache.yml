@@ -2,7 +2,7 @@ name: "Cache Warming"
 
 # 预热 pr-check / publish 用到的缓存。
 #
-# 缓存 key 必须与 .github/actions/rust-setup 完全一致，否则 PR 无法命中。
+# 缓存 key 必须与 pr-check / publish / nightly 完全一致，否则无法命中。
 # 这里显式配置 registry / debug / release 三段缓存，方便核对是否真的写了缓存。
 
 on:
@@ -64,9 +64,9 @@ jobs:
             target/debug/.fingerprint
             target/debug/deps
             target/debug/build
-          key: ${{ runner.os }}-rust-debug-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-rust-debug-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-rust-debug-${{ steps.rust-toolchain.outputs.cachekey }}-
+            ${{ runner.os }}-rust-debug-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
 
       - name: Cache Rust release dependencies
         uses: actions/cache@v6
@@ -75,9 +75,9 @@ jobs:
             target/release/.fingerprint
             target/release/deps
             target/release/build
-          key: ${{ runner.os }}-rust-release-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-rust-release-${{ steps.rust-toolchain.outputs.cachekey }}-
+            ${{ runner.os }}-rust-release-v2-${{ steps.rust-toolchain.outputs.cachekey }}-
 
       # 与 pr-check 一致：build --tests + clippy（clippy 是 PR 里最慢的一步）
       - name: Warm debug cache
