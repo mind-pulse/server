@@ -618,8 +618,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d930c203dd0b6ff06e0201a4a2fe9149b43c684fd4420555b26d21b1a02956f"
 dependencies = [
  "futures-core",
- "lock_api",
- "parking_lot",
+ "lock_api 0.4.14",
+ "parking_lot 0.12.5",
 ]
 
 [[package]]
@@ -1107,6 +1107,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "lock_api"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "65d91b22da179613dcf4d6ec8349563f52a363f6849e03b00dd0a185ec4a59af"
+dependencies = [
+ "scopeguard",
+]
+
+[[package]]
 name = "log"
 version = "0.4.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1243,8 +1252,18 @@ version = "0.12.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "93857453250e3077bd71ff98b6a65ea6621a19bb0f559a85248955ac12c45a1a"
 dependencies = [
- "lock_api",
- "parking_lot_core",
+ "lock_api 0.4.14",
+ "parking_lot_core 0.9.12",
+]
+
+[[package]]
+name = "parking_lot"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a9cf937ca4e1d0b7578784559063422fc39ae7c5a00f02471f2614d5486fd226"
+dependencies = [
+ "lock_api 0.5.0",
+ "parking_lot_core 0.10.0",
 ]
 
 [[package]]
@@ -1255,7 +1274,19 @@ checksum = "2621685985a2ebf1c516881c026032ac7deafcda1a2c9b7850dc81e3dfcb64c1"
 dependencies = [
  "cfg-if",
  "libc",
- "redox_syscall",
+ "redox_syscall 0.5.18",
+ "smallvec",
+ "windows-link",
+]
+
+[[package]]
+name = "parking_lot_core"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9cfff060068cc18aa7815010fcaf80c68c7fb9e85fc7f5c0f9bf142c21d19826"
+dependencies = [
+ "libc",
+ "redox_syscall 0.9.5",
  "smallvec",
  "windows-link",
 ]
@@ -1459,6 +1490,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "redox_syscall"
+version = "0.9.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "580c875845b41ecb1564ad1ae4703044cef774145e3d7a94dc2b3fa7c97868fd"
+dependencies = [
+ "bitflags",
+]
+
+[[package]]
 name = "regex"
 version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1566,9 +1606,9 @@ checksum = "9774ba4a74de5f7b1c1451ed6cd5285a32eddb5cccb8cc655a4e50009e06477f"
 
 [[package]]
 name = "salvo"
-version = "1.0.1"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5195b16bb9086c424f32fea95fc4e57617f68b494cd419c4839f36c4e52a6432"
+checksum = "eefb370a3b081da644e2794b5c44b5649793f859a5f1f75d6d0be5b81085aab3"
 dependencies = [
  "salvo-oapi",
  "salvo_core",
@@ -1576,9 +1616,9 @@ dependencies = [
 
 [[package]]
 name = "salvo-oapi"
-version = "1.0.1"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebcc93544364bd6565b4af675649b87c0dd80b16f7a6bb48c4da2426648358fd"
+checksum = "3ed25c14fc752a646c6fcedd9c8455697b6844c24bf1bcceeb03c53ee10a463c"
 dependencies = [
  "anyhow",
  "base64 0.23.1",
@@ -1590,7 +1630,7 @@ dependencies = [
  "indexmap",
  "inventory",
  "mime-infer",
- "parking_lot",
+ "parking_lot 0.13.0",
  "regex",
  "rust-embed",
  "rust_decimal",
@@ -1611,9 +1651,9 @@ dependencies = [
 
 [[package]]
 name = "salvo-oapi-macros"
-version = "1.0.1"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0912f9eb1cb4d677d369030c59254720737250206af4b3d6094e0febc8883a1c"
+checksum = "ff6636d2c22b1b1f567d9b2dbeaf82e60e088dd9a0abceee592f98c02730b5c6"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -1625,9 +1665,9 @@ dependencies = [
 
 [[package]]
 name = "salvo-serde-util"
-version = "1.0.1"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "98e7a3a7921b22fb7916b7b2a2dad21f2a9119b1935276c355e8b22341413d8c"
+checksum = "f8c0d983018a0c9ce6a182d72dac63bf4ef60436d0647fe7ce9934777d9b1f9b"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1636,9 +1676,9 @@ dependencies = [
 
 [[package]]
 name = "salvo_core"
-version = "1.0.1"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e750d044c19994e42efd60f66ff502892dccf9e54eec50d63f4be4ca618e8a5a"
+checksum = "f8a316ecb26c99b489786f339fb7c1493e026faca5f6691aa12e8ab708c7cf2f"
 dependencies = [
  "async-trait",
  "base64 0.23.1",
@@ -1660,11 +1700,10 @@ dependencies = [
  "mime-infer",
  "multimap",
  "multra",
- "parking_lot",
+ "parking_lot 0.13.0",
  "percent-encoding",
  "pin-project",
  "rand 0.10.3",
- "regex",
  "salvo_macros",
  "serde",
  "serde-xml-rs",
@@ -1679,9 +1718,9 @@ dependencies = [
 
 [[package]]
 name = "salvo_macros"
-version = "1.0.1"
+version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0b7644c99267dd8a97d97a00ad1358c6d597db764354fe6c7679105af62d1f7c"
+checksum = "7b350922ce067d7f0a9bfa9f07a520ade9c849f3fb9f730ca28666bb53bc833d"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -1885,7 +1924,7 @@ version = "0.9.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3763264f6b73151db08c50ff20d7d8a0b8796e021cdea7ceedad07b80155fa0e"
 dependencies = [
- "lock_api",
+ "lock_api 0.4.14",
 ]
 
 [[package]]
